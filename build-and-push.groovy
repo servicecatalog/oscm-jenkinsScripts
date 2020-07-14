@@ -74,5 +74,5 @@ node("${NODE_NAME}") {
 
     clean.execute()
     build.execute()
-    push.execute(true, true) 
+    push.execute(true, false) 
 }
