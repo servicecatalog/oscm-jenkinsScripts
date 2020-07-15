@@ -35,8 +35,8 @@
 
  **/
 
-void execute(String FQDN = env.NODE_NAME + '.intern.est.fujitsu.com') {
-	
+void execute() {
+
     def _fixPermissions = {
         sh '''
         
@@ -87,8 +87,6 @@ void execute(String FQDN = env.NODE_NAME + '.intern.est.fujitsu.com') {
 
     def _setupVarEnv = {
         stage('Start - fill var.env template') {
-            script {
-            env.FQDN_NODE = FQDN
             sh '''
             sed -i \
                 -e "s|^\\(DB_PORT_.*\\+=\\).*|\\15432|g" \
@@ -122,8 +120,8 @@ void execute(String FQDN = env.NODE_NAME + '.intern.est.fujitsu.com') {
                 -e "s|^\\\\(CLUSTER_NAME=\\\\).*|\\\\1esscluster|g" \
                 -e "s|^\\\\(LOAD_BALANCER_NAME=\\\\).*|\\\\1VM Network|g" \
                 -e "s|^\\(KEY_SECRET=\\).*|\\1secretsecret1234|g" \
-                -e "s|^\\(HOST_FQDN=\\).*|\\1${FQDN_NODE}|g" \
-                -e "s|^\\(REPORT_ENGINEURL=https://\\).*\\(:8681.*\\)|\\1${FQDN_NODE}\\2|g" \
+                -e "s|^\\(HOST_FQDN=\\).*|\\1${NODE_NAME}.intern.est.fujitsu.com|g" \
+                -e "s|^\\(REPORT_ENGINEURL=https://\\).*\\(:8681.*\\)|\\1${NODE_NAME}.intern.est.fujitsu.com\\2|g" \
                 -e "s|^\\(TOMEE_DEBUG=\\).*|\\1${TOMEE_DEBUG}|g" \
                 -e "s|^\\\\(AUTH_MODE=\\\\).*|\\\\1${AUTH_MODE}|g" \
                 -e "s|^\\\\(SSO_IDP_TRUSTSTORE=\\\\).*|\\\\1/opt/apache-tomee/conf/ssl.p12|g" \
@@ -143,10 +141,8 @@ void execute(String FQDN = env.NODE_NAME + '.intern.est.fujitsu.com') {
                 -e "s|^\\\\(CONTROLLER_USER_PASS=\\\\).*|\\\\1${CONTROLLER_USER_PASS}|g" \
 				${WORKSPACE}/docker/var.env;
             '''
-            }
         }
     }
-
 
     def _start = {
         stage('Start - start OSCM') {
@@ -164,14 +160,12 @@ void execute(String FQDN = env.NODE_NAME + '.intern.est.fujitsu.com') {
             '''
         }
     }
-    
-    
+
     _fixPermissions()
     _createEnvTemplates()
     _setupEnv()
     _setupVarEnv()
     _start()
 }
-
 
 return this
