@@ -96,12 +96,14 @@ def execute(boolean loginRequired = false, publish = false) {
     }
 
     def _pushImages = {
-        stage('Push - images to registry') {
-            sh('IMAGES="db initdb core app identity birt branding help deployer maildev proxy"; ' +
-                    'for IMAGE in ${IMAGES}; do ' +
-                    "docker push " + (publish ? "" : '${DOCKER_REGISTRY}/') + "${dstOrg}/oscm-" + '${IMAGE}' + ":${dstTag}; " +
-                    'done'
-            )
+        if(DOCKER_TAG) {
+            stage('Push - images to registry') {
+                sh('IMAGES="db initdb core app identity birt branding help deployer maildev proxy"; ' +
+                        'for IMAGE in ${IMAGES}; do ' +
+                        "docker push " + (publish ? "" : '${DOCKER_REGISTRY}/') + "${dstOrg}/oscm-" + '${IMAGE}' + ":${dstTag}; " +
+                        'done'
+                )
+            }
         }
     }
     
