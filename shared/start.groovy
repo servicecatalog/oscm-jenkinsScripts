@@ -96,7 +96,7 @@ void execute(String FQDN = env.NODE_NAME + '.intern.est.fujitsu.com') {
                 -e "s|^\\(DB_SUPERPWD=\\).*|\\1secret|g" \
                 -e "s|^\\(SMTP_HOST=\\).*|\\1oscm-maildev|g" \
                 -e "s|^\\(SMTP_PORT=\\).*|\\125|g" \
-                -e "s|^\\(SMTP_FROM=\\).*|\\1oscm@${FQDN_NODE}|g" \
+                -e "s|^\\(SMTP_FROM=\\).*|\\1oscm@${NODE_NAME}.intern.est.fujitsu.com|g" \
                 -e "s|^\\(SMTP_USER=\\).*|\\1none|g" \
                 -e "s|^\\(SMTP_PWD=\\).*|\\1none|g" \
                 -e "s|^\\(SMTP_AUTH=\\).*|\\1false|g" \
@@ -110,7 +110,7 @@ void execute(String FQDN = env.NODE_NAME + '.intern.est.fujitsu.com') {
                 -e "s|^\\(PROXY_NOPROXY=\\).*|\\1oscm-core\\|10.140.18.120\\|estvcsadev.intern.est.fujitsu.com\\|10.140.16.69|g" \
                 -e "s|^\\(CONTAINER_MAX_SIZE=\\).*|\\150|g" \
                 -e "s|^\\(LOG_LEVEL=\\).*|\\1ERROR|g" \
-                -e "s|^\\(APP_ADMIN_MAIL_ADDRESS=\\).*|\\1oscm@${FQDN_NODE}|g" \
+                -e "s|^\\(APP_ADMIN_MAIL_ADDRESS=\\).*|\\1oscm@${NODE_NAME}.intern.est.fujitsu.com|g" \
                 -e "s|^\\(CONTROLLER_ORG_ID=\\).*|\\1PLATFORM_OPERATOR|g" \
                 -e "s|^\\(CONTROLLER_USER_KEY=\\).*|\\1${CONTROLLER_USER_KEY}|g" \
                 -e "s|^\\(CONTROLLER_USER_NAME=\\).*|\\1${CONTROLLER_USER_ID}|g" \
@@ -159,7 +159,7 @@ void execute(String FQDN = env.NODE_NAME + '.intern.est.fujitsu.com') {
                 -e INITDB=true \
                 -e STARTUP=true \
                 -e SAMPLE_DATA=${SAMPLE_DATA} \
-                -e FQDN=${NODE_NAME}.intern.est.fujitsu.com \
+                -e FQDN=${FQDN_NODE} \
                 ${DOCKER_REGISTRY}/${DOCKER_ORGANIZATION}/oscm-deployer:${DOCKER_TAG}
             '''
         }
