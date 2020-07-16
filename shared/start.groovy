@@ -35,7 +35,7 @@
 
  **/
 
-void execute() {
+void execute(String FQDN = env.NODE_NAME + '.intern.est.fujitsu.com') {
 
     def _fixPermissions = {
         sh '''
@@ -87,6 +87,8 @@ void execute() {
 
     def _setupVarEnv = {
         stage('Start - fill var.env template') {
+            script {
+            env.FQDN_NODE = FQDN
             sh '''
             sed -i \
                 -e "s|^\\(DB_PORT_.*\\+=\\).*|\\15432|g" \
@@ -141,6 +143,7 @@ void execute() {
                 -e "s|^\\\\(CONTROLLER_USER_PASS=\\\\).*|\\\\1${CONTROLLER_USER_PASS}|g" \
 				${WORKSPACE}/docker/var.env;
             '''
+            }
         }
     }
 

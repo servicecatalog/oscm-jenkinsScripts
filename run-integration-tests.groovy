@@ -111,7 +111,7 @@ node("${NODE_NAME}") {
     push.execute()
 
     pull.execute()
-    start.execute()
+    start.execute('localhost')
 
     tests.execute()
 }
