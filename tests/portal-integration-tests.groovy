@@ -5,8 +5,8 @@
  **/
 
 def execute() {
-    
-    def authMode = sh (
+
+    def authMode = sh(
             script: 'echo $AUTH_MODE;',
             returnStdout: true
     ).trim()
@@ -19,7 +19,7 @@ def execute() {
             sh "sed -ri 's|bes\\.user\\.password=.*|bes.user.password=$ADMIN_USER_PWD|g' ${WEBTEST_PROPERTIES_LOCALIZATION}"
             sh "sed -ri 's|app\\.user\\.id=.*|app.user.id=$ADMIN_USER_ID|g' ${WEBTEST_PROPERTIES_LOCALIZATION}"
             sh "sed -ri 's|app\\.user\\.password=.*|app.user.password=$ADMIN_USER_PWD|g' ${WEBTEST_PROPERTIES_LOCALIZATION}"
-            if(authMode=='OIDC'){
+            if (authMode == 'OIDC') {
                 sh "sed -ri 's|oidc\\.supplier\\.id=.*|oidc.supplier.id=$SUPPLIER_USER_ID|g' ${WEBTEST_PROPERTIES_LOCALIZATION}"
                 sh "sed -ri 's|oidc\\.supplier\\.password=.*|oidc.supplier.password=$SUPPLIER_USER_PWD|g' ${WEBTEST_PROPERTIES_LOCALIZATION}"
             }
@@ -52,28 +52,38 @@ def execute() {
 
     def _installUITests = {
         stage('Tests - install ui tests') {
-            user = sh(returnStdout: true, script: 'id -u').trim()
-            group = sh(returnStdout: true, script: 'id -g').trim()
-            sh "sleep 120"
-            sh "docker run " +
-                    "--name maven-ui-tests-${BUILD_ID} " +
-                    "--user $user:$group " +
-                    "--rm " +
-                    "--network host " +
-                    "--add-host oscm-identity:127.0.0.1 " +
-                    "-v ${WORKSPACE}:/build " +
-                    "-e http_proxy=\"${http_proxy}\" " +
-                    "-e https_proxy=\"${https_proxy}\" " +
-                    "-e HTTP_PROXY=\"${http_proxy}\" " +
-                    "-e HTTPS_PROXY=\"${https_proxy}\" " +
-                    "-e MAVEN_OPTS=\"-Duser.home=/build -Dhttp.proxyHost=proxy.intern.est.fujitsu.com -Dhttp.proxyPort=8080 -Dhttps.proxyHost=proxy.intern.est.fujitsu.com -Dhttps.proxyPort=8080\" " +
-                    "oscm-maven clean install -f /build/oscm-ui-tests/pom.xml"
+            catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+                user = sh(returnStdout: true, script: 'id -u').trim()
+                group = sh(returnStdout: true, script: 'id -g').trim()
+                sh "sleep 120"
+                sh "docker run " +
+                        "--name maven-ui-tests-${BUILD_ID} " +
+                        "--user $user:$group " +
+                        "--rm " +
+                        "--network host " +
+                        "--add-host oscm-identity:127.0.0.1 " +
+                        "-v ${WORKSPACE}:/build " +
+                        "-e http_proxy=\"${http_proxy}\" " +
+                        "-e https_proxy=\"${https_proxy}\" " +
+                        "-e HTTP_PROXY=\"${http_proxy}\" " +
+                        "-e HTTPS_PROXY=\"${https_proxy}\" " +
+                        "-e MAVEN_OPTS=\"-Duser.home=/build -Dhttp.proxyHost=proxy.intern.est.fujitsu.com -Dhttp.proxyPort=8080 -Dhttps.proxyHost=proxy.intern.est.fujitsu.com -Dhttps.proxyPort=8080\" " +
+                        "oscm-maven clean install -f /build/oscm-ui-tests/pom.xml"
+            }
+        }
+    }
+
+    def _cleanUp = {
+        stage('Tests - clean up') {
+            sh "sleep 10"
+            sh "if [ \$(docker volume ls -qf dangling=true | wc -l) != '0' ]; then docker volume ls -qf dangling=true | xargs -r docker volume rm > /dev/null; fi"
         }
     }
 
     _updateTechnicalServicePath()
     _setupTenant()
     _installUITests()
+    _cleanUp()
 }
 
 return this

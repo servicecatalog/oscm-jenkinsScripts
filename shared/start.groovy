@@ -36,7 +36,7 @@
  **/
 
 void execute(String FQDN = env.NODE_NAME + '.intern.est.fujitsu.com') {
-	
+
     def _fixPermissions = {
         sh '''
         
@@ -147,7 +147,6 @@ void execute(String FQDN = env.NODE_NAME + '.intern.est.fujitsu.com') {
         }
     }
 
-
     def _start = {
         stage('Start - start OSCM') {
             sh '''
@@ -164,14 +163,12 @@ void execute(String FQDN = env.NODE_NAME + '.intern.est.fujitsu.com') {
             '''
         }
     }
-    
-    
+
     _fixPermissions()
     _createEnvTemplates()
     _setupEnv()
     _setupVarEnv()
     _start()
 }
-
 
 return this
