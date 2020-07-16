@@ -1,3 +1,16 @@
+/**
+
+ *****************************************************************************
+ *                                                                           *
+ * Copyright FUJITSU LIMITED 2020                                            *
+ *                                                                           *
+ * Creation Date: 16-07-2020                                                 *
+ *                                                                           *
+ *****************************************************************************
+ 
+ **\
+
+
 // How to use:
 // 1. Create a job of type Pipeline
 // 2. As the pipeline script paste this script

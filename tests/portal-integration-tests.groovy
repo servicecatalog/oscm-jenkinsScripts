@@ -1,5 +1,15 @@
 /**
 
+
+ *****************************************************************************
+ *                                                                           *
+ * Copyright FUJITSU LIMITED 2020                                            *
+ *                                                                           *
+ * Creation Date: 16-07-2020                                                 *
+ *                                                                           *
+ *****************************************************************************
+
+
  For required environment variables please see the following file: tests/run-integration-tests.groovy
 
  **/

@@ -1,4 +1,13 @@
 /**
+
+ *****************************************************************************
+ *                                                                           *
+ * Copyright FUJITSU LIMITED 2020                                            *
+ *                                                                           *
+ * Creation Date: 16-07-2020                                                 *
+ *                                                                           *
+ *****************************************************************************
+ 
  To import and use, add below code to jenkinsFile run by jenkins:
  `
  def build = evaluate readTrusted('shared/build.groovy') 
