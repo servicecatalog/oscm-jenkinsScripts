@@ -90,9 +90,16 @@ def execute(boolean loginRequired = false, publish = false) {
     }
 
     def _loginToDockerHub = {
-        stage('Push - login to DockerHub') {
-            sh 'docker login -u ${USERNAME} -p ${PASSWORD}'
-        }
+        if(DOCKER_REGISTRY == 'docker.io' {
+            stage('Push - login to DockerHub') {
+                sh 'docker login -u ${USERNAME} -p ${PASSWORD}'
+            }
+         } 
+         else {
+             stage('Push - login to Artifactory') {
+                sh 'docker login -u ${USERNAME} -p ${PASSWORD} '${DOCKER_REGISTRY}'
+            }
+         }
     }
 
     def _pushImages = {
