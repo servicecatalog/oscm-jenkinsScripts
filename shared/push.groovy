@@ -90,7 +90,7 @@ def execute(boolean loginRequired = false, publish = false) {
     }
 
     def _loginToDockerHub = {
-        if(DOCKER_REGISTRY == 'docker.io' {
+        if(DOCKER_REGISTRY == 'docker.io') {
             stage('Push - login to DockerHub') {
                 sh 'docker login -u ${USERNAME} -p ${PASSWORD}'
             }
