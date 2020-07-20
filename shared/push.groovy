@@ -97,7 +97,7 @@ def execute(boolean loginRequired = false, publish = false) {
          } 
          else {
              stage('Push - login to Artifactory') {
-                sh 'docker login -u ${USERNAME} -p ${PASSWORD} '${DOCKER_REGISTRY}'
+                sh 'docker login -u ${USERNAME} -p ${PASSWORD} ${DOCKER_REGISTRY}'
             }
          }
     }
