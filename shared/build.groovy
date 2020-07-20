@@ -571,6 +571,7 @@ def execute() {
 	_buildMavenImage()
 
     _downloadLibraries()
+    
     _buildBootstrapImage()
     _compileBootsrapMarketplace()
     _compileCustomBootsrap()
