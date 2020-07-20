@@ -566,14 +566,14 @@ def execute() {
     _copyUserDocumentation()
 
     _buildOSCMCentosBasedImage()
-    _buildBootstrapImage()
-    _compileBootsrapMarketplace()
-    _compileCustomBootsrap()
-    
+
     _buildAntImage()
 	_buildMavenImage()
 
     _downloadLibraries()
+    _buildBootstrapImage()
+    _compileBootsrapMarketplace()
+    _compileCustomBootsrap()
     
     _copyTenantConfig()
     
