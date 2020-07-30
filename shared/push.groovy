@@ -98,18 +98,27 @@ def execute(boolean loginRequired = false, publish = false) {
     }
 
     def _loginToDockerHub = {
-        stage('Push - login to DockerHub') {
-            sh 'docker login -u ${USERNAME} -p ${PASSWORD}'
-        }
+        if(DOCKER_REGISTRY == 'docker.io') {
+            stage('Push - login to DockerHub') {
+                sh 'docker login -u ${USERNAME} -p ${PASSWORD}'
+            }
+         } 
+         else {
+             stage('Push - login to Artifactory') {
+                sh 'docker login -u ${USERNAME} -p ${PASSWORD} ${DOCKER_REGISTRY}'
+            }
+         }
     }
 
     def _pushImages = {
-        stage('Push - images to registry') {
-            sh('IMAGES="db initdb core app identity birt branding help deployer maildev proxy"; ' +
-                    'for IMAGE in ${IMAGES}; do ' +
-                    "docker push " + (publish ? "" : '${DOCKER_REGISTRY}/') + "${dstOrg}/oscm-" + '${IMAGE}' + ":${dstTag}; " +
-                    'done'
-            )
+        if(DOCKER_TAG) {
+            stage('Push - images to registry') {
+                sh('IMAGES="db initdb core app identity birt branding help deployer maildev proxy"; ' +
+                        'for IMAGE in ${IMAGES}; do ' +
+                        "docker push " + (publish ? "" : '${DOCKER_REGISTRY}/') + "${dstOrg}/oscm-" + '${IMAGE}' + ":${dstTag}; " +
+                        'done'
+                )
+            }
         }
     }
     
