@@ -143,7 +143,7 @@ def execute() {
         def _prepareApprovalAdapterRepository = {
         stage('Build - clone oscm-approval repository') {
     	    sh "mkdir -p ${WORKSPACE}/oscm-approval"
-	        dir("${WORKSPACE}/oscm-app-shell") {
+	        dir("${WORKSPACE}/oscm-approval") {
 	            checkout scm: [
                         $class                           : 'GitSCM',
                         branches                         : [[name: "${REPO_TAG_APPROVAL}"]],
