@@ -376,7 +376,7 @@ def execute() {
                     "-e HTTP_PROXY=\"${http_proxy}\" " +
                     "-e HTTPS_PROXY=\"${https_proxy}\" " +
                     "-e MAVEN_OPTS=\"-Duser.home=/build -Dhttp.proxyHost=proxy.intern.est.fujitsu.com -Dhttp.proxyPort=8080 -Dhttps.proxyHost=proxy.intern.est.fujitsu.com -Dhttps.proxyPort=8080\" " +
-                    "oscm-maven clean package -f /build/oscm-approval/pom.xml"
+                    "oscm-maven clean package -f /build/approval/pom.xml"
         }
     }
     
