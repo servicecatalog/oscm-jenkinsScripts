@@ -607,6 +607,7 @@ def execute() {
     _prepareShellAdapterRepository()
     _prepareIndentityRepository()
     _prepareRestAPIRepository()
+    _prepareApprovalAdapterRepository()
     _copyUserDocumentation()
 
     _buildOSCMCentosBasedImage()
@@ -625,6 +626,7 @@ def execute() {
     _compileCore()
     _compileApp()
 	_compileShell()
+	_compileApproval()
     _compileIdentity()
     _compileRestAPI()
     _copyArtifacts()
