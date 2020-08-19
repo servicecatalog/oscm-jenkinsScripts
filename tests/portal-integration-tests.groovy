@@ -34,12 +34,12 @@ def execute() {
 
     def _setupTenant = {
         stage('Test webservices - setup tenant') {
-        if(authMode=='OIDC'){
-            sh "cp ${WORKSPACE}/oscm-portal/WebContent/oidc/tenant-default.properties ${WORKSPACE}/docker/config/oscm-identity/tenants/"
+            if (authMode == 'OIDC') {
+                sh "cp ${WORKSPACE}/oscm-portal/WebContent/oidc/tenant-default.properties ${WORKSPACE}/docker/config/oscm-identity/tenants/"
 
-            sh "sed -ri 's|oidc.authUrlScope=.*|oidc.authUrlScope=openid profile offline_access https://graph.microsoft.com/user.read.all https://graph.microsoft.com/group.readwrite.all https://graph.microsoft.com/directory.readwrite.all|g' ${WORKSPACE}/docker/config/oscm-identity/tenants/tenant-default.properties"
+                sh "sed -ri 's|oidc.authUrlScope=.*|oidc.authUrlScope=openid profile offline_access https://graph.microsoft.com/user.read.all https://graph.microsoft.com/group.readwrite.all https://graph.microsoft.com/directory.readwrite.all|g' ${WORKSPACE}/docker/config/oscm-identity/tenants/tenant-default.properties"
 
-            sh '''
+                sh '''
             sed -i \
                 -e "s|^\\(oidc.provider\\+=\\).*|\\1default|g" \
                 -e "s|^\\(oidc.clientId\\+=\\).*|\\152d193b3-0b31-4084-88a6-ea1e065b6bec|g" \
@@ -54,7 +54,7 @@ def execute() {
                 -e "s|^\\(oidc.idpApiUri\\+=\\).*|\\1https://graph.microsoft.com|g" \
 				${WORKSPACE}/docker/config/oscm-identity/tenants/tenant-default.properties;
             '''
-        }
+            }
         }
     }
 
@@ -83,7 +83,6 @@ def execute() {
 
     def _cleanUp = {
         stage('Tests - clean up') {
-            sh "sleep 10"
             sh "if [ \$(docker volume ls -qf dangling=true | wc -l) != '0' ]; then docker volume ls -qf dangling=true | xargs -r docker volume rm > /dev/null; fi"
         }
     }
