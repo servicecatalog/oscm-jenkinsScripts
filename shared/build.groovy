@@ -139,6 +139,24 @@ def execute() {
 	        }
 	    }
     }
+    
+        def _prepareApprovalAdapterRepository = {
+        stage('Build - clone oscm-approval repository') {
+    	    sh "mkdir -p ${WORKSPACE}/oscm-approval"
+	        dir("${WORKSPACE}/oscm-approval") {
+	            checkout scm: [
+                        $class                           : 'GitSCM',
+                        branches                         : [[name: "${REPO_TAG_APPROVAL}"]],
+                        doGenerateSubmoduleConfigurations: false,
+                        extensions                       : [[$class : 'CloneOption',
+                                                             noTags : false, reference: '',
+                                                             shallow: true]],
+                        submoduleCfg                     : [],
+                        userRemoteConfigs                : [[url: 'https://github.com/servicecatalog/oscm-approval']]
+                ]
+	        }
+	    }
+    }
 
  	def _prepareIndentityRepository = {
         stage('Build - clone oscm-identity repository') {
@@ -341,6 +359,24 @@ def execute() {
                     "-e HTTPS_PROXY=\"${https_proxy}\" " +
                     "-e MAVEN_OPTS=\"-Duser.home=/build -Dhttp.proxyHost=proxy.intern.est.fujitsu.com -Dhttp.proxyPort=8080 -Dhttps.proxyHost=proxy.intern.est.fujitsu.com -Dhttps.proxyPort=8080\" " +
                     "oscm-maven clean package -f /build/oscm-app-shell/pom.xml"
+        }
+    }
+    
+        def _compileApproval = {
+        stage('Build - compile oscm-approval') {
+            user = sh(returnStdout: true, script: 'id -u').trim()
+            group = sh(returnStdout: true, script: 'id -g').trim()
+            sh "docker run " +
+                    "--name maven-approval-${BUILD_ID} " +
+                    "--user $user:$group " +
+                    "--rm " +
+                    "-v ${WORKSPACE}:/build " +
+                    "-e http_proxy=\"${http_proxy}\" " +
+                    "-e https_proxy=\"${https_proxy}\" " +
+                    "-e HTTP_PROXY=\"${http_proxy}\" " +
+                    "-e HTTPS_PROXY=\"${https_proxy}\" " +
+                    "-e MAVEN_OPTS=\"-Duser.home=/build -Dhttp.proxyHost=proxy.intern.est.fujitsu.com -Dhttp.proxyPort=8080 -Dhttps.proxyHost=proxy.intern.est.fujitsu.com -Dhttps.proxyPort=8080\" " +
+                    "oscm-maven clean package -f /build/oscm-approval/pom.xml"
         }
     }
     
@@ -571,6 +607,7 @@ def execute() {
     _prepareShellAdapterRepository()
     _prepareIndentityRepository()
     _prepareRestAPIRepository()
+    _prepareApprovalAdapterRepository()
     _copyUserDocumentation()
 
     _buildOSCMCentosBasedImage()
@@ -589,6 +626,7 @@ def execute() {
     _compileCore()
     _compileApp()
 	_compileShell()
+	_compileApproval()
     _compileIdentity()
     _compileRestAPI()
     _copyArtifacts()
