@@ -38,7 +38,7 @@
  Name: REPO_TAG_APPROVAL
  Type: String
  Default: master
- Description: Branch or tag in the oscm-approval git repository: https://github.com/servicecatalog/oscm-approval.git
+ Description: Branch or tag in the oscm-approval git repository: https://github.com/servicecatalog/oscm-approval
  ===
  Name: REPO_TAG_IDENTITY
  Type: String
