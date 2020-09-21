@@ -90,7 +90,7 @@ node("${NODE_NAME}") {
 
     clean.execute()
     build.execute()
-    push.execute()
+    push.execute(true, false)
     start.execute()
     test.execute()
 }
