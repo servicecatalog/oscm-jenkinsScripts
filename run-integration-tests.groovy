@@ -123,7 +123,7 @@ node("${NODE_NAME}") {
     build.execute()
     push.execute()
 
-    pull.execute()
+    pull.execute(true, false)
     start.execute('localhost')
 
     tests.execute()
