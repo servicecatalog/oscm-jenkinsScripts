@@ -121,9 +121,9 @@ node("${NODE_NAME}") {
 
     clean.execute()
     build.execute()
-    push.execute()
+    push.execute(true, false)
 
-    pull.execute(true, false)
+    pull.execute()
     start.execute('localhost')
 
     tests.execute()
