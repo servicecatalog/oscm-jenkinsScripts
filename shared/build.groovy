@@ -230,6 +230,19 @@ def execute() {
             )
         }
     }
+
+    def _buildSassImage = {
+        stage('Build - sass image oscm-sass') {
+            docker.build(
+                    "oscm-sass",
+                    "--build-arg http_proxy=\"${http_proxy}\" " +
+                            "--build-arg https_proxy=\"${https_proxy}\" " +
+                            "--build-arg HTTP_PROXY=\"${http_proxy}\" " +
+                            "--build-arg HTTPS_PROXY=\"${https_proxy}\" " +
+                            "${WORKSPACE}/oscm-dockerbuild/oscm-sass"
+            )
+        }
+    }
     
     def _compileBootsrapMarketplace = {
         stage('Build - compile marketplace bootstrap sources') {
@@ -623,6 +636,7 @@ def execute() {
     _downloadLibraries()
     
     _buildBootstrapImage()
+    _buildSassImage()
     _compileBootsrapMarketplace()
     _compileCustomBootsrap()
     
