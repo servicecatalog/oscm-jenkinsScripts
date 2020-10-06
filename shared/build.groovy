@@ -58,6 +58,7 @@
  **/
 
 def execute() {
+
     def _cloneOSCMRepository = {
         stage('Build - clone OSCM repository') {
             checkout scm: [
@@ -108,7 +109,7 @@ def execute() {
             }
         }
     }
-    
+
     def _prepareDocumentationRepository = {
         stage('Build - prepare documentation repository') {
             sh "mkdir -p ${WORKSPACE}/documentation"
@@ -129,9 +130,9 @@ def execute() {
 
     def _prepareShellAdapterRepository = {
         stage('Build - clone oscm-app-shell repository') {
-    	    sh "mkdir -p ${WORKSPACE}/oscm-app-shell"
-	        dir("${WORKSPACE}/oscm-app-shell") {
-	            checkout scm: [
+            sh "mkdir -p ${WORKSPACE}/oscm-app-shell"
+            dir("${WORKSPACE}/oscm-app-shell") {
+                checkout scm: [
                         $class                           : 'GitSCM',
                         branches                         : [[name: "${REPO_TAG_APP_SHELL}"]],
                         doGenerateSubmoduleConfigurations: false,
@@ -141,15 +142,15 @@ def execute() {
                         submoduleCfg                     : [],
                         userRemoteConfigs                : [[url: 'https://github.com/servicecatalog/oscm-app-shell']]
                 ]
-	        }
-	    }
+            }
+        }
     }
-    
-        def _prepareApprovalAdapterRepository = {
+
+    def _prepareApprovalAdapterRepository = {
         stage('Build - clone oscm-approval repository') {
-    	    sh "mkdir -p ${WORKSPACE}/oscm-approval"
-	        dir("${WORKSPACE}/oscm-approval") {
-	            checkout scm: [
+            sh "mkdir -p ${WORKSPACE}/oscm-approval"
+            dir("${WORKSPACE}/oscm-approval") {
+                checkout scm: [
                         $class                           : 'GitSCM',
                         branches                         : [[name: "${REPO_TAG_APPROVAL}"]],
                         doGenerateSubmoduleConfigurations: false,
@@ -159,15 +160,15 @@ def execute() {
                         submoduleCfg                     : [],
                         userRemoteConfigs                : [[url: 'https://github.com/servicecatalog/oscm-approval']]
                 ]
-	        }
-	    }
+            }
+        }
     }
 
- 	def _prepareIndentityRepository = {
+    def _prepareIndentityRepository = {
         stage('Build - clone oscm-identity repository') {
-    	    sh "mkdir -p ${WORKSPACE}/oscm-identity"
-	        dir("${WORKSPACE}/oscm-identity") {
-	            checkout scm: [
+            sh "mkdir -p ${WORKSPACE}/oscm-identity"
+            dir("${WORKSPACE}/oscm-identity") {
+                checkout scm: [
                         $class                           : 'GitSCM',
                         branches                         : [[name: "${REPO_TAG_IDENTITY}"]],
                         doGenerateSubmoduleConfigurations: false,
@@ -177,8 +178,8 @@ def execute() {
                         submoduleCfg                     : [],
                         userRemoteConfigs                : [[url: 'https://github.com/servicecatalog/oscm-identity']]
                 ]
-	        }
-	    }
+            }
+        }
     }
 
     def _prepareRestAPIRepository = {
@@ -198,7 +199,7 @@ def execute() {
             }
         }
     }
-    
+
     def _copyUserDocumentation = {
         stage('Build - copy user documentation') {
             sh "cp -r ${WORKSPACE}/documentation/Development/oscm-doc-user/resources/ ${WORKSPACE}/oscm-doc-user/";
@@ -215,64 +216,6 @@ def execute() {
                             "--build-arg HTTPS_PROXY=\"${https_proxy}\" " +
                             "${WORKSPACE}/oscm-dockerbuild/oscm-centos-based"
             )
-        }
-    }
-    
-    def _buildBootstrapImage = {
-        stage('Build - bootstrap image oscm-bootstrap') {
-            docker.build(
-                    "oscm-bootstrap",
-                    "--build-arg http_proxy=\"${http_proxy}\" " +
-                            "--build-arg https_proxy=\"${https_proxy}\" " +
-                            "--build-arg HTTP_PROXY=\"${http_proxy}\" " +
-                            "--build-arg HTTPS_PROXY=\"${https_proxy}\" " +
-                            "${WORKSPACE}/oscm-dockerbuild/oscm-bootstrap"
-            )
-        }
-    }
-
-    def _buildSassImage = {
-        stage('Build - sass image oscm-sass') {
-            docker.build(
-                    "oscm-sass",
-                    "--build-arg http_proxy=\"${http_proxy}\" " +
-                            "--build-arg https_proxy=\"${https_proxy}\" " +
-                            "--build-arg HTTP_PROXY=\"${http_proxy}\" " +
-                            "--build-arg HTTPS_PROXY=\"${https_proxy}\" " +
-                            "${WORKSPACE}/oscm-dockerbuild/oscm-sass"
-            )
-        }
-    }
-    
-    def _compileBootsrapMarketplace = {
-        stage('Build - compile marketplace bootstrap sources') {
-            user = sh(returnStdout: true, script: 'id -u').trim()
-            group = sh(returnStdout: true, script: 'id -g').trim()
-            sh "docker run " +
-                    "--name oscm-bootstrap-${BUILD_ID} " +
-                    "--user $user:$group " +
-                    "--rm " +
-                    "-v ${WORKSPACE}:/build " +
-                    "-e http_proxy=\"${http_proxy}\" " +
-                    "-e https_proxy=\"${https_proxy}\" " +
-                    "-e BOOTSTRAP_OPTS=\"-Dhttp.proxyHost=proxy.intern.est.fujitsu.com -Dhttp.proxyPort=8080 -Dhttps.proxyHost=proxy.intern.est.fujitsu.com -Dhttps.proxyPort=8080\" " +
-                    "oscm-bootstrap --update /build/oscm-portal/WebContent/marketplace/scss:/build/oscm-portal/WebContent/marketplace/css"
-        }
-    }
-    
-    def _compileCustomBootsrap = {
-        stage('Build - compile custom bootstrap marketplace sources') {
-            user = sh(returnStdout: true, script: 'id -u').trim()
-            group = sh(returnStdout: true, script: 'id -g').trim()
-            sh "docker run " +
-                    "--name oscm-bootstrap-${BUILD_ID} " +
-                    "--user $user:$group " +
-                    "--rm " +
-                    "-v ${WORKSPACE}:/build " +
-                    "-e http_proxy=\"${http_proxy}\" " +
-                    "-e https_proxy=\"${https_proxy}\" " +
-                    "-e BOOTSTRAP_OPTS=\"-Dhttp.proxyHost=proxy.intern.est.fujitsu.com -Dhttp.proxyPort=8080 -Dhttps.proxyHost=proxy.intern.est.fujitsu.com -Dhttps.proxyPort=8080\" " +
-                    "oscm-bootstrap --update /build/oscm-portal/WebContent/marketplace/customBootstrap/scss:/build/oscm-portal/WebContent/marketplace/customBootstrap/css"
         }
     }
 
@@ -317,14 +260,14 @@ def execute() {
         }
     }
 
-	def _copyTenantConfig = {
-		stage('Build - before oscm-core compiling') {
-			sh "mkdir -p ${WORKSPACE}/oscm-portal/WebContent/oidc"
+    def _copyTenantConfig = {
+        stage('Build - before oscm-core compiling') {
+            sh "mkdir -p ${WORKSPACE}/oscm-portal/WebContent/oidc"
             dir("${WORKSPACE}/oscm-portal/WebContent/oidc") {
-				sh "cp ${WORKSPACE}/oscm-identity/config/tenants/tenant-default.properties ."
-		    }
-	    }
-	}
+                sh "cp ${WORKSPACE}/oscm-identity/config/tenants/tenant-default.properties ."
+            }
+        }
+    }
 
     def _compileCore = {
         stage('Build - compile oscm-core') {
@@ -340,6 +283,7 @@ def execute() {
                     "-e HTTP_PROXY=\"${http_proxy}\" " +
                     "-e HTTPS_PROXY=\"${https_proxy}\" " +
                     "-e ANT_OPTS=\"-Dhttp.proxyHost=proxy.intern.est.fujitsu.com -Dhttp.proxyPort=8080 -Dhttps.proxyHost=proxy.intern.est.fujitsu.com -Dhttps.proxyPort=8080\" " +
+                    "-e PATH=/usr/local/dart-sass:${env.PATH} " +
                     "gc-ant -f /build/oscm-devruntime/javares/build-oscmaas.xml BUILD.BES"
         }
     }
@@ -361,7 +305,7 @@ def execute() {
                     "oscm-maven clean install -f /build/oscm-app-maven/pom.xml"
         }
     }
-	
+
     def _compileShell = {
         stage('Build - compile oscm-shell') {
             user = sh(returnStdout: true, script: 'id -u').trim()
@@ -379,8 +323,8 @@ def execute() {
                     "oscm-maven clean package -f /build/oscm-app-shell/pom.xml"
         }
     }
-    
-        def _compileApproval = {
+
+    def _compileApproval = {
         stage('Build - compile oscm-approval') {
             user = sh(returnStdout: true, script: 'id -u').trim()
             group = sh(returnStdout: true, script: 'id -g').trim()
@@ -397,7 +341,7 @@ def execute() {
                     "oscm-maven clean package -f /build/oscm-approval/pom.xml"
         }
     }
-    
+
     def _compileIdentity = {
         stage('Build - compile oscm-identity') {
             user = sh(returnStdout: true, script: 'id -u').trim()
@@ -485,8 +429,8 @@ def execute() {
             )
         }
     }
-    
-    
+
+
     def _buildIdentityImage = {
         stage('Build - identity image oscm-identity') {
             docker.build(
@@ -590,33 +534,32 @@ def execute() {
             )
         }
     }
-    
-    def _buildProxy = {
-    stage('Build - proxy image oscm-proxy') {
-        docker.build(
-                "oscm-proxy:${DOCKER_TAG}",
-                "--build-arg http_proxy=\"${http_proxy}\" " +
-                        "--build-arg https_proxy=\"${https_proxy}\" " +
-                        "--build-arg HTTP_PROXY=\"${http_proxy}\" " +
-                        "--build-arg HTTPS_PROXY=\"${https_proxy}\" " +
-                        "${WORKSPACE}/oscm-dockerbuild/oscm-proxy"
-	        )
-	    }
-	}
-    
-    def _buildMailDev = {
-    stage('Build - maildev image oscm-maildev') {
-        docker.build(
-                "oscm-maildev:${DOCKER_TAG}",
-                "--build-arg http_proxy=\"${http_proxy}\" " +
-                        "--build-arg https_proxy=\"${https_proxy}\" " +
-                        "--build-arg HTTP_PROXY=\"${http_proxy}\" " +
-                        "--build-arg HTTPS_PROXY=\"${https_proxy}\" " +
-                        "${WORKSPACE}/oscm-dockerbuild/oscm-maildev"
-        )
-    }
-}
 
+    def _buildProxy = {
+        stage('Build - proxy image oscm-proxy') {
+            docker.build(
+                    "oscm-proxy:${DOCKER_TAG}",
+                    "--build-arg http_proxy=\"${http_proxy}\" " +
+                            "--build-arg https_proxy=\"${https_proxy}\" " +
+                            "--build-arg HTTP_PROXY=\"${http_proxy}\" " +
+                            "--build-arg HTTPS_PROXY=\"${https_proxy}\" " +
+                            "${WORKSPACE}/oscm-dockerbuild/oscm-proxy"
+            )
+        }
+    }
+
+    def _buildMailDev = {
+        stage('Build - maildev image oscm-maildev') {
+            docker.build(
+                    "oscm-maildev:${DOCKER_TAG}",
+                    "--build-arg http_proxy=\"${http_proxy}\" " +
+                            "--build-arg https_proxy=\"${https_proxy}\" " +
+                            "--build-arg HTTP_PROXY=\"${http_proxy}\" " +
+                            "--build-arg HTTPS_PROXY=\"${https_proxy}\" " +
+                            "${WORKSPACE}/oscm-dockerbuild/oscm-maildev"
+            )
+        }
+    }
 
     _cloneOSCMRepository()
     _cloneOSCMAppRepository()
@@ -626,26 +569,20 @@ def execute() {
     _prepareIndentityRepository()
     _prepareRestAPIRepository()
     _prepareApprovalAdapterRepository()
+
     _copyUserDocumentation()
 
     _buildOSCMCentosBasedImage()
-
     _buildAntImage()
-	_buildMavenImage()
+    _buildMavenImage()
 
     _downloadLibraries()
-    
-    _buildBootstrapImage()
-    _buildSassImage()
-    _compileBootsrapMarketplace()
-    _compileCustomBootsrap()
-    
     _copyTenantConfig()
-    
+
     _compileCore()
     _compileApp()
-	_compileShell()
-	_compileApproval()
+    _compileShell()
+    _compileApproval()
     _compileIdentity()
     _compileRestAPI()
     _copyArtifacts()
