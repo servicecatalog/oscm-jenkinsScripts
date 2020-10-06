@@ -77,7 +77,7 @@ def execute() {
             sh "curl ${ANT_URL} -x http://proxy.intern.est.fujitsu.com:8080 -o ${WORKSPACE}/apache-ant.tar.gz"
             sh "mkdir ${WORKSPACE}/apache-ant && tar -xf ${WORKSPACE}/apache-ant.tar.gz -C ${WORKSPACE}/apache-ant --strip-components 1"
             sh "wget https://repo1.maven.org/maven2/org/apache/ivy/ivy/2.4.0/ivy-2.4.0.jar -O ${WORKSPACE}/apache-ant/lib/ivy.jar"
-            sh "wget \"https://github.com/sass/dart-sass/releases/download/1.26.11/dart-sass-1.26.11-linux-x64.tar.gz\" -O ${WORKSPACE}/tmp/dart-sass-1.26.11-linux-x64.tar.gz"
+            sh "wget https://github.com/sass/dart-sass/releases/download/1.26.11/dart-sass-1.26.11-linux-x64.tar.gz -O ${WORKSPACE}/dart-sass-1.26.11-linux-x64.tar.gz"
             sh "mkdir ${WORKSPACE}/sass && tar -xf ${WORKSPACE}/tmp/dart-sass-1.26.11-linux-x64.tar.gz -C ${WORKSPACE}/sass --strip-components 1"
 
             ANT_BIN = sh(
