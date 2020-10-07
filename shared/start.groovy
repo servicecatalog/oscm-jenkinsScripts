@@ -147,6 +147,7 @@ void execute(String FQDN = env.NODE_NAME + '.intern.est.fujitsu.com') {
                 -e "s|^\\\\(SUPPLIER_USER_ID=\\\\).*|\\\\1${SUPPLIER_USER_ID}|g" \
                 -e "s|^\\\\(SUPPLIER_USER_PWD=\\\\).*|\\\\1${SUPPLIER_USER_PWD}|g" \
                 -e "s|^\\\\(CUSTOMER_USER_ID=\\\\).*|\\\\1${CUSTOMER_USER_ID}|g" \
+                -e "s|^\\\\(RESELLER_USER_ID=\\\\).*|\\\\1${RESELLER_USER_ID}|g" \
                 -e "s|^\\\\(CONTROLLER_USER_NAME=\\\\).*|\\\\1${CONTROLLER_USER_NAME}|g" \
                 -e "s|^\\\\(CONTROLLER_USER_PASS=\\\\).*|\\\\1${CONTROLLER_USER_PASS}|g" \
 				${WORKSPACE}/docker/var.env;
