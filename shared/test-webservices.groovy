@@ -116,7 +116,7 @@ void execute() {
     }
 
     def _cleanupWorkspace = {
-        stage('Cleanup - prepare workspace') {
+        stage('Cleanup - clean workspace') {
             sh '''
             mkdir -p ${WORKSPACE}
             if [ ${COMPLETE_CLEANUP} == "true" ]; then
