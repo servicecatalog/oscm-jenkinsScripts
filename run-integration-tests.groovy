@@ -127,4 +127,5 @@ node("${NODE_NAME}") {
     start.execute('localhost')
 
     tests.execute()
+    clean.execute()
 }

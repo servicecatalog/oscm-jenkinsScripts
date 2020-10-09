@@ -115,28 +115,6 @@ void execute() {
         }
     }
 
-    def _cleanupWorkspace = {
-        stage('Cleanup - clean workspace') {
-            sh "sleep 120"
-            sh '''
-            mkdir -p ${WORKSPACE}
-            if [ ${COMPLETE_CLEANUP} == "true" ]; then
-                docker run --rm -v ${WORKSPACE}/docker/data/oscm-db:/db busybox rm -rf /db/data || true;
-                docker run --rm -v ${WORKSPACE}:/workspace centos:7 find /workspace -uid 0 -delete
-                rm -rf ${WORKSPACE}/*
-                rm -rf ${WORKSPACE}/{,.[!.],..?}*
-                mkdir ${WORKSPACE}/docker
-            else
-                if [ ! -d ${WORKSPACE}/docker ]; then
-                    mkdir ${WORKSPACE}/docker;
-                else
-                    rm -f ${WORKSPACE}/docker/.env ${WORKSPACE}/docker/var.env;
-                fi;
-            fi;
-            '''
-        }
-    }
-
     _prepareEnv()
     _setupAnt()
     _setupIvy()
@@ -146,7 +124,6 @@ void execute() {
     _setupTenant()
     _setupSupplier()
     _test()
-    _cleanupWorkspace()
 }
 
 return this
