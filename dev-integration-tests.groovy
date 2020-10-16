@@ -189,5 +189,4 @@ node("${NODE_NAME}") {
     start.execute()
 
     tests.execute()
-    clean.execute()
 }
