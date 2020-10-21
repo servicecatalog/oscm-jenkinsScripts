@@ -79,7 +79,7 @@ void execute() {
                 rm -rf ${WORKSPACE}/*
                 rm -rf ${WORKSPACE}/{,.[!.],..?}*
                 mkdir ${WORKSPACE}/docker
-            else
+            else 
                 if [ ! -d ${WORKSPACE}/docker ]; then
                     mkdir ${WORKSPACE}/docker;
                 else
