@@ -572,7 +572,6 @@ def execute() {
 
     _copyUserDocumentation()
 
-    _buildOSCMCentosBasedImage()
     _buildAntImage()
     _buildMavenImage()
 
@@ -592,14 +591,11 @@ def execute() {
     _buildAppImage()
     _buildDBImage()
     _buildIdentityImage()
-    _buildProxy()
     _buildNginxImage()
     _buildBrandingImage()
     _buildWebserverImage()
-    _buildBirtImage()
     _buildInitDBImage()
     _buildDeployerImage()
-    _buildMailDev()
 }
 
 return this
