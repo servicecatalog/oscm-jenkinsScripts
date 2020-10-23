@@ -572,6 +572,7 @@ def execute() {
 
     _copyUserDocumentation()
 
+    _buildOSCMCentosBasedImage()
     _buildAntImage()
     _buildMavenImage()
 
