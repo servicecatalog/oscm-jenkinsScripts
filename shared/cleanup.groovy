@@ -74,7 +74,7 @@ void execute() {
             sh '''
             mkdir -p ${WORKSPACE}
             if [ ${COMPLETE_CLEANUP} == "true" ]; then
-                docker run --rm -v ${WORKSPACE}:/workspace estartifactory.intern.est.fujitsu.com:445/artifactory/oscm-registry/oscm-busybox/Christian rm -rf /db/data || true;
+                docker run --rm -v ${WORKSPACE}:/workspace estartifactory.intern.est.fujitsu.com:445/oscm-registry/oscm-busybox:Christian rm -rf /db/data || true;
                 docker run --rm -v ${WORKSPACE}:/workspace estartifactory.intern.est.fujitsu.com:445/oscm-registry/oscm-centos:7 find /workspace -uid 0 -delete
                 rm -rf ${WORKSPACE}/*
                 rm -rf ${WORKSPACE}/{,.[!.],..?}*
