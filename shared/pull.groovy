@@ -43,7 +43,6 @@ void execute() {
     }
 
     _pullDeployerImage()
-    _pullProxyImage()
 }
 
 return this
