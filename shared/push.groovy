@@ -99,7 +99,7 @@ def execute(boolean loginRequired = false, publish = false) {
 
     def _loginToDst = {
        stage('Push - login to registry') {
-           sh 'docker login -u ${USERNAME} -p ${PASSWORD}' + "${dstReg}"
+           sh 'docker login -u ${USERNAME} -p ${PASSWORD}' + " ${dstReg}"
        }
     }
 
