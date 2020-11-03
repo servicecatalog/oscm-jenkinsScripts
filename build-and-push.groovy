@@ -85,29 +85,7 @@ node("${NODE_NAME}") {
     def build = evaluate readTrusted('shared/build.groovy')
     def push = evaluate readTrusted('shared/push.groovy')
 
-    def _cleanupWorkspace = {
-        stage('Cleanup - clean workspace') {
-            sh '''
-            mkdir -p ${WORKSPACE}
-            if [ ${COMPLETE_CLEANUP} == "true" ]; then
-                docker run --rm -v ${WORKSPACE}/docker/data/oscm-db:/db busybox rm -rf /db/data || true;
-                docker run --rm -v ${WORKSPACE}:/workspace centos:7 find /workspace -uid 0 -delete
-                rm -rf ${WORKSPACE}/*
-                rm -rf ${WORKSPACE}/{,.[!.],..?}*
-                mkdir ${WORKSPACE}/docker
-            else
-                if [ ! -d ${WORKSPACE}/docker ]; then
-                    mkdir ${WORKSPACE}/docker;
-                else
-                    rm -f ${WORKSPACE}/docker/.env ${WORKSPACE}/docker/var.env;
-                fi;
-            fi;
-            '''
-        }
-    }
-
     clean.execute()
     build.execute()
     push.execute(true, false)
-    _cleanupWorkspace()
 }

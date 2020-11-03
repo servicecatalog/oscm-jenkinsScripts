@@ -139,7 +139,6 @@ def execute(boolean loginRequired = false, publish = false) {
     if(loginRequired) {
         _logoutFromDockerHub()
     }
-
 }
 
 return this
