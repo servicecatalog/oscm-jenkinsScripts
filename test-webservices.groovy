@@ -93,4 +93,5 @@ node("${NODE_NAME}") {
     push.execute()
     start.execute()
     test.execute()
+    clean.execute()
 }
