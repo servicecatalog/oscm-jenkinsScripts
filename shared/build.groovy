@@ -219,51 +219,6 @@ def execute() {
         }
     }
 
-    def _buildBootstrapImage = {
-        stage('Build - bootstrap image oscm-bootstrap') {
-            docker.build(
-                    "oscm-bootstrap",
-                    "--build-arg http_proxy=\"${http_proxy}\" " +
-                            "--build-arg https_proxy=\"${https_proxy}\" " +
-                            "--build-arg HTTP_PROXY=\"${http_proxy}\" " +
-                            "--build-arg HTTPS_PROXY=\"${https_proxy}\" " +
-                            "${WORKSPACE}/oscm-dockerbuild/oscm-bootstrap"
-            )
-        }
-    }
-
-    def _compileBootsrapMarketplace = {
-        stage('Build - compile marketplace bootstrap sources') {
-            user = sh(returnStdout: true, script: 'id -u').trim()
-            group = sh(returnStdout: true, script: 'id -g').trim()
-            sh "docker run " +
-                    "--name oscm-bootstrap-${BUILD_ID} " +
-                    "--user $user:$group " +
-                    "--rm " +
-                    "-v ${WORKSPACE}:/build " +
-                    "-e http_proxy=\"${http_proxy}\" " +
-                    "-e https_proxy=\"${https_proxy}\" " +
-                    "-e BOOTSTRAP_OPTS=\"-Dhttp.proxyHost=proxy.intern.est.fujitsu.com -Dhttp.proxyPort=8080 -Dhttps.proxyHost=proxy.intern.est.fujitsu.com -Dhttps.proxyPort=8080\" " +
-                    "oscm-bootstrap --update /build/oscm-portal/WebContent/marketplace/scss:/build/oscm-portal/WebContent/marketplace/css"
-        }
-    }
-
-    def _compileCustomBootsrap = {
-        stage('Build - compile custom bootstrap marketplace sources') {
-            user = sh(returnStdout: true, script: 'id -u').trim()
-            group = sh(returnStdout: true, script: 'id -g').trim()
-            sh "docker run " +
-                    "--name oscm-bootstrap-${BUILD_ID} " +
-                    "--user $user:$group " +
-                    "--rm " +
-                    "-v ${WORKSPACE}:/build " +
-                    "-e http_proxy=\"${http_proxy}\" " +
-                    "-e https_proxy=\"${https_proxy}\" " +
-                    "-e BOOTSTRAP_OPTS=\"-Dhttp.proxyHost=proxy.intern.est.fujitsu.com -Dhttp.proxyPort=8080 -Dhttps.proxyHost=proxy.intern.est.fujitsu.com -Dhttps.proxyPort=8080\" " +
-                    "oscm-bootstrap --update /build/oscm-portal/WebContent/marketplace/customBootstrap/scss:/build/oscm-portal/WebContent/marketplace/customBootstrap/css"
-        }
-    }
-
     def _buildAntImage = {
         stage('Build - ant image gc-ant') {
             docker.build(
@@ -622,11 +577,6 @@ def execute() {
     _buildMavenImage()
 
     _downloadLibraries()
-
-    _buildBootstrapImage()
-    _compileBootsrapMarketplace()
-    _compileCustomBootsrap()
-
     _copyTenantConfig()
 
     _compileCore()
