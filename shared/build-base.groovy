@@ -105,7 +105,7 @@
                 ]
             }
         }
-        
+    }
         
     def _copyUserDocumentation = {
         stage('Build - copy user documentation') {
