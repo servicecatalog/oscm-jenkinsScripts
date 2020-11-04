@@ -1,5 +1,21 @@
 
  def execute() {
+ 
+     def _cloneOSCMRepository = {
+        stage('Build - clone OSCM repository') {
+            checkout scm: [
+                    $class                           : 'GitSCM',
+                    branches                         : [[name: "${REPO_TAG_OSCM}"]],
+                    doGenerateSubmoduleConfigurations: false,
+                    extensions                       : [[$class : 'CloneOption',
+                                                         noTags : false, reference: '',
+                                                         shallow: true]],
+                    submoduleCfg                     : [],
+                    userRemoteConfigs                : [[url: 'https://github.com/servicecatalog/oscm.git']]
+            ]
+        }
+    }
+ 
 
     def _prepareDockerbuildRepository = {
         stage('Build - clone dockerbuild repository') {
@@ -302,6 +318,7 @@
         }
     }
 
+	_cloneOSCMRepository
     _prepareDockerbuildRepository()
     _prepareDocumentationRepository()
     _prepareIndentityRepository()
