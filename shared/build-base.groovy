@@ -16,6 +16,23 @@
         }
     }
  
+     def _cloneOSCMAppRepository = {
+        stage('Build - clone OSCM repository') {
+            sh "mkdir -p ${WORKSPACE}/oscm-app-maven"
+            dir("${WORKSPACE}/oscm-app-maven") {
+                checkout scm: [
+                        $class                           : 'GitSCM',
+                        branches                         : [[name: "${REPO_TAG_OSCM_APP}"]],
+                        doGenerateSubmoduleConfigurations: false,
+                        extensions                       : [[$class : 'CloneOption',
+                                                             noTags : false, reference: '',
+                                                             shallow: true]],
+                        submoduleCfg                     : [],
+                        userRemoteConfigs                : [[url: 'https://github.com/servicecatalog/oscm-app']]
+                ]
+            }
+        }
+    }
 
     def _prepareDockerbuildRepository = {
         stage('Build - clone dockerbuild repository') {
