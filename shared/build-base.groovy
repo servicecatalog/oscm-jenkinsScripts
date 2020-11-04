@@ -89,7 +89,24 @@
         }
     }
 
-
+    def _prepareApprovalAdapterRepository = {
+        stage('Build - clone oscm-approval repository') {
+            sh "mkdir -p ${WORKSPACE}/oscm-approval"
+            dir("${WORKSPACE}/oscm-approval") {
+                checkout scm: [
+                        $class                           : 'GitSCM',
+                        branches                         : [[name: "${REPO_TAG_APPROVAL}"]],
+                        doGenerateSubmoduleConfigurations: false,
+                        extensions                       : [[$class : 'CloneOption',
+                                                             noTags : false, reference: '',
+                                                             shallow: true]],
+                        submoduleCfg                     : [],
+                        userRemoteConfigs                : [[url: 'https://github.com/servicecatalog/oscm-approval']]
+                ]
+            }
+        }
+        
+        
     def _copyUserDocumentation = {
         stage('Build - copy user documentation') {
             sh "cp -r ${WORKSPACE}/documentation/Development/oscm-doc-user/resources/ ${WORKSPACE}/oscm-doc-user/";
@@ -360,6 +377,7 @@
     _prepareDockerbuildRepository()
     _prepareDocumentationRepository()
     _prepareIndentityRepository()
+    _prepareApprovalAdapterRepository()
 
     _copyUserDocumentation()
 
