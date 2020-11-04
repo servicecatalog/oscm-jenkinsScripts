@@ -318,7 +318,7 @@
         }
     }
 
-	_cloneOSCMRepository
+	_cloneOSCMRepository()
     _prepareDockerbuildRepository()
     _prepareDocumentationRepository()
     _prepareIndentityRepository()
