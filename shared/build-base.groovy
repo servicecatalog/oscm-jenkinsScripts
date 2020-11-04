@@ -16,24 +16,6 @@
         }
     }
  
-    def _compileCore = {
-        stage('Build - compile oscm-core') {
-            user = sh(returnStdout: true, script: 'id -u').trim()
-            group = sh(returnStdout: true, script: 'id -g').trim()
-            sh "docker run " +
-                    "--name gc-ant-core-${BUILD_ID} " +
-                    "--user $user:$group " +
-                    "--rm " +
-                    "-v ${WORKSPACE}:/build " +
-                    "-e http_proxy=\"${http_proxy}\" " +
-                    "-e https_proxy=\"${https_proxy}\" " +
-                    "-e HTTP_PROXY=\"${http_proxy}\" " +
-                    "-e HTTPS_PROXY=\"${https_proxy}\" " +
-                    "-e ANT_OPTS=\"-Dhttp.proxyHost=proxy.intern.est.fujitsu.com -Dhttp.proxyPort=8080 -Dhttps.proxyHost=proxy.intern.est.fujitsu.com -Dhttps.proxyPort=8080\" " +
-                    "-e PATH=/usr/local/dart-sass:${env.PATH} " +
-                    "gc-ant -f /build/oscm-devruntime/javares/build-oscmaas.xml BUILD.BES"
-        }
-    }
 
     def _prepareDockerbuildRepository = {
         stage('Build - clone dockerbuild repository') {
@@ -109,6 +91,7 @@
             )
         }
     }
+    
 
     def _buildAntImage = {
         stage('Build - ant image gc-ant') {
@@ -133,6 +116,25 @@
                             "--build-arg HTTPS_PROXY=\"${https_proxy}\" " +
                             "${WORKSPACE}/oscm-dockerbuild/oscm-maven"
             )
+        }
+    }
+    
+        def _compileCore = {
+        stage('Build - compile oscm-core') {
+            user = sh(returnStdout: true, script: 'id -u').trim()
+            group = sh(returnStdout: true, script: 'id -g').trim()
+            sh "docker run " +
+                    "--name gc-ant-core-${BUILD_ID} " +
+                    "--user $user:$group " +
+                    "--rm " +
+                    "-v ${WORKSPACE}:/build " +
+                    "-e http_proxy=\"${http_proxy}\" " +
+                    "-e https_proxy=\"${https_proxy}\" " +
+                    "-e HTTP_PROXY=\"${http_proxy}\" " +
+                    "-e HTTPS_PROXY=\"${https_proxy}\" " +
+                    "-e ANT_OPTS=\"-Dhttp.proxyHost=proxy.intern.est.fujitsu.com -Dhttp.proxyPort=8080 -Dhttps.proxyHost=proxy.intern.est.fujitsu.com -Dhttps.proxyPort=8080\" " +
+                    "-e PATH=/usr/local/dart-sass:${env.PATH} " +
+                    "gc-ant -f /build/oscm-devruntime/javares/build-oscmaas.xml BUILD.BES"
         }
     }
 
@@ -349,10 +351,11 @@
 
     _downloadLibraries()
     _copyTenantConfig()
-
+    
+	_compileCore()
     _compileIdentity()
     _copyArtifacts()
-	_compileCore()
+
 	
     _buildServerImage()
     _buildDBImage()
