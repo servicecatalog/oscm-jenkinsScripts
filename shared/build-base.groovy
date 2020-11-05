@@ -133,7 +133,7 @@
     def _buildAntImage = {
         stage('Build - ant image gc-ant') {
             docker.build(
-                    "gc-ant:${DOCKER_TAG}",
+                    "gc-ant",
                     "--build-arg http_proxy=\"${http_proxy}\" " +
                             "--build-arg https_proxy=\"${https_proxy}\" " +
                             "--build-arg HTTP_PROXY=\"${http_proxy}\" " +
@@ -149,7 +149,7 @@
     def _buildMavenImage = {
         stage('Build - maven image oscm-maven') {
             docker.build(
-                    "oscm-maven:${DOCKER_TAG}",
+                    "oscm-maven",
                     "--build-arg http_proxy=\"${http_proxy}\" " +
                             "--build-arg https_proxy=\"${https_proxy}\" " +
                             "--build-arg HTTP_PROXY=\"${http_proxy}\" " +
