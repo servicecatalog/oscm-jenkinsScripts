@@ -422,7 +422,6 @@ def execute() {
 
 
     _downloadLibraries()
-    _copyTenantConfig()
 
     _compileCore()
     _compileApp()
