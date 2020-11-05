@@ -113,7 +113,7 @@ def execute(boolean loginRequired = false, publish = false) {
     def _pushImages = {
         if(DOCKER_TAG) {
             stage('Push - images to registry') {
-                sh('IMAGES="db initdb identity birt branding help maildev proxy centos-based gc-ant maven oscm-gf"; ' +
+                sh('IMAGES="db initdb identity birt branding help maildev proxy centos-based gc-ant maven gf"; ' +
                         'for IMAGE in ${IMAGES}; do ' +
                         "docker push " + (publish ? "" : '${DOCKER_REGISTRY}/') + "${dstOrg}/oscm-" + '${IMAGE}' + ":${dstTag}; " +
                         'done'
