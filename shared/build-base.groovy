@@ -140,6 +140,9 @@
                             "--build-arg HTTPS_PROXY=\"${https_proxy}\" " +
                             "${WORKSPACE}/oscm-dockerbuild/gc-ant"
             )
+            sh(
+                'docker tag gc-ant oscm-gc-ant:${DOCKER_TAG}; ' 
+            )
         }
     }
 
@@ -152,6 +155,9 @@
                             "--build-arg HTTP_PROXY=\"${http_proxy}\" " +
                             "--build-arg HTTPS_PROXY=\"${https_proxy}\" " +
                             "${WORKSPACE}/oscm-dockerbuild/oscm-maven"
+            )
+            sh(
+                'docker tag oscm-maven oscm-maven:${DOCKER_TAG}; ' 
             )
         }
     }
