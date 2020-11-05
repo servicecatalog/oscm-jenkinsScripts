@@ -116,7 +116,7 @@
     def _buildOSCMCentosBasedImage = {
         stage('Build - CENTOS base image oscm-centos-based') {
             docker.build(
-                    "oscm-centos-based:${DOCKER_TAG}", "oscm-centos-based", 
+                    "-t oscm-centos-based:${DOCKER_TAG} -t oscm-centos-based", 
                     "--build-arg http_proxy=\"${http_proxy}\" " +
                             "--build-arg https_proxy=\"${https_proxy}\" " +
                             "--build-arg HTTP_PROXY=\"${http_proxy}\" " +
