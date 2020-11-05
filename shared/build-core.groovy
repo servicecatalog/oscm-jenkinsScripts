@@ -91,6 +91,14 @@ def execute() {
             }
         }
     }
+    
+    def _prepareBuildTools = {
+        stage('Build - pull build tools') {
+             docker.image("${DOCKER_REGISTRY}/${DOCKER_ORGANIZATION}/oscm-gc-ant:${DOCKER_TAG}").pull()
+             docker.image("${DOCKER_REGISTRY}/${DOCKER_ORGANIZATION}/oscm-centos-based:${DOCKER_TAG}").pull()
+             docker.image("${DOCKER_REGISTRY}/${DOCKER_ORGANIZATION}/oscm-maven:${DOCKER_TAG}").pull()
+        }
+    }
 
     def _prepareDockerbuildRepository = {
         stage('Build - clone dockerbuild repository') {
@@ -341,6 +349,7 @@ def execute() {
 
     _cloneOSCMRepository()
     _cloneOSCMAppRepository()
+    _prepareBuildTools()
     _prepareDockerbuildRepository()
     _prepareShellAdapterRepository()
     _prepareRestAPIRepository()
