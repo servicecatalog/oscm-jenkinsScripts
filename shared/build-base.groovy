@@ -258,12 +258,15 @@
     def _buildServerImage = {
         stage('Build - server image oscm-gf') {
             docker.build(
-                    "oscm-gf:${DOCKER_TAG}",
+                    "oscm-gf",
                     "--build-arg http_proxy=\"${http_proxy}\" " +
                             "--build-arg https_proxy=\"${https_proxy}\" " +
                             "--build-arg HTTP_PROXY=\"${http_proxy}\" " +
                             "--build-arg HTTPS_PROXY=\"${https_proxy}\" " +
                             "${WORKSPACE}/oscm-dockerbuild/oscm-gf"
+            )
+            sh(
+                'docker tag oscm-gf oscm-gf:${DOCKER_TAG}; ' 
             )
         }
     }
