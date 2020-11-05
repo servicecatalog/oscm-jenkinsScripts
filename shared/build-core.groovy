@@ -367,7 +367,6 @@ def execute() {
     _compileApp()
     _compileShell()
     _compileApproval()
-    _compileIdentity()
     _compileRestAPI()
     _copyArtifacts()
 
