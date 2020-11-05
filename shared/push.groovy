@@ -79,7 +79,7 @@ def execute(boolean loginRequired = false, publish = false) {
     def _tagImages = {
         if(!publish) {
             stage('Push - tag local images') {
-                sh('IMAGES="db initdb identity birt branding help deployer maildev proxy"; ' +
+                sh('IMAGES="db initdb identity birt branding help maildev proxy"; ' +
                         'for IMAGE in ${IMAGES}; do ' +
                         'docker tag oscm-${IMAGE}:${DOCKER_TAG} ${DOCKER_REGISTRY}/${DOCKER_ORGANIZATION}/oscm-${IMAGE}:${DOCKER_TAG}; ' +
                         'done'
@@ -87,7 +87,7 @@ def execute(boolean loginRequired = false, publish = false) {
             }
         } else {
             stage('Push - retag images') {
-                sh('IMAGES="db initdb identity birt branding help deployer maildev proxy"; ' +
+                sh('IMAGES="db initdb identity birt branding help maildev proxy"; ' +
                         'for IMAGE in ${IMAGES}; do ' +
                         'docker pull ' + "${srcRegistry}/${srcOrg}" + '/oscm-${IMAGE}:' + "${srcTag}; " +
                         'docker tag ' + "${srcRegistry}/${srcOrg}" + '/oscm-${IMAGE}:' + "${srcTag} ${dstReg}/${dstOrg}" + '/oscm-${IMAGE}:' + "${dstTag}; " +
@@ -113,7 +113,7 @@ def execute(boolean loginRequired = false, publish = false) {
     def _pushImages = {
         if(DOCKER_TAG) {
             stage('Push - images to registry') {
-                sh('IMAGES="db initdb core app identity birt branding help deployer maildev proxy"; ' +
+                sh('IMAGES="db initdb identity birt branding help maildev proxy"; ' +
                         'for IMAGE in ${IMAGES}; do ' +
                         "docker push " + (publish ? "" : '${DOCKER_REGISTRY}/') + "${dstOrg}/oscm-" + '${IMAGE}' + ":${dstTag}; " +
                         'done'
