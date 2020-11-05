@@ -343,7 +343,6 @@ def execute() {
     _cloneOSCMAppRepository()
     _prepareDockerbuildRepository()
     _prepareShellAdapterRepository()
-    _prepareIndentityRepository()
     _prepareRestAPIRepository()
     _prepareApprovalAdapterRepository()
 
