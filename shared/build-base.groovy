@@ -70,25 +70,6 @@
         }
     }
 
-
-    def _prepareIndentityRepository = {
-        stage('Build - clone oscm-identity repository') {
-            sh "mkdir -p ${WORKSPACE}/oscm-identity"
-            dir("${WORKSPACE}/oscm-identity") {
-                checkout scm: [
-                        $class                           : 'GitSCM',
-                        branches                         : [[name: "${REPO_TAG_IDENTITY}"]],
-                        doGenerateSubmoduleConfigurations: false,
-                        extensions                       : [[$class : 'CloneOption',
-                                                             noTags : false, reference: '',
-                                                             shallow: true]],
-                        submoduleCfg                     : [],
-                        userRemoteConfigs                : [[url: 'https://github.com/servicecatalog/oscm-identity']]
-                ]
-            }
-        }
-    }
-
     def _prepareApprovalAdapterRepository = {
         stage('Build - clone oscm-approval repository') {
             sh "mkdir -p ${WORKSPACE}/oscm-approval"
@@ -177,16 +158,6 @@
         }
     }
 
-    def _copyTenantConfig = {
-        stage('Build - before oscm-core compiling') {
-            sh "mkdir -p ${WORKSPACE}/oscm-portal/WebContent/oidc"
-            dir("${WORKSPACE}/oscm-portal/WebContent/oidc") {
-                sh "cp ${WORKSPACE}/oscm-identity/config/tenants/tenant-default.properties ."
-            }
-        }
-    }
-    
-    
         def _compileCore = {
         stage('Build - compile oscm-core') {
             user = sh(returnStdout: true, script: 'id -u').trim()
@@ -207,23 +178,6 @@
     }
 
 
-    def _compileIdentity = {
-        stage('Build - compile oscm-identity') {
-            user = sh(returnStdout: true, script: 'id -u').trim()
-            group = sh(returnStdout: true, script: 'id -g').trim()
-            sh "docker run " +
-                    "--name maven-identity-${BUILD_ID} " +
-                    "--user $user:$group " +
-                    "--rm " +
-                    "-v ${WORKSPACE}:/build " +
-                    "-e http_proxy=\"${http_proxy}\" " +
-                    "-e https_proxy=\"${https_proxy}\" " +
-                    "-e HTTP_PROXY=\"${http_proxy}\" " +
-                    "-e HTTPS_PROXY=\"${https_proxy}\" " +
-                    "-e MAVEN_OPTS=\"-Duser.home=/build -Dhttp.proxyHost=proxy.intern.est.fujitsu.com -Dhttp.proxyPort=8080 -Dhttps.proxyHost=proxy.intern.est.fujitsu.com -Dhttps.proxyPort=8080\" " +
-                    "oscm-maven clean package -f /build/oscm-identity/pom.xml"
-        }
-    }
     def _compileApp = {
         stage('Build - compile oscm-app') {
             user = sh(returnStdout: true, script: 'id -u').trim()
@@ -280,20 +234,6 @@
                             "--build-arg HTTP_PROXY=\"${http_proxy}\" " +
                             "--build-arg HTTPS_PROXY=\"${https_proxy}\" " +
                             "${WORKSPACE}/oscm-dockerbuild/oscm-core"
-            )
-        }
-    }
-
-
-    def _buildIdentityImage = {
-        stage('Build - identity image oscm-identity') {
-            docker.build(
-                    "oscm-identity:${DOCKER_TAG}",
-                    "--build-arg http_proxy=\"${http_proxy}\" " +
-                            "--build-arg https_proxy=\"${https_proxy}\" " +
-                            "--build-arg HTTP_PROXY=\"${http_proxy}\" " +
-                            "--build-arg HTTPS_PROXY=\"${https_proxy}\" " +
-                            "${WORKSPACE}/oscm-dockerbuild/oscm-identity"
             )
         }
     }
@@ -407,7 +347,6 @@
 	_cloneOSCMAppRepository()
     _prepareDockerbuildRepository()
     _prepareDocumentationRepository()
-    _prepareIndentityRepository()
     _prepareApprovalAdapterRepository()
 
     _copyUserDocumentation()
@@ -421,13 +360,11 @@
     
 	_compileCore()
 	_compileApp()
-    _compileIdentity()
     _copyArtifacts()
 
 	
     _buildServerImage()
     _buildDBImage()
-    _buildIdentityImage()
     _buildProxy()
     _buildNginxImage()
     _buildBrandingImage()
