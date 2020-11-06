@@ -79,7 +79,8 @@ def execute(boolean loginRequired = false, publish = false, IMAGES) {
     def _tagImages = {
         if(!publish) {
             stage('Push - tag local images') {
-                sh('IMAGES="$IMAGES"; ' +
+            env.IMAGES = IMAGES
+                sh('IMAGES="${IMAGES}"; ' +
                         'for IMAGE in ${IMAGES}; do ' +
                         'docker tag oscm-${IMAGE}:${DOCKER_TAG} ${DOCKER_REGISTRY}/${DOCKER_ORGANIZATION}/oscm-${IMAGE}:${DOCKER_TAG}; ' +
                         'done'
@@ -87,7 +88,8 @@ def execute(boolean loginRequired = false, publish = false, IMAGES) {
             }
         } else {
             stage('Push - retag images') {
-                sh('IMAGES="$IMAGES"; ' +
+            env.IMAGES = IMAGES
+                sh('IMAGES="${IMAGES}"; ' +
                         'for IMAGE in ${IMAGES}; do ' +
                         'docker pull ' + "${srcRegistry}/${srcOrg}" + '/oscm-${IMAGE}:' + "${srcTag}; " +
                         'docker tag ' + "${srcRegistry}/${srcOrg}" + '/oscm-${IMAGE}:' + "${srcTag} ${dstReg}/${dstOrg}" + '/oscm-${IMAGE}:' + "${dstTag}; " +
@@ -113,7 +115,7 @@ def execute(boolean loginRequired = false, publish = false, IMAGES) {
     def _pushImages = {
         if(DOCKER_TAG) {
             stage('Push - images to registry') {
-                sh('IMAGES="$IMAGES"; ' +
+                sh('IMAGES="${IMAGES}"; ' +
                         'for IMAGE in ${IMAGES}; do ' +
                         "docker push " + (publish ? "" : '${DOCKER_REGISTRY}/') + "${dstOrg}/oscm-" + '${IMAGE}' + ":${dstTag}; " +
                         'done'
