@@ -44,7 +44,7 @@
 
  **/
 
-def execute(boolean loginRequired = false, publish = false) {
+def execute(boolean loginRequired = false, publish = false, IMAGES) {
     def srcRegistry = sh (
             script: 'if [ -n "$DOCKER_SRC_REGISTRY" ]; then echo $DOCKER_SRC_REGISTRY; else echo $DOCKER_REGISTRY; fi',
             returnStdout: true
@@ -79,7 +79,7 @@ def execute(boolean loginRequired = false, publish = false) {
     def _tagImages = {
         if(!publish) {
             stage('Push - tag local images') {
-                sh('IMAGES="db initdb birt branding help maildev proxy centos-based gc-ant maven gf"; ' +
+                sh('IMAGES="$IMAGES"; ' +
                         'for IMAGE in ${IMAGES}; do ' +
                         'docker tag oscm-${IMAGE}:${DOCKER_TAG} ${DOCKER_REGISTRY}/${DOCKER_ORGANIZATION}/oscm-${IMAGE}:${DOCKER_TAG}; ' +
                         'done'
@@ -87,7 +87,7 @@ def execute(boolean loginRequired = false, publish = false) {
             }
         } else {
             stage('Push - retag images') {
-                sh('IMAGES="db initdb birt branding help maildev proxy centos-based gc-ant maven gf"; ' +
+                sh('IMAGES="$IMAGES"; ' +
                         'for IMAGE in ${IMAGES}; do ' +
                         'docker pull ' + "${srcRegistry}/${srcOrg}" + '/oscm-${IMAGE}:' + "${srcTag}; " +
                         'docker tag ' + "${srcRegistry}/${srcOrg}" + '/oscm-${IMAGE}:' + "${srcTag} ${dstReg}/${dstOrg}" + '/oscm-${IMAGE}:' + "${dstTag}; " +
@@ -113,7 +113,7 @@ def execute(boolean loginRequired = false, publish = false) {
     def _pushImages = {
         if(DOCKER_TAG) {
             stage('Push - images to registry') {
-                sh('IMAGES="db initdb birt branding help maildev proxy centos-based gc-ant maven gf"; ' +
+                sh('IMAGES="$IMAGES"; ' +
                         'for IMAGE in ${IMAGES}; do ' +
                         "docker push " + (publish ? "" : '${DOCKER_REGISTRY}/') + "${dstOrg}/oscm-" + '${IMAGE}' + ":${dstTag}; " +
                         'done'
