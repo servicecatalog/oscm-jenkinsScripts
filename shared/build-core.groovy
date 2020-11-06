@@ -314,6 +314,24 @@ def execute() {
                     "oscm-maven clean install -f /build/oscm-rest-api/pom.xml"
         }
     }
+    
+      def _compileIdentity = {
+        stage('Build - compile oscm-identity') {
+            user = sh(returnStdout: true, script: 'id -u').trim()
+            group = sh(returnStdout: true, script: 'id -g').trim()
+            sh "docker run " +
+                    "--name maven-identity-${BUILD_ID} " +
+                    "--user $user:$group " +
+                    "--rm " +
+                    "-v ${WORKSPACE}:/build " +
+                    "-e http_proxy=\"${http_proxy}\" " +
+                    "-e https_proxy=\"${https_proxy}\" " +
+                    "-e HTTP_PROXY=\"${http_proxy}\" " +
+                    "-e HTTPS_PROXY=\"${https_proxy}\" " +
+                    "-e MAVEN_OPTS=\"-Duser.home=/build -Dhttp.proxyHost=proxy.intern.est.fujitsu.com -Dhttp.proxyPort=8080 -Dhttps.proxyHost=proxy.intern.est.fujitsu.com -Dhttps.proxyPort=8080\" " +
+                    "oscm-maven clean package -f /build/oscm-identity/pom.xml"
+        }
+    }
 
     def _copyArtifacts = {
         stage('Build - copy artifacts') {
@@ -401,6 +419,7 @@ def execute() {
     _compileShell()
     _compileApproval()
     _compileRestAPI()
+    _compileIdentity()
     _copyArtifacts()
 
     _buildIdentityImage()
