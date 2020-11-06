@@ -213,6 +213,16 @@ def execute() {
                     "gc-ant -f /build/oscm-devruntime/javares/build-oscmaas.xml BUILD.LIB"
         }
     }
+    
+     def _copyTenantConfig = {
+        stage('Build - before oscm-core compiling') {
+            sh "mkdir -p ${WORKSPACE}/oscm-portal/WebContent/oidc"
+            dir("${WORKSPACE}/oscm-portal/WebContent/oidc") {
+                sh "cp ${WORKSPACE}/oscm-identity/config/tenants/tenant-default.properties ."
+            }
+        }
+    }
+    
 
     def _compileCore = {
         stage('Build - compile oscm-core') {
@@ -383,6 +393,7 @@ def execute() {
 
 
     _downloadLibraries()
+    _copyTenantConfig()
 
     _compileCore()
     _compileApp()
