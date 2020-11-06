@@ -356,7 +356,6 @@
     _buildMavenImage()
 
     _downloadLibraries()
-    _copyTenantConfig()
     
 	_compileCore()
 	_compileApp()
