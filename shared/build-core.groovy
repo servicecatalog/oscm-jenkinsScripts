@@ -327,16 +327,16 @@ def execute() {
                     "oscm-centos-based /bin/bash /build/oscm-dockerbuild/prepare.sh /build || true"
         }
     }
-
-    def _buildServerImage = {
-        stage('Build - server image oscm-gf') {
+    
+        def _buildIdentityImage = {
+        stage('Build - identity image oscm-identity') {
             docker.build(
-                    "oscm-gf",
+                    "oscm-identity:${DOCKER_TAG}",
                     "--build-arg http_proxy=\"${http_proxy}\" " +
                             "--build-arg https_proxy=\"${https_proxy}\" " +
                             "--build-arg HTTP_PROXY=\"${http_proxy}\" " +
                             "--build-arg HTTPS_PROXY=\"${https_proxy}\" " +
-                            "${WORKSPACE}/oscm-dockerbuild/oscm-gf"
+                            "${WORKSPACE}/oscm-dockerbuild/oscm-identity"
             )
         }
     }
@@ -394,6 +394,7 @@ def execute() {
 
     _downloadLibraries()
     _copyTenantConfig()
+    
 
     _compileCore()
     _compileApp()
@@ -402,6 +403,7 @@ def execute() {
     _compileRestAPI()
     _copyArtifacts()
 
+    _buildIdentityImage()
     _buildCoreImage()
     _buildAppImage()
     _buildDeployerImage()
