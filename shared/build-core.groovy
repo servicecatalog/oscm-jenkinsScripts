@@ -106,6 +106,24 @@ def execute() {
             )
         }
     }
+    
+     def _prepareIndentityRepository = {
+        stage('Build - clone oscm-identity repository') {
+            sh "mkdir -p ${WORKSPACE}/oscm-identity"
+            dir("${WORKSPACE}/oscm-identity") {
+                checkout scm: [
+                        $class                           : 'GitSCM',
+                        branches                         : [[name: "${REPO_TAG_IDENTITY}"]],
+                        doGenerateSubmoduleConfigurations: false,
+                        extensions                       : [[$class : 'CloneOption',
+                                                             noTags : false, reference: '',
+                                                             shallow: true]],
+                        submoduleCfg                     : [],
+                        userRemoteConfigs                : [[url: 'https://github.com/servicecatalog/oscm-identity']]
+                ]
+            }
+        }
+    }
 
     def _prepareDockerbuildRepository = {
         stage('Build - clone dockerbuild repository') {
@@ -357,6 +375,7 @@ def execute() {
     _cloneOSCMRepository()
     _cloneOSCMAppRepository()
     _prepareBuildTools()
+    _prepareIndentityRepository()
     _prepareDockerbuildRepository()
     _prepareShellAdapterRepository()
     _prepareRestAPIRepository()
