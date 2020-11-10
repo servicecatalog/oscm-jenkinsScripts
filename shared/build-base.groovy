@@ -347,7 +347,7 @@
 	_cloneOSCMAppRepository()
     _prepareDockerbuildRepository()
     _prepareDocumentationRepository()
-    
+    _prepareApprovalAdapterRepository()
 
     _copyUserDocumentation()
 
