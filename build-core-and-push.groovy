@@ -85,7 +85,7 @@ node("${NODE_NAME}") {
     def build = evaluate readTrusted('shared/build-core.groovy')
     def push = evaluate readTrusted('shared/push-base-and-core.groovy')
     
-    def IMAGES="core app deployer"
+    def IMAGES="core app deployer identity"
 
     clean.execute()
     build.execute()
