@@ -83,10 +83,12 @@
 node("${NODE_NAME}") {
     def clean = evaluate readTrusted('shared/cleanup.groovy')
     def build = evaluate readTrusted('shared/build-core.groovy')
-    def push = evaluate readTrusted('shared/push-core.groovy')
+    def push = evaluate readTrusted('shared/push-base.groovy')
+    
+    def IMAGES="core app deployer"
 
     clean.execute()
     build.execute()
-    push.execute(true, false)
+    push.execute(true, false, IMAGES)
 }
  
