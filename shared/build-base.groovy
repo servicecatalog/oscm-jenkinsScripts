@@ -300,7 +300,7 @@
 	_prepareBuildTools()
     _prepareDockerbuildRepository()
     _prepareDocumentationRepository()
-    _prepareApprovalAdapterRepository()
+    
 
     _copyUserDocumentation()
 
