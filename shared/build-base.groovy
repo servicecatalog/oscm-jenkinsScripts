@@ -316,7 +316,6 @@
     _buildBrandingImage()
     _buildWebserverImage()
     _buildBirtImage()
-    _buildInitDBImage()
     _buildMailDev()
 }
 
