@@ -1,6 +1,23 @@
 
  def execute() {
  
+     def _prepareDockerbuildRepository = {
+        stage('Build - clone dockerbuild repository') {
+            sh "mkdir -p ${WORKSPACE}/oscm-dockerbuild"
+            dir("${WORKSPACE}/oscm-dockerbuild") {
+                checkout scm: [
+                        $class                           : 'GitSCM',
+                        branches                         : [[name: "${REPO_TAG_DOCKERBUILD}"]],
+                        doGenerateSubmoduleConfigurations: false,
+                        extensions                       : [[$class : 'CloneOption',
+                                                             noTags : false, reference: '',
+                                                             shallow: true]],
+                        submoduleCfg                     : [],
+                        userRemoteConfigs                : [[url: 'https://github.com/servicecatalog/oscm-dockerbuild.git']]
+                ]
+            }
+        }
+    }
 
     def _buildOSCMCentosBasedImage = {
         stage('Build - CENTOS base image oscm-centos-based') {
@@ -50,7 +67,8 @@
             )
         }
     }
-
+    
+    _prepareDockerbuildRepository()
     _buildOSCMCentosBasedImage()
     _buildAntImage()
     _buildMavenImage()
