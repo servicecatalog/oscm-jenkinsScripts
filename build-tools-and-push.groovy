@@ -85,7 +85,7 @@ node("${NODE_NAME}") {
     def build = evaluate readTrusted('shared/build-tools.groovy')
     def push = evaluate readTrusted('shared/push-base-and-core.groovy')
     
-    def IMAGES="gc-ant maven"
+    def IMAGES="centos-based gc-ant maven"
 
     clean.execute()
     build.execute()
