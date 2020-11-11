@@ -385,6 +385,18 @@ def execute() {
         }
     }
 
+    def _buildInitDBImage = {
+        stage('Build - init db image oscm-initdb') {
+            docker.build(
+                    "oscm-initdb:${DOCKER_TAG}",
+                    "--build-arg http_proxy=\"${http_proxy}\" " +
+                            "--build-arg https_proxy=\"${https_proxy}\" " +
+                            "--build-arg HTTP_PROXY=\"${http_proxy}\" " +
+                            "--build-arg HTTPS_PROXY=\"${https_proxy}\" " +
+                            "${WORKSPACE}/oscm-dockerbuild/oscm-initdb"
+            )
+        }
+    }
 
     def _buildDeployerImage = {
         stage('Build - deployer image') {
@@ -416,6 +428,7 @@ def execute() {
 
     _compileCore()
     _compileApp()
+     _buildDBImage()
     _compileShell()
     _compileApproval()
     _compileRestAPI()
