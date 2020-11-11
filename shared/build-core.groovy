@@ -428,7 +428,7 @@ def execute() {
 
     _compileCore()
     _compileApp()
-    _buildInitDBImage
+    _buildInitDBImage()
     _compileShell()
     _compileApproval()
     _compileRestAPI()
