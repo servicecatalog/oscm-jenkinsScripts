@@ -107,10 +107,6 @@
 
 node("${NODE_NAME}") {
 
-    // Build and push
-    def clean = evaluate readTrusted('shared/cleanup.groovy')
-    def build = evaluate readTrusted('shared/build.groovy')
-    def push = evaluate readTrusted('shared/push.groovy')
 
     // Pull and start
     def pull = evaluate readTrusted('shared/pull.groovy')
@@ -118,10 +114,6 @@ node("${NODE_NAME}") {
     
     // Run integration tests
     def tests = evaluate readTrusted('tests/portal-integration-tests.groovy')
-
-    clean.execute()
-    build.execute()
-    push.execute()
 
     pull.execute()
     start.execute('localhost')
