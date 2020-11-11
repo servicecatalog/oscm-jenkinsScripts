@@ -268,6 +268,7 @@
         }
     }
 
+
     def _buildProxy = {
         stage('Build - proxy image oscm-proxy') {
             docker.build(
@@ -311,6 +312,7 @@
 
 	
     _buildServerImage()
+    _buildDBImage()
     _buildProxy()
     _buildNginxImage()
     _buildBrandingImage()
