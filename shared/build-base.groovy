@@ -294,6 +294,8 @@
         }
     }
 
+	_cloneOSCMRepository()
+	_cloneOSCMAppRepository()
 	_prepareBuildTools()
     _prepareDockerbuildRepository()
     _prepareDocumentationRepository()
