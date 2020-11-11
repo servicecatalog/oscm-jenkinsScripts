@@ -345,19 +345,6 @@ def execute() {
         }
     }
 
-    def _copyArtifacts = {
-        stage('Build - copy artifacts') {
-            user = sh(returnStdout: true, script: 'id -u').trim()
-            group = sh(returnStdout: true, script: 'id -g').trim()
-            sh "docker run " +
-                    "--name copy-${BUILD_ID} " +
-                    "--user $user:$group " +
-                    "--rm " +
-                    "-v ${WORKSPACE}:/build " +
-                    "oscm-centos-based /bin/bash /build/oscm-dockerbuild/prepare.sh /build || true"
-        }
-    }
-    
         def _buildIdentityImage = {
         stage('Build - identity image oscm-identity') {
             docker.build(
