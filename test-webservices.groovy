@@ -98,6 +98,21 @@ node("${NODE_NAME}") {
         }
     }
     
+        def _downloadLibraries = {
+        stage('Build - download external libraries') {
+            sh "docker run " +
+                    "--name gc-ant-ivy-${BUILD_ID} " +
+                    "--rm " +
+                    "-v ${WORKSPACE}:/build " +
+                    "-e http_proxy=\"${http_proxy}\" " +
+                    "-e https_proxy=\"${http_proxy}\" " +
+                    "-e HTTP_PROXY=\"${http_proxy}\" " +
+                    "-e HTTPS_PROXY=\"${http_proxy}\" " +
+                    "-e ANT_OPTS=\"-Dhttp.proxyHost=proxy.intern.est.fujitsu.com -Dhttp.proxyPort=8080 -Dhttps.proxyHost=proxy.intern.est.fujitsu.com -Dhttps.proxyPort=8080\" " +
+                    "gc-ant -f /build/oscm-devruntime/javares/build-oscmaas.xml BUILD.LIB"
+        }
+    }
+    
         def _compileCore = {
         stage('Build - compile oscm-core') {
             user = sh(returnStdout: true, script: 'id -u').trim()
@@ -141,6 +156,7 @@ node("${NODE_NAME}") {
     pull.execute()
     _prepareBuildTools()
     _cloneOSCMRepository()
+    _downloadLibraries()
     _compileCore()
     start.execute()
     test.execute()
