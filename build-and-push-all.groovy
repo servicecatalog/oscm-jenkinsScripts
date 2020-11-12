@@ -90,6 +90,8 @@ node("${NODE_NAME}") {
     def IMAGES="db birt branding help maildev proxy gf core app deployer identity initdb centos-based gc-ant maven"
 
     clean.execute()
-    build.execute()
+    build-tool.execute()
+    build-base.execute()
+    build-core.execute()
     push.execute(true, false)
 }
