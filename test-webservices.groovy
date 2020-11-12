@@ -83,14 +83,12 @@
 
 node("${NODE_NAME}") {
     def clean = evaluate readTrusted('shared/cleanup.groovy')
-    def build = evaluate readTrusted('shared/build.groovy')
-    def push = evaluate readTrusted('shared/push.groovy')
+    def pull = evaluate readTrusted('shared/pull.groovy')
     def start = evaluate readTrusted('shared/start.groovy')
     def test = evaluate readTrusted('shared/test-webservices.groovy')
 
     clean.execute()
-    build.execute()
-    push.execute()
+    pull.execute()
     start.execute()
     test.execute()
     clean.execute()
