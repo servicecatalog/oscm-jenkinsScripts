@@ -82,6 +82,21 @@
 // Description: Load sample data?
 
 node("${NODE_NAME}") {
+
+    def _cloneOSCMRepository = {
+        stage('Build - checkout tests') {
+            checkout scm: [
+                    $class                           : 'GitSCM',
+                    branches                         : [[name: "${REPO_TAG_OSCM}"]],
+                    doGenerateSubmoduleConfigurations: false,
+                    extensions                       : [[$class : 'CloneOption',
+                                                         noTags : false, reference: '',
+                                                         shallow: true]],
+                    submoduleCfg                     : [],
+                    userRemoteConfigs                : [[url: 'https://github.com/servicecatalog/oscm.git']]
+            ]
+        }
+    }
     def clean = evaluate readTrusted('shared/cleanup.groovy')
     def pull = evaluate readTrusted('shared/pull.groovy')
     def start = evaluate readTrusted('shared/start.groovy')
@@ -89,6 +104,7 @@ node("${NODE_NAME}") {
 
     clean.execute()
     pull.execute()
+    _cloneOSCMRepository()
     start.execute()
     test.execute()
     clean.execute()
