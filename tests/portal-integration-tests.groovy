@@ -35,7 +35,7 @@ def execute() {
     def _setupTenant = {
         stage('Test webservices - setup tenant') {
             if (authMode == 'OIDC') {
-                sh "cp ${WORKSPACE}/oscm-portal/WebContent/oidc/tenant-default.properties ${WORKSPACE}/docker/config/oscm-identity/tenants/"
+                sh "cp ${WORKSPACE}/docker/config/oscm-identity/tenants/tenant-default.properties.template" ${WORKSPACE}/docker/config/oscm-identity/tenants/tenant-default.properties"
 
                 sh "sed -ri 's|oidc.authUrlScope=.*|oidc.authUrlScope=openid profile offline_access https://graph.microsoft.com/user.read.all https://graph.microsoft.com/group.readwrite.all https://graph.microsoft.com/directory.readwrite.all|g' ${WORKSPACE}/docker/config/oscm-identity/tenants/tenant-default.properties"
 
@@ -63,7 +63,7 @@ def execute() {
             catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                 user = sh(returnStdout: true, script: 'id -u').trim()
                 group = sh(returnStdout: true, script: 'id -g').trim()
-                sh "sleep 120"
+                sh "sleep 120"ot
                 sh "docker run " +
                         "--name maven-ui-tests-${BUILD_ID} " +
                         "--user $user:$group " +
