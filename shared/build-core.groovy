@@ -423,22 +423,19 @@ def execute() {
 
     _downloadLibraries()
     _copyTenantConfig()
-    _copyArtifacts()
-    
-    
 
     _compileCore()
     _compileApp()
-    _buildInitDBImage()
     _compileShell()
     _compileApproval()
     _compileRestAPI()
     _compileIdentity()
     _copyArtifacts()
-
+    
     _buildIdentityImage()
     _buildCoreImage()
     _buildAppImage()
+    _buildInitDBImage()
     _buildDeployerImage()
 }
 
