@@ -107,34 +107,6 @@
 
 node("${NODE_NAME}") {
 
-        def _cloneOSCMRepository = {
-        stage('Build - clone OSCM repository') {
-            checkout scm: [
-                    $class                           : 'GitSCM',
-                    branches                         : [[name: "${REPO_TAG_OSCM}"]],
-                    doGenerateSubmoduleConfigurations: false,
-                    extensions                       : [[$class : 'CloneOption',
-                                                         noTags : false, reference: '',
-                                                         shallow: true]],
-                    submoduleCfg                     : [],
-                    userRemoteConfigs                : [[url: 'https://github.com/servicecatalog/oscm.git']]
-            ]
-        }
-    }
-    
-        def _prepareBuildTools = {
-        stage('Build - pull build tools') {
-             docker.image("${DOCKER_REGISTRY}/${DOCKER_ORGANIZATION}/oscm-gc-ant:${DOCKER_TAG}").pull()
-             docker.image("${DOCKER_REGISTRY}/${DOCKER_ORGANIZATION}/oscm-centos-based:${DOCKER_TAG}").pull()
-             docker.image("${DOCKER_REGISTRY}/${DOCKER_ORGANIZATION}/oscm-maven:${DOCKER_TAG}").pull()
-             sh(
-                'docker tag ${DOCKER_REGISTRY}/${DOCKER_ORGANIZATION}/oscm-gc-ant:${DOCKER_TAG} gc-ant; ' +
-                'docker tag ${DOCKER_REGISTRY}/${DOCKER_ORGANIZATION}/oscm-centos-based:${DOCKER_TAG} oscm-centos-based; ' +
-                'docker tag ${DOCKER_REGISTRY}/${DOCKER_ORGANIZATION}/oscm-maven:${DOCKER_TAG} oscm-maven; ' 
-            )
-        }
-    }
-
     // Pull and start
     def clean = evaluate readTrusted('shared/cleanup.groovy')
     def pull = evaluate readTrusted('shared/pull.groovy')
@@ -145,8 +117,6 @@ node("${NODE_NAME}") {
     
     
     clean.execute()
-    _prepareBuildTools()
-    _cloneOSCMRepository()
     pull.execute()
     start.execute('localhost')
 
