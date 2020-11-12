@@ -72,7 +72,7 @@ void execute() {
 
     def _setupTenant = {
         stage('Test webservices - setup tenant') {
-            sh "cp ${WORKSPACE}/oscm-portal/WebContent/oidc/tenant-default.properties ${WORKSPACE}/docker/config/oscm-identity/tenants/"
+            sh "cp ${WORKSPACE}/docker/config/oscm-identity/tenants/tenant-default.properties.template ${WORKSPACE}/docker/config/oscm-identity/tenants/tenant-default.properties"
 
             sh '''
             sed -i \
