@@ -17,21 +17,6 @@ def execute() {
             returnStdout: true
     ).trim()
     
-    def _cloneOSCMRepository = {
-        stage('Build - clone OSCM repository') {
-            checkout scm: [
-                    $class                           : 'GitSCM',
-                    branches                         : [[name: "${REPO_TAG_OSCM}"]],
-                    doGenerateSubmoduleConfigurations: false,
-                    extensions                       : [[$class : 'CloneOption',
-                                                         noTags : false, reference: '',
-                                                         shallow: true]],
-                    submoduleCfg                     : [],
-                    userRemoteConfigs                : [[url: 'https://github.com/servicecatalog/oscm.git']]
-            ]
-        }
-    }
-    
     def _prepareBuildTools = {
         stage('Build - pull build tools') {
              docker.image("${DOCKER_REGISTRY}/${DOCKER_ORGANIZATION}/oscm-maven:${DOCKER_TAG}").pull()
@@ -113,7 +98,6 @@ def execute() {
 
     
     _prepareBuildTools()
-    _cloneOSCMRepository()
     _updateTechnicalServicePath()
     _setupTenant()
     _installUITests()
