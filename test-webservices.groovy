@@ -156,8 +156,6 @@ node("${NODE_NAME}") {
     pull.execute()
     _prepareBuildTools()
     _cloneOSCMRepository()
-    _downloadLibraries()
-    _compileCore()
     start.execute()
     test.execute()
     clean.execute()
