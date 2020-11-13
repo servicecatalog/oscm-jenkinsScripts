@@ -91,7 +91,8 @@ node("${NODE_NAME}") {
 
     clean.execute()
     buildTool.execute()
+    push.execute(true, false, "centos-based gc-ant maven")
     buildBase.execute()
     buildCore.execute()
-    push.execute(true, false)
+    push.execute(true, false, IMAGES)
 }
