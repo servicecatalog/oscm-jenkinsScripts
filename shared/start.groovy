@@ -45,29 +45,7 @@
 
 void execute(String FQDN = env.NODE_NAME + '.intern.est.fujitsu.com') {
 
-    def _fixPermissions = {
-        sh '''
-        
-        if [ ${COMPLETE_CLEANUP} == "false" ]; then
-            mkdir -p ${WORKSPACE}/backup
-            cp -r ${WORKSPACE}/docker/config ${WORKSPACE}/backup
-            cp -r ${WORKSPACE}/docker/data ${WORKSPACE}/backup
-            cp -r ${WORKSPACE}/docker/logs ${WORKSPACE}/backup
-        fi;
-        
-        rm -rf ${WORKSPACE}/docker
-        mkdir -p ${WORKSPACE}/docker/config/oscm-identity/tenants/
-        
-        
-        if [ ${COMPLETE_CLEANUP} == "false" ]; then
-            mkdir -p ${WORKSPACE}/backup
-            cp -r ${WORKSPACE}/backup/config ${WORKSPACE}/docker
-            cp -r ${WORKSPACE}/backup/data ${WORKSPACE}/docker
-            cp -r ${WORKSPACE}/backup/logs ${WORKSPACE}/docker
-            rm -rf ${WORKSPACE}/backup
-        fi;
-        '''
-    }
+   
 
     def _createEnvTemplates = {
         stage('Start - create env templates') {
@@ -173,7 +151,7 @@ void execute(String FQDN = env.NODE_NAME + '.intern.est.fujitsu.com') {
         }
     }
 
-    _fixPermissions()
+   
     _createEnvTemplates()
     _setupEnv()
     _setupVarEnv()
