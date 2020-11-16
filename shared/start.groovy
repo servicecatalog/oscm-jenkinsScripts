@@ -152,7 +152,7 @@ void execute(String FQDN = env.NODE_NAME + '.intern.est.fujitsu.com') {
             '''
         }
     }
-   
+
     _createEnvTemplates()
     _setupEnv()
     _setupVarEnv()
