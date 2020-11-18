@@ -45,33 +45,13 @@
 
 void execute(String FQDN = env.NODE_NAME + '.intern.est.fujitsu.com') {
 
-   def _fixPermissionsForTesting = {
-        sh '''
-        
-        if [ ${COMPLETE_CLEANUP} == "false" ]; then
-            mkdir -p ${WORKSPACE}/backup
-            cp -r ${WORKSPACE}/docker/config ${WORKSPACE}/backup
-            cp -r ${WORKSPACE}/docker/data ${WORKSPACE}/backup
-            cp -r ${WORKSPACE}/docker/logs ${WORKSPACE}/backup
-        fi;
-        
-        rm -rf ${WORKSPACE}/docker
-        mkdir -p ${WORKSPACE}/docker/config/oscm-identity/tenants/
-        
-        
-        if [ ${COMPLETE_CLEANUP} == "false" ]; then
-            mkdir -p ${WORKSPACE}/backup
-            cp -r ${WORKSPACE}/backup/config ${WORKSPACE}/docker
-            cp -r ${WORKSPACE}/backup/data ${WORKSPACE}/docker
-            cp -r ${WORKSPACE}/backup/logs ${WORKSPACE}/docker
-            rm -rf ${WORKSPACE}/backup
-        fi;
-        '''
-    }
-
     def _createEnvTemplates = {
         stage('Start - create env templates') {
+            // If the docker dir doesn't exists at this point, it is created with root owner by volume mapping with the docker run command
+            // But we need to change it's owner to jenkins here, in order that env files can be replaced with sed later on
+            // (this is because sed needs permission to create a temp file in this directory!)
             sh '''
+            docker run --rm -v ${WORKSPACE}/docker:/docker busybox chown $(id -u jenkins):$(id -g jenkins) /docker
             docker run \
                 --name deployer1 \
                 --rm \
@@ -173,8 +153,6 @@ void execute(String FQDN = env.NODE_NAME + '.intern.est.fujitsu.com') {
         }
     }
 
-   
-    _fixPermissionsForTesting()
     _createEnvTemplates()
     _setupEnv()
     _setupVarEnv()
