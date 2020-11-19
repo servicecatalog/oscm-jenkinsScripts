@@ -1,6 +1,4 @@
 void execute() {
-
-
     def _cloneOSCMRepository = {
         stage('Build - checkout tests') {
             checkout scm: [
@@ -15,5 +13,6 @@ void execute() {
             ]
         }
     }
+    _cloneOSCMRepository()
 }
 return this
