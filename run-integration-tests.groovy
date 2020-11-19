@@ -125,16 +125,15 @@ node("${NODE_NAME}") {
     // Pull and start
     def clean = evaluate readTrusted('shared/cleanup.groovy')
     def pull = evaluate readTrusted('shared/pull.groovy')
+    def checkoutTests = evaluate readTrusted('shared/checkout-tests.groovy')
     def start = evaluate readTrusted('shared/start.groovy')
     
     // Run integration tests
     def tests = evaluate readTrusted('tests/portal-integration-tests.groovy')
     
-    
     clean.execute()
     pull.execute()
-    _cloneOSCMRepository()
+    checkoutTests.execute()
     start.execute('localhost')
-
     tests.execute()
 }
