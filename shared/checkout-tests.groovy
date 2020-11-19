@@ -1,4 +1,4 @@
-def execute() {
+void execute() {
 
 
     def _cloneOSCMRepository = {
