@@ -52,6 +52,7 @@ void execute(String FQDN = env.NODE_NAME + '.intern.est.fujitsu.com') {
             // (this is because sed needs permission to create a temp file in this directory!)
             sh '''
             docker run --rm -v ${WORKSPACE}/docker:/docker busybox chown $(id -u jenkins):$(id -g jenkins) /docker
+            mkdir -p ${WORKSPACE}/docker/config/oscm-identity/tenants/
             docker run \
                 --name deployer1 \
                 --rm \
@@ -59,6 +60,7 @@ void execute(String FQDN = env.NODE_NAME + '.intern.est.fujitsu.com') {
                 -e SAMPLE_DATA=${SAMPLE_DATA} \
                 ${DOCKER_REGISTRY}/${DOCKER_ORGANIZATION}/oscm-deployer:${DOCKER_TAG}
             '''
+         
         }
     }
 

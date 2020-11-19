@@ -83,8 +83,8 @@ void execute() {
                 if [ ! -d ${WORKSPACE}/docker ]; then
                     mkdir ${WORKSPACE}/docker;
                 else
-                    docker run --rm -v ${WORKSPACE}/docker:/docker busybox mv /docker/var.env /docker/var.env.bak-jenkins
-                    docker run --rm -v ${WORKSPACE}/docker:/docker busybox mv /docker/.env /docker/.env.bak-jenkins    
+                    docker run --rm -v ${WORKSPACE}/docker:/docker busybox  mv /docker/var.env "/docker/var.env.$(date -Iseconds)"     
+                    docker run --rm -v ${WORKSPACE}/docker:/docker busybox mv /docker/.env "/docker/.env.$(date -Iseconds)"
                 fi;
             fi;
             '''
