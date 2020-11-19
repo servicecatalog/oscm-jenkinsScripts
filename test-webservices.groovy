@@ -107,7 +107,6 @@ node("${NODE_NAME}") {
     clean.execute()
     pull.execute()
     _prepareBuildTools()
-    _cloneOSCMRepository()
     start.execute()
     checkoutTests.execute()
     test.execute()
