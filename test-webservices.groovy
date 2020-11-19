@@ -107,8 +107,9 @@ node("${NODE_NAME}") {
     clean.execute()
     pull.execute()
     _prepareBuildTools()
-    start.execute()
     checkoutTests.execute()
+    start.execute()
+
     test.execute()
     clean.execute()
 }
