@@ -85,7 +85,7 @@ node("${NODE_NAME}") {
     def buildTool = evaluate readTrusted('shared/build-tools.groovy')
     def buildBase = evaluate readTrusted('shared/build-base.groovy')
     def buildCore = evaluate readTrusted('shared/build-core.groovy')
-    def push = evaluate readTrusted('shared/push-base-and-core.groovy')
+    def push = evaluate readTrusted('shared/push.groovy')
     
     clean.execute()
     buildTool.execute()
