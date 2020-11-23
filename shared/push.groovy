@@ -103,6 +103,7 @@ def execute(boolean loginRequired = false, publish = false, IMAGES) {
        stage('Push - login to registry') {
            sh 'docker login -u ${USERNAME} -p ${PASSWORD}' + " ${dstReg}"
        }
+    }
 
     def _pushImages = {
          stage('Push - images to registry') {
