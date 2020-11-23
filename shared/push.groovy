@@ -107,6 +107,7 @@ def execute(boolean loginRequired = false, publish = false, IMAGES) {
 
     def _pushImages = {
          stage('Push - images to registry') {
+             sh('IMAGES="${IMAGES}"; ' +
                  'for IMAGE in ${IMAGES}; do ' +
                  "docker push " + (publish ? "" : '${DOCKER_REGISTRY}/') + "${dstOrg}/oscm-" + '${IMAGE}' + ":${dstTag}; " +
                  'done'
