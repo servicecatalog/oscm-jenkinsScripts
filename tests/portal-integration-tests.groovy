@@ -16,6 +16,15 @@ def execute() {
             script: 'echo $AUTH_MODE;',
             returnStdout: true
     ).trim()
+    
+    def _prepareBuildTools = {
+        stage('Build - pull build tools') {
+             docker.image("${DOCKER_REGISTRY}/${DOCKER_ORGANIZATION}/oscm-maven:${DOCKER_TAG}").pull()
+             sh(
+                'docker tag ${DOCKER_REGISTRY}/${DOCKER_ORGANIZATION}/oscm-maven:${DOCKER_TAG} oscm-maven; ' 
+            )
+        }
+    }
 
     def _updateTechnicalServicePath = {
         stage('Tests - Update technical service path') {
@@ -35,7 +44,7 @@ def execute() {
     def _setupTenant = {
         stage('Test webservices - setup tenant') {
             if (authMode == 'OIDC') {
-                sh "cp ${WORKSPACE}/oscm-portal/WebContent/oidc/tenant-default.properties ${WORKSPACE}/docker/config/oscm-identity/tenants/"
+                sh "cp ${WORKSPACE}/docker/config/oscm-identity/tenants/tenant-default.properties.template ${WORKSPACE}/docker/config/oscm-identity/tenants/tenant-default.properties"
 
                 sh "sed -ri 's|oidc.authUrlScope=.*|oidc.authUrlScope=openid profile offline_access https://graph.microsoft.com/user.read.all https://graph.microsoft.com/group.readwrite.all https://graph.microsoft.com/directory.readwrite.all|g' ${WORKSPACE}/docker/config/oscm-identity/tenants/tenant-default.properties"
 
@@ -87,6 +96,8 @@ def execute() {
         }
     }
 
+    
+    _prepareBuildTools()
     _updateTechnicalServicePath()
     _setupTenant()
     _installUITests()

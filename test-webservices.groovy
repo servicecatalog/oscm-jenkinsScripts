@@ -82,15 +82,19 @@
 // Description: Load sample data?
 
 node("${NODE_NAME}") {
+    
+    
     def clean = evaluate readTrusted('shared/cleanup.groovy')
-    def build = evaluate readTrusted('shared/build.groovy')
-    def push = evaluate readTrusted('shared/push.groovy')
+    def pull = evaluate readTrusted('shared/pull.groovy')
+    def checkoutTests = evaluate readTrusted('shared/checkout-tests.groovy')
+    def prepareWS = evaluate readTrusted('shared/prepare-ws.groovy')
     def start = evaluate readTrusted('shared/start.groovy')
     def test = evaluate readTrusted('shared/test-webservices.groovy')
 
     clean.execute()
-    build.execute()
-    push.execute()
+    pull.execute()
+    checkoutTests.execute()
+    prepareWS.execute()
     start.execute()
     test.execute()
     clean.execute()

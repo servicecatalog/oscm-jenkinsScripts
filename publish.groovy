@@ -55,6 +55,6 @@
 
 node("${NODE_NAME}") {
     def push = evaluate readTrusted('shared/push.groovy')
-
-    push.execute(true, true)
+    IMAGES = "db initdb core app identity birt branding help deployer maildev proxy"
+    push.execute(true, true, IMAGES)
 }

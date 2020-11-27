@@ -44,6 +44,21 @@
  Default: master
  Description: Branch or tag in the oscm-dockerbuild git repository: https://github.com/servicecatalog/oscm-dockerbuild
  ===
+ Name: REPO_TAG_OSCM_APP
+ Type: String
+ Default: master
+ Description: Branch or tag in the oscm-app git repository: https://github.com/servicecatalog/oscm-app
+ ===
+ Name: REPO_TAG_APP_SHELL
+ Type: String
+ Default: master
+ Description: Branch or tag in the oscm-app-shell git repository: https://github.com/servicecatalog/oscm-app-shell
+ ===
+ Name: REPO_TAG_APPROVAL
+ Type: String
+ Default: master
+ Description: Branch or tag in the oscm-approval git repository: https://github.com/servicecatalog/oscm-approval
+ ===
  Name: REPO_TAG_IDENTITY
  Type: String
  Default: master
@@ -59,14 +74,6 @@
  Default: /opt/trusted_certs
  Description: Path to the directory with certificates that will be imported as trusted by oscm
  ===
- Name: TOMEE_DEBUG
- Default: disabled
- ===
- Name: AUTH_MODE
- Type: Option list (INTERNAL, OIDC)
- Default: INTERNAL
- Description: Auth mode used to communicate with OSCM web services.
- ===
  Name: COMPLETE_CLEANUP
  Default: enabled
  Description: Delete the database and whole workspace
@@ -75,12 +82,16 @@
 
 node("${NODE_NAME}") {
     def clean = evaluate readTrusted('shared/cleanup.groovy')
-    def build = evaluate readTrusted('shared/build.groovy')
+    def buildTool = evaluate readTrusted('shared/build-tools.groovy')
+    def buildBase = evaluate readTrusted('shared/build-base.groovy')
+    def buildCore = evaluate readTrusted('shared/build-core.groovy')
     def push = evaluate readTrusted('shared/push.groovy')
-    def start = evaluate readTrusted('shared/start.groovy')
-
+    
     clean.execute()
-    build.execute()
-    push.execute()
-    start.execute()
+    buildTool.execute()
+    push.execute(true, false, "centos-based gc-ant maven")
+    buildBase.execute()
+    push.execute(true, false, "db birt branding help maildev proxy gf")
+    buildCore.execute()
+    push.execute(true, false, "core app deployer identity initdb")
 }

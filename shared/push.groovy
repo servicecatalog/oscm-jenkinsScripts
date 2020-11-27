@@ -44,7 +44,7 @@
 
  **/
 
-def execute(boolean loginRequired = false, publish = false) {
+def execute(boolean loginRequired = false, publish = false, IMAGES) {
     def srcRegistry = sh (
             script: 'if [ -n "$DOCKER_SRC_REGISTRY" ]; then echo $DOCKER_SRC_REGISTRY; else echo $DOCKER_REGISTRY; fi',
             returnStdout: true
@@ -79,7 +79,8 @@ def execute(boolean loginRequired = false, publish = false) {
     def _tagImages = {
         if(!publish) {
             stage('Push - tag local images') {
-                sh('IMAGES="db initdb core app identity birt branding help deployer maildev proxy"; ' +
+            env.IMAGES = IMAGES
+                sh('IMAGES="${IMAGES}"; ' +
                         'for IMAGE in ${IMAGES}; do ' +
                         'docker tag oscm-${IMAGE}:${DOCKER_TAG} ${DOCKER_REGISTRY}/${DOCKER_ORGANIZATION}/oscm-${IMAGE}:${DOCKER_TAG}; ' +
                         'done'
@@ -87,7 +88,8 @@ def execute(boolean loginRequired = false, publish = false) {
             }
         } else {
             stage('Push - retag images') {
-                sh('IMAGES="db initdb core app identity birt branding help deployer maildev proxy"; ' +
+            env.IMAGES = IMAGES
+                sh('IMAGES="${IMAGES}"; ' +
                         'for IMAGE in ${IMAGES}; do ' +
                         'docker pull ' + "${srcRegistry}/${srcOrg}" + '/oscm-${IMAGE}:' + "${srcTag}; " +
                         'docker tag ' + "${srcRegistry}/${srcOrg}" + '/oscm-${IMAGE}:' + "${srcTag} ${dstReg}/${dstOrg}" + '/oscm-${IMAGE}:' + "${dstTag}; " +
@@ -97,33 +99,24 @@ def execute(boolean loginRequired = false, publish = false) {
         }
     }
 
-    def _loginToDockerHub = {
-        if(DOCKER_REGISTRY == 'docker.io') {
-            stage('Push - login to DockerHub') {
-                sh 'docker login -u ${USERNAME} -p ${PASSWORD}'
-            }
-         } 
-         else {
-             stage('Push - login to Artifactory') {
-                sh 'docker login -u ${USERNAME} -p ${PASSWORD} ${DOCKER_REGISTRY}'
-            }
-         }
+    def _loginToDst = {
+       stage('Push - login to registry') {
+           sh 'docker login -u ${USERNAME} -p ${PASSWORD}' + " ${dstReg}"
+       }
     }
 
     def _pushImages = {
-        if(DOCKER_TAG) {
-            stage('Push - images to registry') {
-                sh('IMAGES="db initdb core app identity birt branding help deployer maildev proxy"; ' +
-                        'for IMAGE in ${IMAGES}; do ' +
-                        "docker push " + (publish ? "" : '${DOCKER_REGISTRY}/') + "${dstOrg}/oscm-" + '${IMAGE}' + ":${dstTag}; " +
-                        'done'
-                )
-            }
-        }
+         stage('Push - images to registry') {
+             sh('IMAGES="${IMAGES}"; ' +
+                 'for IMAGE in ${IMAGES}; do ' +
+                 "docker push " + (publish ? "" : '${DOCKER_REGISTRY}/') + "${dstOrg}/oscm-" + '${IMAGE}' + ":${dstTag}; " +
+                 'done'
+             )
+         }
     }
     
-    def _logoutFromDockerHub = {
-        stage('Push - logout from DockerHub') {
+    def _logoutFromDst = {
+        stage('Push - logout from registry') {
             sh 'docker logout'
         }
     }
@@ -131,13 +124,13 @@ def execute(boolean loginRequired = false, publish = false) {
     _tagImages()
 
     if(loginRequired) {
-        _loginToDockerHub()
+        _loginToDst()
     }
 
     _pushImages()
     
     if(loginRequired) {
-        _logoutFromDockerHub()
+        _logoutFromDst()
     }
 }
 
