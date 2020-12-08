@@ -150,7 +150,6 @@ void execute(String FQDN = env.NODE_NAME + '.intern.est.fujitsu.com') {
                 -e INITDB=true \
                 -e STARTUP=true \
                 -e SAMPLE_DATA=${SAMPLE_DATA} \
-                -e HOST_FQDN=${FQDN_NODE} \
                 ${DOCKER_REGISTRY}/${DOCKER_ORGANIZATION}/oscm-deployer:${DOCKER_TAG}
             '''
         }
