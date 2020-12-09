@@ -51,19 +51,19 @@ void execute(String FQDN = env.NODE_NAME + '.intern.est.fujitsu.com') {
             // But we need to change it's owner to jenkins here, in order that env files can be replaced with sed later on
             // (this is because sed needs permission to create a temp file in this directory!)
             script {
-            env.FQDN_NODE = FQDN
-            sh '''
-            docker run --rm -v ${WORKSPACE}/docker:/docker busybox chown $(id -u jenkins):$(id -g jenkins) /docker
-            mkdir -p ${WORKSPACE}/docker/config/oscm-identity/tenants/
-            docker run \
-                --name deployer1 \
-                --rm \
-                -v ${WORKSPACE}/docker:/target \
-                -e SAMPLE_DATA=${SAMPLE_DATA} \
-                -e HOST_FQDN=${FQDN_NODE} \
-                ${DOCKER_REGISTRY}/${DOCKER_ORGANIZATION}/oscm-deployer:${DOCKER_TAG}
-            '''
-         }
+                env.FQDN_NODE = FQDN
+                sh '''
+                docker run --rm -v ${WORKSPACE}/docker:/docker busybox chown $(id -u jenkins):$(id -g jenkins) /docker
+                mkdir -p ${WORKSPACE}/docker/config/oscm-identity/tenants/
+                docker run \
+                    --name deployer1 \
+                    --rm \
+                    -v ${WORKSPACE}/docker:/target \
+                    -e SAMPLE_DATA=${SAMPLE_DATA} \
+                    -e HOST_FQDN=${FQDN_NODE} \
+                    ${DOCKER_REGISTRY}/${DOCKER_ORGANIZATION}/oscm-deployer:${DOCKER_TAG}
+                '''
+            }
         }
     }
 
