@@ -151,6 +151,7 @@ void execute(String FQDN = env.NODE_NAME + '.intern.est.fujitsu.com') {
                 -v /var/run/docker.sock:/var/run/docker.sock \
                 -e INITDB=true \
                 -e STARTUP=true \
+                -e PROXY=true \
                 -e SAMPLE_DATA=${SAMPLE_DATA} \
                 ${DOCKER_REGISTRY}/${DOCKER_ORGANIZATION}/oscm-deployer:${DOCKER_TAG}
             '''
