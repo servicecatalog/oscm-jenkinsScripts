@@ -50,17 +50,20 @@ void execute(String FQDN = env.NODE_NAME + '.intern.est.fujitsu.com') {
             // If the docker dir doesn't exists at this point, it is created with root owner by volume mapping with the docker run command
             // But we need to change it's owner to jenkins here, in order that env files can be replaced with sed later on
             // (this is because sed needs permission to create a temp file in this directory!)
-            sh '''
-            docker run --rm -v ${WORKSPACE}/docker:/docker busybox chown $(id -u jenkins):$(id -g jenkins) /docker
-            mkdir -p ${WORKSPACE}/docker/config/oscm-identity/tenants/
-            docker run \
-                --name deployer1 \
-                --rm \
-                -v ${WORKSPACE}/docker:/target \
-                -e SAMPLE_DATA=${SAMPLE_DATA} \
-                ${DOCKER_REGISTRY}/${DOCKER_ORGANIZATION}/oscm-deployer:${DOCKER_TAG}
-            '''
-         
+            script {
+                env.FQDN_NODE = FQDN
+                sh '''
+                docker run --rm -v ${WORKSPACE}/docker:/docker busybox chown $(id -u jenkins):$(id -g jenkins) /docker
+                mkdir -p ${WORKSPACE}/docker/config/oscm-identity/tenants/
+                docker run \
+                    --name deployer1 \
+                    --rm \
+                    -v ${WORKSPACE}/docker:/target \
+                    -e SAMPLE_DATA=${SAMPLE_DATA} \
+                    -e HOST_FQDN=${FQDN_NODE} \
+                    ${DOCKER_REGISTRY}/${DOCKER_ORGANIZATION}/oscm-deployer:${DOCKER_TAG}
+                '''
+            }
         }
     }
 
@@ -148,8 +151,8 @@ void execute(String FQDN = env.NODE_NAME + '.intern.est.fujitsu.com') {
                 -v /var/run/docker.sock:/var/run/docker.sock \
                 -e INITDB=true \
                 -e STARTUP=true \
+                -e PROXY=true \
                 -e SAMPLE_DATA=${SAMPLE_DATA} \
-                -e FQDN=${FQDN_NODE} \
                 ${DOCKER_REGISTRY}/${DOCKER_ORGANIZATION}/oscm-deployer:${DOCKER_TAG}
             '''
         }
