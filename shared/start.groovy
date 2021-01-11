@@ -143,6 +143,8 @@ void execute(String FQDN = env.NODE_NAME + '.intern.est.fujitsu.com', PROXY = tr
 
     def _start = {
         stage('Start - start OSCM') {
+        script {
+            env.PROXY = PROXY
             sh '''
             docker run \
                 --name deployer2 \
@@ -155,6 +157,7 @@ void execute(String FQDN = env.NODE_NAME + '.intern.est.fujitsu.com', PROXY = tr
                 -e SAMPLE_DATA=${SAMPLE_DATA} \
                 ${DOCKER_REGISTRY}/${DOCKER_ORGANIZATION}/oscm-deployer:${DOCKER_TAG}
             '''
+        }
         }
     }
 
