@@ -43,7 +43,7 @@
 
  **/
 
-void execute(String FQDN = env.NODE_NAME + '.intern.est.fujitsu.com') {
+void execute(String FQDN = env.NODE_NAME + '.intern.est.fujitsu.com', PROXY = true) {
 
     def _createEnvTemplates = {
         stage('Start - create env templates') {
@@ -151,7 +151,7 @@ void execute(String FQDN = env.NODE_NAME + '.intern.est.fujitsu.com') {
                 -v /var/run/docker.sock:/var/run/docker.sock \
                 -e INITDB=true \
                 -e STARTUP=true \
-                -e PROXY=true \
+                -e PROXY=${PROXY} \
                 -e SAMPLE_DATA=${SAMPLE_DATA} \
                 ${DOCKER_REGISTRY}/${DOCKER_ORGANIZATION}/oscm-deployer:${DOCKER_TAG}
             '''
