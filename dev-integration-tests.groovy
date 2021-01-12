@@ -186,7 +186,7 @@ node("${NODE_NAME}") {
     _buildOSCMCentosBasedImage()
     _buildMavenImage()
     pull.execute()
-    start.execute()
+    start.execute(env.NODE_NAME, false)
 
     tests.execute()
 }
