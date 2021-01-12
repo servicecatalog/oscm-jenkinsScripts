@@ -95,7 +95,7 @@ node("${NODE_NAME}") {
     pull.execute()
     checkoutTests.execute()
     prepareWS.execute()
-    start.execute(start.execute(env.NODE_NAME, false)
+    start.execute(env.NODE_NAME, false)
     test.execute()
     clean.execute()
 }
