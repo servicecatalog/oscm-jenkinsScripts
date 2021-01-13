@@ -120,6 +120,6 @@ node("${NODE_NAME}") {
     clean.execute()
     pull.execute()
     checkoutTests.execute()
-    start.execute('localhost', false)
+    start.execute('localhost', true)
     tests.execute()
 }
