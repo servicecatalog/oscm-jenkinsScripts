@@ -75,6 +75,7 @@ void execute() {
             mkdir -p ${WORKSPACE}
             if [ ${COMPLETE_CLEANUP} == "true" ]; then
                 docker run --rm -v ${WORKSPACE}/docker/data/oscm-db:/db busybox rm -rf /db/data || true;
+                docker run --rm -v ${WORKSPACE}/docker/logs:/logs busybox rm -rf /logs || true;
                 docker run --rm -v ${WORKSPACE}:/workspace centos:7 find /workspace -uid 0 -delete
                 rm -rf ${WORKSPACE}/*
                 rm -rf ${WORKSPACE}/{,.[!.],..?}*
