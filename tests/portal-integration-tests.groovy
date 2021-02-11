@@ -51,12 +51,12 @@ def execute() {
                 sh '''
             sed -i \
                 -e "s|^\\(oidc.provider\\+=\\).*|\\1default|g" \
-                -e "s|^\\(oidc.clientId\\+=\\).*|\\152d193b3-0b31-4084-88a6-ea1e065b6bec|g" \
-                -e "s|^\\(oidc.clientSecret\\+=\\).*|\\17F=peZ64RzCeUZRUi3BmgAB.wMMjmo_:|g" \
+                -e "s|^\\(oidc.clientId\\+=\\).*|\\1ef29aa22-369b-424f-9c72-6800fb24239d|g" \
+                -e "s|^\\(oidc.clientSecret\\+=\\).*|\\1ARNRWfZsWiA6A]=tmA-GyRPlhX9=9VQ7|g" \
                 -e "s|^\\(oidc.authUrl\\+=\\).*|\\1https://login.microsoftonline.com/ctmgsso.onmicrosoft.com/oauth2/v2.0/authorize|g" \
                 -e "s|^\\(oidc.logoutUrl\\+=\\).*|\\1https://login.microsoftonline.com/ctmgsso.onmicrosoft.com/oauth2/v2.0/logout|g" \
                 -e "s|^\\(oidc.tokenUrl\\+=\\).*|\\1https://login.microsoftonline.com/ctmgsso.onmicrosoft.com/oauth2/v2.0/token|g" \
-                -e "s|^\\(oidc.redirectUrl\\+=\\).*|\\1https://localhost/oscm-identity/callback|g" \
+                -e "s|^\\(oidc.redirectUrl\\+=\\).*|\\1https://localhost:9091/oscm-identity/callback|g" \
                 -e "s|^\\(oidc.configurationUrl\\+=\\).*|\\1https://login.microsoftonline.com/ctmgsso.onmicrosoft.com/v2.0/.well-known/openid-configuration|g" \
                 -e "s|^\\(oidc.usersEndpoint\\+=\\).*|\\1https://graph.microsoft.com/v1.0/users|g" \
                 -e "s|^\\(oidc.groupsEndpoint\\+=\\).*|\\1https://graph.microsoft.com/v1.0/groups|g" \
@@ -66,6 +66,7 @@ def execute() {
             }
         }
     }
+    
 
     def _installUITests = {
         stage('Tests - install ui tests') {
