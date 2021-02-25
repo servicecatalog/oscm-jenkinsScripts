@@ -77,8 +77,8 @@ void execute() {
             sh '''
             sed -i \
                 -e "s|^\\(oidc.provider\\+=\\).*|\\1default|g" \
-                -e "s|^\\(oidc.clientId\\+=\\).*|\\1ef29aa22-369b-424f-9c72-6800fb24239d|g" \
-                -e "s|^\\(oidc.clientSecret\\+=\\).*|\\1ARNRWfZsWiA6A]=tmA-GyRPlhX9=9VQ7|g" \
+                -e "s|^\\(oidc.clientId\\+=\\).*|\\1${CLIENT_ID}|g" \
+                -e "s|^\\(oidc.clientSecret\\+=\\).*|\\1${CLIENT_SECRET}|g" \
                 -e "s|^\\(oidc.authUrl\\+=\\).*|\\1https://login.microsoftonline.com/ctmgsso.onmicrosoft.com/oauth2/v2.0/authorize|g" \
                 -e "s|^\\(oidc.authUrlScope\\+=\\).*|\\1openid profile offline_access https://graph.microsoft.com/user.read.all https://graph.microsoft.com/group.readwrite.all |g" \
                 -e "s|^\\(oidc.logoutUrl\\+=\\).*|\\1https://login.microsoftonline.com/ctmgsso.onmicrosoft.com/oauth2/v2.0/logout|g" \
