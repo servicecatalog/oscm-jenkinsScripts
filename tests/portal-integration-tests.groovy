@@ -51,8 +51,8 @@ def execute() {
                 sh '''
             sed -i \
                 -e "s|^\\(oidc.provider\\+=\\).*|\\1default|g" \
-                -e "s|^\\(oidc.clientId\\+=\\).*|\\1fd8194f8-6f45-4210-bfcb-647a0e438918|g" \
-                -e "s|^\\(oidc.clientSecret\\+=\\).*|\\1buA_sBZmbKVUSa~8n57koKOM-_i0UUII8_|g" \
+                -e "s|^\\(oidc.clientId\\+=\\).*|\\1${CLIENT_ID}|g" \
+                -e "s|^\\(oidc.clientSecret\\+=\\).*|\\1${CLIENT_SECRET}|g" \
                 -e "s|^\\(oidc.authUrl\\+=\\).*|\\1https://login.microsoftonline.com/ctmgsso.onmicrosoft.com/oauth2/v2.0/authorize|g" \
                 -e "s|^\\(oidc.logoutUrl\\+=\\).*|\\1https://login.microsoftonline.com/ctmgsso.onmicrosoft.com/oauth2/v2.0/logout|g" \
                 -e "s|^\\(oidc.tokenUrl\\+=\\).*|\\1https://login.microsoftonline.com/ctmgsso.onmicrosoft.com/oauth2/v2.0/token|g" \
