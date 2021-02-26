@@ -51,8 +51,8 @@ def execute() {
                 sh '''
             sed -i \
                 -e "s|^\\(oidc.provider\\+=\\).*|\\1default|g" \
-                -e "s|^\\(oidc.clientId\\+=\\).*|\\1fd8194f8-6f45-4210-bfcb-647a0e438918|g" \
-                -e "s|^\\(oidc.clientSecret\\+=\\).*|\\1buA_sBZmbKVUSa~8n57koKOM-_i0UUII8_|g" \
+                -e "s|^\\(oidc.clientId\\+=\\).*|\\1${CLIENT_ID}|g" \
+                -e "s|^\\(oidc.clientSecret\\+=\\).*|\\1${CLIENT_SECRET}|g" \
                 -e "s|^\\(oidc.authUrl\\+=\\).*|\\1https://login.microsoftonline.com/ctmgsso.onmicrosoft.com/oauth2/v2.0/authorize|g" \
                 -e "s|^\\(oidc.logoutUrl\\+=\\).*|\\1https://login.microsoftonline.com/ctmgsso.onmicrosoft.com/oauth2/v2.0/logout|g" \
                 -e "s|^\\(oidc.tokenUrl\\+=\\).*|\\1https://login.microsoftonline.com/ctmgsso.onmicrosoft.com/oauth2/v2.0/token|g" \
@@ -84,7 +84,7 @@ def execute() {
                         "-e https_proxy=\"${https_proxy}\" " +
                         "-e HTTP_PROXY=\"${http_proxy}\" " +
                         "-e HTTPS_PROXY=\"${https_proxy}\" " +
-                        "-e MAVEN_OPTS=\"-Duser.home=/build -Dhttp.proxyHost=proxy.intern.est.fujitsu.com -Dhttp.proxyPort=8080 -Dhttps.proxyHost=proxy.intern.est.fujitsu.com -Dhttps.proxyPort=8080\" " +
+                        "-e MAVEN_OPTS=\"-Duser.home=/build -Dhttp.proxyHost=proxy.${DOMAIN} -Dhttp.proxyPort=8080 -Dhttps.proxyHost=proxy.${DOMAIN} -Dhttps.proxyPort=8080\" " +
                         "oscm-maven clean install -e -f /build/oscm-ui-tests/pom.xml"
             }
         }
