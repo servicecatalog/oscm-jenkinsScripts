@@ -12,7 +12,6 @@
 // 3. Create the following string parameters (adjust defaults if you wish):
 // --
 // Name: DOCKER_REGISTRY
-// Default: artifactory.intern.est.fujitsu.com:5002
 // Description: Registry host and port for the final Docker image. Example: DOCKER_REGISTRY/DOCKER_ORGANIZATION/oscm-core:TAG_DOCKER
 // --
 // Name: DOCKER_ORGANIZATION

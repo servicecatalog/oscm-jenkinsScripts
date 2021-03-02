@@ -26,7 +26,6 @@
  ===
  Name: DOCKER_REGISTRY
  Type: String
- Default: artifactory.intern.est.fujitsu.com:5003
  Description: Registry host and port for the final Docker image. Example: <DOCKER_REGISTRY>/<DOCKER_ORGANIZATION>/oscm-core:<DOCKER_TAG>
  ===
  Name: DOCKER_ORGANIZATION
