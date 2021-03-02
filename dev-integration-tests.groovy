@@ -18,7 +18,6 @@
  ===
  Name: DOCKER_REGISTRY
  Type: String
- Default: artifactory.intern.est.fujitsu.com:5003
  Description: Registry host and port for the final Docker image. Example: <DOCKER_REGISTRY>/<DOCKER_ORGANIZATION>/oscm-core:<DOCKER_TAG>
  ===
  Name: DOCKER_ORGANIZATION
@@ -73,7 +72,6 @@
  ===
  Name: EMAIL_ADDRESS
  Type: String
- Default: frank.shimizu@est.fujitsu.com
  Description: Email address used for SLES base image registration
  ===
  Name: TRUSTED_CERTS_PATH

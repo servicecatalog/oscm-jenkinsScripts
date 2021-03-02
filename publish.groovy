@@ -26,7 +26,6 @@
  ===
  Name: DOCKER_SRC_REGISTRY
  Type: String
- Default: artifactory.intern.est.fujitsu.com:5003
  Description: Registry host and port for source images.
  ===
  Name: DOCKER_SRC_ORGANIZATION
