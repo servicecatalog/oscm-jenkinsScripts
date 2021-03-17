@@ -85,12 +85,12 @@ node("${NODE_NAME}") {
     def buildBase = evaluate readTrusted('shared/build-base.groovy')
     def buildCore = evaluate readTrusted('shared/build-core.groovy')
     def push = evaluate readTrusted('shared/push.groovy')
-    
+
     clean.execute()
     buildTool.execute()
     push.execute(true, false, "centos-based gc-ant maven")
     buildBase.execute()
     push.execute(true, false, "db birt branding help maildev proxy gf")
     buildCore.execute()
-    push.execute(true, false, "core app deployer identity initdb")
+    push.execute(true, false, "core app deployer identity mail initdb")
 }
