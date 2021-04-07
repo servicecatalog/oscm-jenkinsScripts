@@ -87,7 +87,7 @@ void execute(String FQDN = env.NODE_NAME + '.intern.est.fujitsu.com', PROXY = tr
                 -e "s|^\\(DB_PWD_.*\\+=\\).*|\\1secret|g" \
                 -e "s|^\\(DB_SUPERPWD=\\).*|\\1secret|g" \
                 -e "s|^\\(SMTP_HOST=\\).*|\\1oscm-maildev|g" \
-                -e "s|^\\(SMTP_PORT=\\).*|\\125|g" \
+                -e "s|^\\(SMTP_PORT=\\).*|\\11025|g" \
                 -e "s|^\\(SMTP_FROM=\\).*|\\1oscm@${NODE_NAME}.${DOMAIN}|g" \
                 -e "s|^\\(SMTP_USER=\\).*|\\1none|g" \
                 -e "s|^\\(SMTP_PWD=\\).*|\\1none|g" \
