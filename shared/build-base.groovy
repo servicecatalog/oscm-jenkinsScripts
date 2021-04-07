@@ -324,28 +324,28 @@
 	_cloneOSCMRepository()
 	_cloneOSCMAppRepository()
 	_prepareBuildTools()
-    _prepareDockerbuildRepository()
-    _prepareDocumentationRepository()
-    _prepareApprovalAdapterRepository()
-    _prepareMaildevRepository
+  _prepareDockerbuildRepository()
+  _prepareDocumentationRepository()
+  _prepareApprovalAdapterRepository()
+  _prepareMaildevRepository()
 
-    _copyUserDocumentation()
+  _copyUserDocumentation()
 
-    _downloadLibraries()
+  _downloadLibraries()
 
 	_compileCore()
 	_compileApp()
-    _copyArtifacts()
+  _copyArtifacts()
 
 
-    _buildServerImage()
-    _buildDBImage()
-    _buildProxy()
-    _buildNginxImage()
-    _buildBrandingImage()
-    _buildWebserverImage()
-    _buildBirtImage()
-    _buildMailDev()
+  _buildServerImage()
+  _buildDBImage()
+  _buildProxy()
+  _buildNginxImage()
+  _buildBrandingImage()
+  _buildWebserverImage()
+  _buildBirtImage()
+  _buildMailDev()
 }
 
 return this
