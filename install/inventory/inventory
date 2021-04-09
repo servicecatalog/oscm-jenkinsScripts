@@ -1,0 +1,14 @@
+[jenkins_controllers]
+jenkins ansible_ssh_host=192.168.32.113 ansible_ssh_port=22 ansible_ssh_private_key_file=keys/jenkins
+
+[agents]
+agent1 ansible_ssh_host=192.168.32.115 ansible_ssh_port=22 ansible_ssh_private_key_file=keys/agent1
+
+
+[all:children]
+jenkins_controllers
+agents
+
+[all:vars]
+ansible_user=vagrant
+ansible_ssh_common_args='-o StrictHostKeyChecking=no'
