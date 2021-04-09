@@ -1,0 +1,275 @@
+- name: Install base software on all
+  hosts: all
+  gather_facts: yes
+  become: yes
+  tasks:
+    - name: update hosts
+      lineinfile:
+        path: "/etc/hosts"
+        regexp: ".*\t{{ hostvars[item]['ansible_hostname']}}\t{{ hostvars[item]['ansible_hostname']}}"
+        line: "{{ hostvars[item]['ansible_ssh_host'] }}\t{{ hostvars[item]['ansible_hostname']}}\t{{ hostvars[item]['ansible_hostname']}}"
+        state: present
+        backup: yes
+      with_items: "{{ ansible_play_batch }}"
+    - name: AdoptOpenJDK yum repository
+      yum_repository:
+        name: AdoptOpenJDK
+        description: AdoptOpenJDK
+        baseurl: http://adoptopenjdk.jfrog.io/adoptopenjdk/rpm/centos/$releasever/$basearch
+        enabled: yes
+        gpgcheck: yes
+        gpgkey: https://adoptopenjdk.jfrog.io/adoptopenjdk/api/gpg/key/public
+    - name: Endpoint yum repository
+      yum_repository:
+        name: endpoint
+        description: End Point repository
+        baseurl: https://packages.endpoint.com/rhel/$releasever/os/$basearch/
+        enabled: yes
+        gpgcheck: yes
+        gpgkey: https://packages.endpoint.com/endpoint-rpmsign-7.pub
+    - name: remove any installed git
+      yum:
+        name: git
+        state: absent
+    - name: Install fontconfig, AdoptOpenJDK and git
+      yum:
+        name:
+          - fontconfig
+          - adoptopenjdk-11-hotspot
+          - git
+        state: latest
+        #     environment:
+        #http_proxy: http://proxy.intern.est.fujitsu.com:8080
+        # https_proxy: http://proxy.intern.est.fujitsu.com:8080
+
+
+- name: Jenkins installation
+  hosts: jenkins_controllers
+  become: yes
+  tasks:
+    - name: enable and start firewalld service
+      systemd:
+        name: firewalld
+        state: started
+        enabled: yes
+    - name: permit traffic in default zone on port 8080/tcp
+      firewalld:
+        port: 8080/tcp
+        permanent: yes
+        state: enabled
+        immediate: yes
+    - name: jenkins yum repository
+      yum_repository:
+        name: jenkins
+        description: Jenkins-stable
+        baseurl: http://pkg.jenkins.io/redhat-stable
+        enabled: yes
+        gpgcheck: yes
+        gpgkey: https://pkg.jenkins.io/redhat-stable/jenkins.io.key
+    - name: Install Jenkins
+      yum:
+        name:
+          - jenkins-2.263.4
+        state: latest
+        #environment:
+        #http_proxy: http://proxy.intern.est.fujitsu.com:8080
+        #https_proxy: http://proxy.intern.est.fujitsu.com:8080
+    - name: Create directories for Jenkins
+      file:
+        path: "{{ item }}"
+        state: directory
+        owner: jenkins
+        group: jenkins
+        recurse: yes
+      with_items:
+        - '/var/cache/jenkins/tmp'
+        - '/var/cache/jenkins/heapdumps'
+        - '/var/lib/jenkins/plugins'
+        - '/var/lib/jenkins/jobs/pull-and-start'
+    - name: Update JENKINS_JAVA_OPTIONS
+      lineinfile:
+        path: "/etc/sysconfig/jenkins"
+        regexp: ".*-Djava.awt.headless=true.*"
+        line: 'JENKINS_JAVA_OPTIONS="-Djava.awt.headless=true -Djenkins.install.runSetupWizard=false -Djava.io.tmpdir=/var/cache/jenkins/tmp/ -Dorg.apache.commons.jelly.tags.fmt.timeZone=Europe/Berlin -Duser.timezone=Europe/Berlin"'
+        state: present
+    - name: Update JENKINS_ARGS
+      lineinfile:
+        path: "/etc/sysconfig/jenkins"
+        regexp: ".*JENKINS_ARGS=.*"
+        line: 'JENKINS_ARGS="--pluginroot=/var/cache/jenkins/plugins"'
+        state: present
+    - name: Create limits file
+      copy:
+        dest: "/etc/security/limits.d/30-jenkins.conf"
+        src: "/etc/ansible/jenkins.conf"
+    - name: Create pipelines
+      copy:
+        dest: "/var/lib/jenkins/jobs/pull-and-start/config.xml"
+        src: "/etc/ansible/pull-and-start/config.xml"
+    - name: download jenkins-plugin-manager
+      get_url:
+        url: https://github.com/jenkinsci/plugin-installation-manager-tool/releases/download/2.5.0/jenkins-plugin-manager-2.5.0.jar
+        dest: /home/vagrant/jenkins-plugin-manager.jar
+    - name: Copy the plugins.yaml file
+      copy:
+        dest: "/home/vagrant/plugins.yaml"
+        src: "/etc/ansible/plugins.yaml"
+    - name: Copy the jenkins certificate
+      copy:
+        dest: "/var/lib/jenkins/agent1_cert"
+        src: "/etc/ansible/keys/agent1"
+        owner: jenkins
+        group: jenkins
+        mode: '0600'
+    - name: Copy the jenkins.yaml file
+      become: yes
+      copy:
+        dest: "/var/lib/jenkins/jenkins.yaml"
+        src: "/etc/ansible/jenkins.yaml"
+    - name: Copy the init files
+      become: yes
+      copy:
+        dest: "/var/lib/jenkins/init.groovy.d/"
+        src: "init.groovy.d/"
+    - name: run the jenkins-plugin-manager
+      become: yes
+      command: java -jar jenkins-plugin-manager.jar --jenkins-version 2.263.4 --plugin-file plugins.yaml --plugin-download-directory /var/lib/jenkins/plugins
+    - name: update JENKINS_HOME ownership
+      become: yes
+      file:
+        path: /var/lib/jenkins
+        owner: jenkins
+        group: jenkins
+        state: directory
+        recurse: yes
+    - name: start jenkins service
+      systemd:
+        name: jenkins
+        state: started
+
+- name: Agent installation
+  hosts: agents
+  become: yes
+  tasks:
+    - name: Create a jenkins group
+      group:
+       name: jenkins
+       state: present
+    - name: Create a jenkins user
+      user:
+        name: jenkins
+        groups: jenkins
+        state: present
+        createhome: yes
+        home: /home/vagrant/jenkins-agent
+    - name: Create directories for Jenkins
+      file:
+        path: "{{ item }}"
+        state: directory
+        owner: vagrant
+        group: vagrant
+        recurse: yes
+      with_items:
+        - '/home/vagrant/jenkins-agent'
+    - name: enable and start firewalld service
+      systemd:
+        name: firewalld
+        state: started
+        enabled: yes
+    - name: permit traffic in default zone on port 22/tcp
+      firewalld:
+        port: 22/tcp
+        permanent: yes
+        state: enabled
+        immediate: yes
+    - name: remove any installed docker
+      yum:
+        name:
+          - docker
+          - docker-client
+          - docker-client-latest
+          - docker-common
+          - docker-latest
+          - docker-latest-logrotate
+          - docker-logrotate
+          - docker-engine
+        state: absent
+    - name: install docker-compose
+      get_url:
+        url: https://github.com/docker/compose/releases/download/1.27.4/docker-compose-linux-x86_64
+        dest: /usr/local/bin/docker-compose
+    - name: set docker-compose rechte
+      file:
+        path: "/usr/local/bin/docker-compose"
+        mode: "+x"
+    - name: docker-ce-stable yum repository
+      yum_repository:
+        name: docker-ce-stable
+        description: Docker CE Stable - $basearch
+        baseurl: https://download.docker.com/linux/centos/7/$basearch/stable
+        enabled: yes
+        gpgcheck: yes
+        gpgkey: https://download.docker.com/linux/centos/gpg
+        #environment:
+        #http_proxy: http://proxy.intern.est.fujitsu.com:8080
+        #https_proxy: http://proxy.intern.est.fujitsu.com:8080
+    - name: Install Docker and unzip
+      yum:
+        name:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+          - unzip
+        state: latest
+        #environment:
+        #http_proxy: http://proxy.intern.est.fujitsu.com:8080
+        #https_proxy: http://proxy.intern.est.fujitsu.com:8080
+    - name: add docker group
+      group:
+        name: docker
+        state: present
+    - name: add $USER to docker group
+      user:
+        name: "{{ ansible_user }}"
+        groups: docker
+        append: yes
+    - name: do a ssh reset in order to reflect the $USER group changes
+      meta: reset_connection
+    - name: start Docker service
+      systemd:
+        name: docker
+        state: started
+    - name: create Maven directory
+      file:
+        path: "/opt/tools/maven"
+        state: directory
+        owner: vagrant
+        group: vagrant
+        recurse: yes
+    - name: download Maven 3.6.3
+      unarchive:
+        src: https://mirrors.sonic.net/apache/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz
+        dest: /opt/tools/maven
+        remote_src: yes
+        #environment:
+        #http_proxy: http://proxy.intern.est.fujitsu.com:8080
+        #https_proxy: http://proxy.intern.est.fujitsu.com:8080
+    - name: create Maven latest symlink
+      file:
+        src: /opt/tools/maven/apache-maven-3.6.3
+        dest: /opt/tools/maven/latest
+        owner: vagrant
+        group: vagrant
+        state: link
+    - name: setup Maven profile
+      copy:
+        dest: /etc/profile.d/maven.sh
+        content: |
+          PATH=/opt/tools/maven/latest/bin:$PATH
+    - name: set final ownership to /opt/tools
+      file:
+        path: "/opt/tools"
+        state: directory
+        owner: vagrant
+        group: vagrant
+        recurse: yes
