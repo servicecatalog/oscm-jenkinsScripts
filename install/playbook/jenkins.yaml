@@ -24,11 +24,11 @@ jenkins:
       launcher:
         command:
           command: "ssh -i /var/lib/jenkins/agent1_cert vagrant@192.168.32.115 -o StrictHostKeyChecking=no\
-            \ \"cd /home/vagrant/jenkins-agent && curl -O http://192.168.32.113:8080/jnlpJars/agent.jar\
-            \ && java -jar agent.jar\""
+            \ \"sudo su -s /bin/bash jenkins -c 'cd /var/lib/jenkins && curl -O http://192.168.32.113:8080/jnlpJars/agent.jar\
+            \ && java -jar agent.jar'\""
       mode: EXCLUSIVE
       name: "agent1"
-      remoteFS: "/home/vagrant/jenkins-agent"
+      remoteFS: "/var/lib/jenkins"
       retentionStrategy: "always"
   numExecutors: 0
   primaryView:
