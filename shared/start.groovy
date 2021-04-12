@@ -42,7 +42,7 @@
 
  **/
 
-void execute(String FQDN = env.NODE_NAME + '.intern.est.fujitsu.com', PROXY = true) {
+void execute(String FQDN = env.NODE_NAME, PROXY = true) {
 
     def _createEnvTemplates = {
         stage('Start - create env templates') {
