@@ -151,26 +151,6 @@
   hosts: agents
   become: yes
   tasks:
-    - name: Create a jenkins group
-      group:
-       name: jenkins
-       state: present
-    - name: Create a jenkins user
-      user:
-        name: jenkins
-        groups: jenkins
-        state: present
-        createhome: yes
-        home: /home/vagrant/jenkins-agent
-    - name: Create directories for Jenkins
-      file:
-        path: "{{ item }}"
-        state: directory
-        owner: vagrant
-        group: vagrant
-        recurse: yes
-      with_items:
-        - '/home/vagrant/jenkins-agent'
     - name: enable and start firewalld service
       systemd:
         name: firewalld
@@ -233,6 +213,28 @@
         name: "{{ ansible_user }}"
         groups: docker
         append: yes
+    - name: Create a jenkins group
+      group:
+       name: jenkins
+       state: present
+    - name: Create a jenkins user
+      user:
+        name: jenkins
+        groups:
+        - jenkins
+        - docker
+        state: present
+        createhome: yes
+        home: /var/lib/jenkins
+    - name: Create directories for Jenkins
+      file:
+        path: "{{ item }}"
+        state: directory
+        owner: jenkins
+        group: jenkins
+        recurse: yes
+      with_items:
+        - '/var/lib/jenkins'
     - name: do a ssh reset in order to reflect the $USER group changes
       meta: reset_connection
     - name: start Docker service
