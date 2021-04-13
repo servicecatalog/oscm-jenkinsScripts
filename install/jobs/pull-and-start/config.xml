@@ -35,7 +35,7 @@
         <hudson.model.StringParameterDefinition>
           <name>DOCKER_TAG</name>
           <description>Tag for the docker image to pull from. Use your first name for personal builds.</description>
-          <defaultValue>christian</defaultValue>
+          <defaultValue>latest</defaultValue>
           <trim>false</trim>
         </hudson.model.StringParameterDefinition>
         <hudson.model.ChoiceParameterDefinition>
@@ -43,7 +43,7 @@
           <description></description>
           <choices class="java.util.Arrays$ArrayList">
             <a class="string-array">
-              <string>agent1</string>
+              <string>192.168.32.115</string>
             </a>
           </choices>
         </hudson.model.ChoiceParameterDefinition>

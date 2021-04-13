@@ -20,7 +20,7 @@ jenkins:
   myViewsTabBar: "standard"
   nodes:
   - permanent:
-      labelString: "agent1 linux"
+      labelString: "192.168.32.115 linux"
       launcher:
         command:
           command: "ssh -i /var/lib/jenkins/agent1_cert vagrant@192.168.32.115 -o StrictHostKeyChecking=no\
