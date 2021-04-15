@@ -70,12 +70,6 @@
           <trim>false</trim>
         </hudson.model.StringParameterDefinition>
         <hudson.model.StringParameterDefinition>
-          <name>REPO_TAG_APP_SHELL</name>
-          <description>Branch or tag in the oscm-app-shell git repository: https://github.com/servicecatalog/oscm-app-shell</description>
-          <defaultValue>master</defaultValue>
-          <trim>false</trim>
-        </hudson.model.StringParameterDefinition>
-        <hudson.model.StringParameterDefinition>
           <name>REPO_TAG_IDENTITY</name>
           <description>Branch or tag in the oscm-identity git repository: https://github.com/servicecatalog/oscm-idenity</description>
           <defaultValue>master</defaultValue>
@@ -84,6 +78,12 @@
         <hudson.model.StringParameterDefinition>
           <name>REPO_TAG_APPROVAL</name>
           <description>Branch or tag in the oscm-identity git repository: https://github.com/servicecatalog/oscm-approval</description>
+          <defaultValue>master</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>REPO_TAG_DOCUMENTATION</name>
+          <description></description>
           <defaultValue>master</defaultValue>
           <trim>false</trim>
         </hudson.model.StringParameterDefinition>
@@ -112,7 +112,7 @@
         <hudson.model.PasswordParameterDefinition>
           <name>PASSWORD</name>
           <description>Password to push on Dockerhub</description>
-          <defaultValue>{AQAAABAAAAAg+XC7IwlAiA72LvjyWeyp1xTbuiY6IyB8lFYvv6mOR6uPvicOk7heGb4rQ6KyqVZ4}</defaultValue>
+          <defaultValue>{AQAAABAAAAAg9yeqdtRledzSPKSjpNFt7kEbCCroa355GwSExlEFR2Xd4Iwwjp7SgqJnE29ZqLcZ}</defaultValue>
         </hudson.model.PasswordParameterDefinition>
         <hudson.model.StringParameterDefinition>
           <name>http_proxy</name>
@@ -126,8 +126,18 @@
           <defaultValue></defaultValue>
           <trim>false</trim>
         </hudson.model.StringParameterDefinition>
-      </parameterDefinitions>
-    </hudson.model.ParametersDefinitionProperty>
+        <hudson.model.StringParameterDefinition>
+          <name>http_port</name>
+          <description></description>
+          <defaultValue></defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>https_port</name>
+          <description></description>
+          <defaultValue></defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
       </parameterDefinitions>
     </hudson.model.ParametersDefinitionProperty>
   </properties>
@@ -141,14 +151,14 @@
       </userRemoteConfigs>
       <branches>
         <hudson.plugins.git.BranchSpec>
-          <name>master</name>
+          <name>updateScriptsForAnsible</name>
         </hudson.plugins.git.BranchSpec>
       </branches>
       <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
       <submoduleCfg class="empty-list"/>
       <extensions/>
     </scm>
-    <scriptPath>build-tools-and-push.groovy</scriptPath>
+    <scriptPath>build-core-and-push.groovy</scriptPath>
     <lightweight>true</lightweight>
   </definition>
   <triggers/>

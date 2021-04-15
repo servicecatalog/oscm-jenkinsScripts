@@ -112,7 +112,7 @@
         <hudson.model.PasswordParameterDefinition>
           <name>PASSWORD</name>
           <description>Password to push on Dockerhub</description>
-          <defaultValue>{AQAAABAAAAAg+XC7IwlAiA72LvjyWeyp1xTbuiY6IyB8lFYvv6mOR6uPvicOk7heGb4rQ6KyqVZ4}</defaultValue>
+          <defaultValue>{AQAAABAAAAAg9yeqdtRledzSPKSjpNFt7kEbCCroa355GwSExlEFR2Xd4Iwwjp7SgqJnE29ZqLcZ}</defaultValue>
         </hudson.model.PasswordParameterDefinition>
         <hudson.model.StringParameterDefinition>
           <name>http_proxy</name>
@@ -122,6 +122,18 @@
         </hudson.model.StringParameterDefinition>
         <hudson.model.StringParameterDefinition>
           <name>https_proxy</name>
+          <description></description>
+          <defaultValue></defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>http_port</name>
+          <description></description>
+          <defaultValue></defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>https_port</name>
           <description></description>
           <defaultValue></defaultValue>
           <trim>false</trim>
