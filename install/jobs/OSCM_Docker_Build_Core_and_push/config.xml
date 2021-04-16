@@ -88,6 +88,12 @@
           <trim>false</trim>
         </hudson.model.StringParameterDefinition>
         <hudson.model.StringParameterDefinition>
+          <name>REPO_TAG_APP_SHELL</name>
+          <description></description>
+          <defaultValue>master</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
           <name>REPO_TAG_REST_API</name>
           <description>Branch or tag in the oscm-identity git repository: https://github.com/servicecatalog/oscm-rest-api</description>
           <defaultValue>master</defaultValue>
@@ -112,7 +118,7 @@
         <hudson.model.PasswordParameterDefinition>
           <name>PASSWORD</name>
           <description>Password to push on Dockerhub</description>
-          <defaultValue>{AQAAABAAAAAg9yeqdtRledzSPKSjpNFt7kEbCCroa355GwSExlEFR2Xd4Iwwjp7SgqJnE29ZqLcZ}</defaultValue>
+          <defaultValue>{AQAAABAAAAAgABVEwpSvM/Si8pPm5RyJ8hgmQGw9G2TX6p46XwxY1jF0ANtRm+RXbLKuCbI/E0Z3}</defaultValue>
         </hudson.model.PasswordParameterDefinition>
         <hudson.model.StringParameterDefinition>
           <name>http_proxy</name>
