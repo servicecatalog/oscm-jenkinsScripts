@@ -119,7 +119,7 @@
                                                              noTags : false, reference: '',
                                                              shallow: true]],
                         submoduleCfg                     : [],
-                        userRemoteConfigs                : [[url: 'https://github.com/kowalczyka/maildev.git']]
+                        userRemoteConfigs                : [[url: 'https://github.com/servicecatalog/maildev.git']]
                 ]
             }
         }
