@@ -182,6 +182,8 @@
       file:
         path: "/usr/local/bin/docker-compose"
         mode: "+x"
+        environment:
+            PATH: $PATH:/usr/local/bin
     - name: docker-ce-stable yum repository
       yum_repository:
         name: docker-ce-stable
