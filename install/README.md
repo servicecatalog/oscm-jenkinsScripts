@@ -6,7 +6,7 @@
 
 <h1> Start </h1>
 
-Move into the directory where the vagrantfile is and start vagrant
+Change into the directory where the vagrantfile is located and start vagrant
 
 ``` 
 vagrant up 
@@ -43,5 +43,7 @@ After the playbook was running successfully, you are able to connect to your Jen
 
 
 You can log in into Jenkins with the Credentials
+
 User: Admin
+
 Password: Admin
