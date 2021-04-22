@@ -42,7 +42,7 @@ After the playbook was running successfully, you are able to connect to your Jen
 
 
 
-You can log in into Jenkins with the Credentials
+You can use the following credentials to sign in to Jenkins
 
 User: Admin
 
