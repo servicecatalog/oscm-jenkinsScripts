@@ -1,3 +1,12 @@
+/*****************************************************************************
+ *                                                                           *
+ * Copyright FUJITSU LIMITED 2020                                            *
+ *                                                                           *
+ * Creation Date: 22.04.2021                                                 *
+ *                                                                           *
+ ****************************************************************************/
+/** Copyright (c) 2020 Darin Pope **/
+
 import jenkins.model.Jenkins
 import com.cloudbees.plugins.credentials.domains.Domain
 import com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl
