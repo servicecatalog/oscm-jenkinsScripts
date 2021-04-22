@@ -1,3 +1,11 @@
+#*****************************************************************************
+#*                                                                           *
+#* Copyright FUJITSU LIMITED 2021                                            *                                                                     *
+#* Creation Date: 22-04-2021                                                 *
+#*                                                                           *
+#*****************************************************************************
+# Copyright (c) 2020 Darin Pope
+
 - name: Install base software on all
   hosts: all
   gather_facts: yes
