@@ -74,7 +74,7 @@ def execute() {
 
     def _setupAnt = {
         stage('Update - download and setup ant') {
-            sh "curl ${ANT_URL} -x http://proxy.intern.est.fujitsu.com:8080 -o ${WORKSPACE}/apache-ant.tar.gz"
+            sh "curl ${ANT_URL} -x ${https_proxy}:${https_port} -o ${WORKSPACE}/apache-ant.tar.gz"
             sh "mkdir ${WORKSPACE}/apache-ant && tar -xf ${WORKSPACE}/apache-ant.tar.gz -C ${WORKSPACE}/apache-ant --strip-components 1"
             sh "wget https://repo1.maven.org/maven2/org/apache/ivy/ivy/2.4.0/ivy-2.4.0.jar -O ${WORKSPACE}/apache-ant/lib/ivy.jar"
             ANT_BIN = sh(
@@ -86,7 +86,7 @@ def execute() {
                     returnStdout: true
             ).trim()
             ANT_OPTS = sh(
-                    script: 'echo "-Dhttp.proxyHost=proxy.intern.est.fujitsu.com -Dhttp.proxyPort=8080 -Dhttps.proxyHost=proxy.intern.est.fujitsu.com -Dhttps.proxyPort=8080"',
+                    script: 'echo "-Dhttp.proxyHost=${http_proxy} -Dhttp.proxyPort=${http_port} -Dhttps.proxyHost=${https_proxy} -Dhttps.proxyPort=${https_port}"',
                     returnStdout: true
             ).trim()
         }

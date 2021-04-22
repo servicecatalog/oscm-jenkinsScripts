@@ -56,7 +56,7 @@ def execute() {
 
     def _setupMaven = {
         stage('Update - download and setup maven') {
-            sh "curl ${MAVEN_URL} -x http://proxy.intern.est.fujitsu.com:8080 -o ${WORKSPACE}/apache-maven.tar.gz"
+            sh "curl ${MAVEN_URL} -x ${https_proxy}:${https_port} -o ${WORKSPACE}/apache-maven.tar.gz"
             sh "mkdir ${WORKSPACE}/apache-maven && tar -xf ${WORKSPACE}/apache-maven.tar.gz -C ${WORKSPACE}/apache-maven --strip-components 1"
             MAVEN_BIN = sh(
                     script: "echo ${WORKSPACE}/apache-maven/bin/mvn",
@@ -67,7 +67,7 @@ def execute() {
                     returnStdout: true
             ).trim()
             MAVEN_OPTS = sh(
-                    script: 'echo "-Dhttp.proxyHost=proxy.intern.est.fujitsu.com -Dhttp.proxyPort=8080 -Dhttps.proxyHost=proxy.intern.est.fujitsu.com -Dhttps.proxyPort=8080"',
+                    script: 'echo "-Dhttp.proxyHost=${http_proxy} -Dhttp.proxyPort=8080 -Dhttps.proxyHost=${https_proxy} -Dhttps.proxyPort=${https_port}"',
                     returnStdout: true
             ).trim()
         }
