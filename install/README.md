@@ -38,7 +38,7 @@ ansible-playbook -i inventory/inventory playbook/playbook.yml
 
 After the playbook was running successfully, you are able to connect to your Jenkins server. Therefore, type http://192.168.32.113:8080 into your browser 
 
-![](file:///C:/Users/worf/Desktop/Capture.JPG)
+![](jenkins.JPG)
 
 
 
