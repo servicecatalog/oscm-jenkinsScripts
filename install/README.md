@@ -44,8 +44,9 @@ When the vagrant boxes are initialized and running, you are able to run the play
 ansible-playbook -i inventory/inventory playbook/playbook.yml
 ```
 
-After the playbook has ran successfully, you are able to connect to the Jenkins server. Open your browser on http://192.168.32.113:8080. 
-Login in to the Jenkins web interface with user name `Admin`, and same as password. You'll find all OSCM pipline jobs there.
+After the playbook has ran successfully, you are able to connect to the Jenkins server.
+
+Open your browser on http://192.168.32.113:8080. Login in to the Jenkins web interface with user name `Admin`, and same as password. You'll find all OSCM pipline jobs there.
 
 
 *Have fun!*
