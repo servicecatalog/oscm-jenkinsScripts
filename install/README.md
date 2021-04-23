@@ -1,6 +1,6 @@
 # OSCM Jenkins Pipline
 
-<h1> Prerequisites </h1>
+## Prerequisites
 
 System minimum 
 - 2 Core CPU 
@@ -12,7 +12,7 @@ Software
 - Vagrant
 
 
-<h1> Getting started </h1>
+## Getting started
 
 Change into the directory where the vagrantfile is located and start vagrant
 
@@ -47,5 +47,6 @@ ansible-playbook -i inventory/inventory playbook/playbook.yml
 After the playbook has ran successfully, you are able to connect to the Jenkins server. Open your browser on http://192.168.32.113:8080. 
 Login in to the Jenkins web interface with user name `Admin`, and same as password. You'll find all OSCM pipline jobs there.
 
-Have fun!
+
+*Have fun!*
 
