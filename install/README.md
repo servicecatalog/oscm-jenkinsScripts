@@ -1,4 +1,4 @@
-# OSCM Jenkins Pipline
+# OSCM Jenkins Pipline Installation
 
 ## Prerequisites
 
