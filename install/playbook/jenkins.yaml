@@ -29,6 +29,7 @@
       labelString: "192.168.32.115 linux"
       launcher:
         command:
+        # connect the node to the master.
           command: "ssh -i /var/lib/jenkins/agent1_cert vagrant@192.168.32.115 -o StrictHostKeyChecking=no\
             \ \"sudo su -s /bin/bash jenkins -c 'cd /var/lib/jenkins && curl -O http://192.168.32.113:8080/jnlpJars/agent.jar\
             \ && java -jar agent.jar'\""
@@ -50,6 +51,7 @@
       allowsSignup: false
       enableCaptcha: false
       users:
+      # user has probably to be replaced with hashicorp vault
       - id: "admin"
         name: "admin"
         properties:
@@ -83,6 +85,7 @@ unclassified:
       credentialsConfig:
         ignoreCredentialPluginDisabled: true
         overridingCredentials: false
+        # user has probably to be replaced with hashicorp vault
         password: "{AQAAABAAAAAQ2HdyjzJ8rkuFF3uPSobSvaVGVh6sR/t3hs1vGw5YTpI=}"
         username: "****"
       timeout: 300
