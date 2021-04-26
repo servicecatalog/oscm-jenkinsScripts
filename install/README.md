@@ -3,6 +3,13 @@
 - install ansible 
 - install vagrant
 
+For initial tests, we recommend at least:
+
+    1 CPU core
+    4 GB of RAM
+    20 GB of disk space
+
+Please note that this minimum configuration is not suitable for production use.
 
 <h1> Start </h1>
 
