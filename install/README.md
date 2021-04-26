@@ -47,7 +47,7 @@ ansible-playbook -i inventory/inventory playbook/playbook.yml
 
 After the playbook has ran successfully, you are able to connect to the Jenkins server.
 
-Open your browser on http://192.168.32.113:8080. Login in to the Jenkins web interface with user name `Admin`, and same as password. You'll find all OSCM pipline jobs there.
+Open your browser on http://192.168.32.113:8080. Login in to the Jenkins web interface with user name `admin`, and same as password. You'll find all OSCM pipline jobs there.
 
 
 *Have fun!*
