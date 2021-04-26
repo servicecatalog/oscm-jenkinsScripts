@@ -13,11 +13,11 @@ void execute() {
         stage('Build - set proxy variables') {
         script {
          sh '''
-            if [ -n ${http_proxy} && -n ${https_proxy} && -n ${http_port} && -n ${https_port} ]; then
+            if [ -n ${http_proxy} ] && [ -n ${https_proxy} ] && [ -n ${http_port} ] && [ -n ${https_port} ]; then
                 $OPTS = "-Dhttp.proxyHost=\"${http_proxy}\" -Dhttp.proxyPort=\"${http_port}\" -Dhttps.proxyHost=\"${https_proxy}\" -Dhttps.proxyPort=\"${https_port}\""
-            elif [ -n ${http_proxy} && -n ${http_port} ]; then
+            elif [ -n ${http_proxy} ] && [ -n ${http_port} ]; then
                 $OPTS = "-Dhttp.proxyHost=\"${http_proxy}\" -Dhttp.proxyPort=\"${http_port}\""
-            elif [ -n ${https_proxy} && -n ${https_port} ]; then
+            elif [ -n ${https_proxy} ] && [ -n ${https_port} ]; then
                 $OPTS = "-Dhttps.proxyHost=\"${https_proxy}\" -Dhttps.proxyPort=\"${https_port}\""
             else
                 $OPTS = ""
