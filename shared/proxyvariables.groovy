@@ -25,6 +25,7 @@ void execute() {
             '''
           env.PROXY_OPTS = OPTS
      }
+     }
                 
     _setProxyVariables()
 }
