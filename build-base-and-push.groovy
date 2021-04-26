@@ -81,12 +81,14 @@
 
 node("${NODE_NAME}") {
     def clean = evaluate readTrusted('shared/cleanup.groovy')
+    def defVariables = evaluate readTrusted('shared/proxyvariables.groovy')
     def build = evaluate readTrusted('shared/build-base.groovy')
     def push = evaluate readTrusted('shared/push.groovy')
     
     def IMAGES="db birt branding help maildev proxy gf"
 
     clean.execute()
+    defVariables.execute()
     build.execute()
     push.execute(true, false, IMAGES)
 }
