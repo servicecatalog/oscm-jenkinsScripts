@@ -304,7 +304,7 @@ def execute() {
                     "-e https_proxy=\"${https_proxy}\" " +
                     "-e HTTP_PROXY=\"${http_proxy}\" " +
                     "-e HTTPS_PROXY=\"${https_proxy}\" " +
-                    "-e MAVEN_OPTS=\"-Xmx512m -Duser.home=/build -Duser.home=/build ${PROXY_OPTS}\" \" " +
+                    "-e MAVEN_OPTS=\"-Xmx512m -Duser.home=/build ${PROXY_OPTS}\" \" " +
                     "oscm-maven clean package -f /build/oscm-approval/pom.xml"
         }
     }
@@ -322,7 +322,7 @@ def execute() {
                     "-e https_proxy=\"${https_proxy}\" " +
                     "-e HTTP_PROXY=\"${http_proxy}\" " +
                     "-e HTTPS_PROXY=\"${https_proxy}\" " +
-                    "-e MAVEN_OPTS=\"-Xmx512m -Duser.home=/build${PROXY_OPTS}\" \" " +
+                    "-e MAVEN_OPTS=\"-Xmx512m -Duser.home=/build ${PROXY_OPTS}\" \" " +
                     "oscm-maven clean install -f /build/oscm-rest-api/pom.xml"
         }
     }
