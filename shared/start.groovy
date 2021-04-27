@@ -42,7 +42,7 @@
 
  **/
 
-void execute(String FQDN = env.NODE_NAME + '.intern.est.fujitsu.com', PROXY = true) {
+void execute(String FQDN = env.NODE_NAME, PROXY = true) {
 
     def _createEnvTemplates = {
         stage('Start - create env templates') {
@@ -88,21 +88,21 @@ void execute(String FQDN = env.NODE_NAME + '.intern.est.fujitsu.com', PROXY = tr
                 -e "s|^\\(DB_SUPERPWD=\\).*|\\1secret|g" \
                 -e "s|^\\(SMTP_HOST=\\).*|\\1oscm-maildev|g" \
                 -e "s|^\\(SMTP_PORT=\\).*|\\125|g" \
-                -e "s|^\\(SMTP_FROM=\\).*|\\1oscm@${NODE_NAME}.${DOMAIN}|g" \
+                -e "s|^\\(SMTP_FROM=\\).*|\\1oscm@$core.de|g" \
                 -e "s|^\\(SMTP_USER=\\).*|\\1none|g" \
                 -e "s|^\\(SMTP_PWD=\\).*|\\1none|g" \
                 -e "s|^\\(SMTP_AUTH=\\).*|\\1false|g" \
                 -e "s|^\\(SMTP_TLS=\\).*|\\1false|g" \
                 -e "s|^\\(CONTAINER_CALLBACK_THREADS=\\).*|\\150|g" \
                 -e "s|^\\(PROXY_ENABLED=\\).*|\\1true|g" \
-                -e "s|^\\(PROXY_HTTP_HOST=\\).*|\\1proxy.${DOMAIN}|g" \
-                -e "s|^\\(PROXY_HTTP_PORT=\\).*|\\18080|g" \
-                -e "s|^\\(PROXY_HTTPS_HOST=\\).*|\\1proxy.${DOMAIN}|g" \
-                -e "s|^\\(PROXY_HTTPS_PORT=\\).*|\\18080|g" \
-                -e "s|^\\(PROXY_NOPROXY=\\).*|\\1oscm-core\\|10.140.18.120\\|estvcsadev.${DOMAIN}\\|10.140.16.69|g" \
+                -e "s|^\\(PROXY_HTTP_HOST=\\).*|\\1${http_proxy}|g" \
+                -e "s|^\\(PROXY_HTTP_PORT=\\).*|\\1${http_port}|g" \
+                -e "s|^\\(PROXY_HTTPS_HOST=\\).*|\\1${https_proxy}|g" \
+                -e "s|^\\(PROXY_HTTPS_PORT=\\).*|\\1${https_port}|g" \
+                -e "s|^\\(PROXY_NOPROXY=\\).*|\\1noproxy|g" \
                 -e "s|^\\(CONTAINER_MAX_SIZE=\\).*|\\150|g" \
                 -e "s|^\\(LOG_LEVEL=\\).*|\\1ERROR|g" \
-                -e "s|^\\(APP_ADMIN_MAIL_ADDRESS=\\).*|\\1oscm@${NODE_NAME}.${DOMAIN}|g" \
+                -e "s|^\\(APP_ADMIN_MAIL_ADDRESS=\\).*|\\1oscm@app.de|g" \
                 -e "s|^\\(CONTROLLER_ORG_ID=\\).*|\\1PLATFORM_OPERATOR|g" \
                 -e "s|^\\(CONTROLLER_USER_KEY=\\).*|\\1${CONTROLLER_USER_KEY}|g" \
                 -e "s|^\\(CONTROLLER_USER_NAME=\\).*|\\1${CONTROLLER_USER_ID}|g" \
