@@ -14,13 +14,13 @@ void execute() {
         script {
          sh '''
             if [ -n ${http_proxy} ] && [ -n ${https_proxy} ] && [ -n ${http_port} ] && [ -n ${https_port} ]; then
-                $OPTS = "-Dhttp.proxyHost=\"${http_proxy}\" -Dhttp.proxyPort=\"${http_port}\" -Dhttps.proxyHost=\"${https_proxy}\" -Dhttps.proxyPort=\"${https_port}\""
+                OPTS = "-Dhttp.proxyHost=\"${http_proxy}\" -Dhttp.proxyPort=\"${http_port}\" -Dhttps.proxyHost=\"${https_proxy}\" -Dhttps.proxyPort=\"${https_port}\""
             elif [ -n ${http_proxy} ] && [ -n ${http_port} ]; then
-                $OPTS = "-Dhttp.proxyHost=\"${http_proxy}\" -Dhttp.proxyPort=\"${http_port}\""
+                OPTS = "-Dhttp.proxyHost=\"${http_proxy}\" -Dhttp.proxyPort=\"${http_port}\""
             elif [ -n ${https_proxy} ] && [ -n ${https_port} ]; then
-                $OPTS = "-Dhttps.proxyHost=\"${https_proxy}\" -Dhttps.proxyPort=\"${https_port}\""
+                OPTS = "-Dhttps.proxyHost=\"${https_proxy}\" -Dhttps.proxyPort=\"${https_port}\""
             else
-                $OPTS = ""
+                OPTS = ""
             fi;
             '''
           env.PROXY_OPTS = $OPTS
