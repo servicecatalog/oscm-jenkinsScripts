@@ -104,7 +104,7 @@ void execute() {
             withEnv([
                     "JAVA_HOME=${JAVA_HOME_DIR}",
                     "ANT_HOME=${ANT_HOME}",
-                    "ANT_OPTS=${PROXY_OPTS} -Xmx4096m -Xms32m",
+                    "ANT_OPTS=${ANT_OPTS} -Xmx4096m -Xms32m",
             ]) {
                 try {
                     sh "${ANT_BIN} -buildfile ${TEST_DIR}/oscm/oscm-build/cruisecontrol.xml _runWebserviceTests"

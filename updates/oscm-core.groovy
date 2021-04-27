@@ -89,7 +89,7 @@ def execute() {
                     returnStdout: true
             ).trim()
             ANT_OPTS = sh(
-                    script: 'echo "-Dhttp.proxyHost=${http_proxy} -Dhttp.proxyPort=${http_port} -Dhttps.proxyHost=${https_proxy} -Dhttps.proxyPort=${https_port}"',
+                    script: 'echo "${ANT_OPTS}"',
                     returnStdout: true
             ).trim()
             SASS_EXEC = sh (

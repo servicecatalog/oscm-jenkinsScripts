@@ -84,7 +84,7 @@ def execute() {
                         "-e https_proxy=\"${https_proxy}\" " +
                         "-e HTTP_PROXY=\"${http_proxy}\" " +
                         "-e HTTPS_PROXY=\"${https_proxy}\" " +
-                        "-e MAVEN_OPTS=\"-Duser.home=/build -Dhttp.proxyHost=\"${HTTP_PROXY_PIPE}\" -Dhttp.proxyPort=\"${HTTP_PORT_PIPE}\"  -Dhttps.proxyHost=\"${HTTPs_PROXY_PIPE}\" -Dhttps.proxyPort=\"${HTTPs_PORT_PIPE}\" \" " +
+                        "-e MAVEN_OPTS=\"${MAVEN_OPTS} \" " +
                         "oscm-maven clean install -e -f /build/oscm-ui-tests/pom.xml"
             }
         }

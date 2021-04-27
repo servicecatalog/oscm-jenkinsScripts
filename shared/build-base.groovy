@@ -123,7 +123,7 @@
                     "-e https_proxy=\"${http_proxy}\" " +
                     "-e HTTP_PROXY=\"${http_proxy}\" " +
                     "-e HTTPS_PROXY=\"${http_proxy}\" " +
-                    "-e ANT_OPTS=\" ${PROXY_OPTS}\" \" " +
+                    "-e ANT_OPTS=\" ${ANT_OPTS}\" \" " +
                     "gc-ant -f /build/oscm-devruntime/javares/build-oscmaas.xml BUILD.LIB"
         }
     }
@@ -141,7 +141,7 @@
                     "-e https_proxy=\"${https_proxy}\" " +
                     "-e HTTP_PROXY=\"${http_proxy}\" " +
                     "-e HTTPS_PROXY=\"${https_proxy}\" " +
-                    "-e ANT_OPTS=\" ${PROXY_OPTS}\"\" " +
+                    "-e ANT_OPTS=\" ${ANT_OPTS}\"\" " +
                     "-e PATH=/usr/local/dart-sass:${env.PATH} " +
                     "gc-ant -f /build/oscm-devruntime/javares/build-oscmaas.xml BUILD.BES"
         }
@@ -161,7 +161,7 @@
                     "-e https_proxy=\"${https_proxy}\" " +
                     "-e HTTP_PROXY=\"${http_proxy}\" " +
                     "-e HTTPS_PROXY=\"${https_proxy}\" " +
-                    "-e MAVEN_OPTS=\"-Xmx512m -Duser.home=/build ${PROXY_OPTS} \" " +
+                    "-e MAVEN_OPTS=\"${MAVEN_OPTS} \" " +
                     "oscm-maven clean install -f /build/oscm-app-maven/pom.xml"
         }
     }
