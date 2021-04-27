@@ -99,7 +99,7 @@ void execute(String FQDN = env.NODE_NAME, PROXY = true) {
                 -e "s|^\\(PROXY_HTTP_PORT=\\).*|\\18080|g" \
                 -e "s|^\\(PROXY_HTTPS_HOST=\\).*|\\1proxy.${DOMAIN}|g" \
                 -e "s|^\\(PROXY_HTTPS_PORT=\\).*|\\1$8080|g" \
-                -e "s|^\\(PROXY_NOPROXY=\\).*|\\1oscm-core\\|10.140.18.120\\|estvcsadev.${DOMAIN}\\|10.140.16.69|g" \
+                -e "s|^\\(PROXY_NOPROXY=\\).*|\\1noproxy|g" \
                 -e "s|^\\(CONTAINER_MAX_SIZE=\\).*|\\150|g" \
                 -e "s|^\\(LOG_LEVEL=\\).*|\\1ERROR|g" \
                 -e "s|^\\(APP_ADMIN_MAIL_ADDRESS=\\).*|\\1oscm@app.de|g" \
