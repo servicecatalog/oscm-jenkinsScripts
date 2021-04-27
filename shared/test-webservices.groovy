@@ -104,7 +104,7 @@ void execute() {
             withEnv([
                     "JAVA_HOME=${JAVA_HOME_DIR}",
                     "ANT_HOME=${ANT_HOME}",
-                    "ANT_OPTS=-Dhttp.proxyHost=${http_proxy} -Dhttp.proxyPort=${http_port} -Dhttps.proxyHost=${https_proxy}} -Dhttps.proxyPort=${https_port} -Xmx4096m -Xms32m",
+                    "ANT_OPTS=-Dhttp.proxyHost=\"${HTTP_PROXY_PIPE}\" -Dhttp.proxyPort=\"${HTTP_PORT_PIPE}\"  -Dhttps.proxyHost=\"${HTTPs_PROXY_PIPE}\" -Dhttps.proxyPort=\"${HTTPs_PORT_PIPE}\" -Xmx4096m -Xms32m",
             ]) {
                 try {
                     sh "${ANT_BIN} -buildfile ${TEST_DIR}/oscm/oscm-build/cruisecontrol.xml _runWebserviceTests"
