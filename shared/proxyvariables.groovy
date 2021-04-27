@@ -12,18 +12,18 @@ void execute() {
     def _setProxyVariables = {
         stage('Build - set proxy variables') {
         script {
+        env.PROXY_OPTS
          sh '''
             if [ -n ${http_proxy} ] && [ -n ${https_proxy} ] && [ -n ${http_port} ] && [ -n ${https_port} ]; then
-               OPTS="-Dhttp.proxyHost=\"${http_proxy}\" -Dhttp.proxyPort=\"${http_port}\" -Dhttps.proxyHost=\"${https_proxy}\" -Dhttps.proxyPort=\"${https_port}\""
+               PROXY_OPTS="-Dhttp.proxyHost=\"${http_proxy}\" -Dhttp.proxyPort=\"${http_port}\" -Dhttps.proxyHost=\"${https_proxy}\" -Dhttps.proxyPort=\"${https_port}\""
             elif [ -n ${http_proxy} ] && [ -n ${http_port} ]; then
-                OPTS="-Dhttp.proxyHost=\"${http_proxy}\" -Dhttp.proxyPort=\"${http_port}\""
+                PROXY_OPTS="-Dhttp.proxyHost=\"${http_proxy}\" -Dhttp.proxyPort=\"${http_port}\""
             elif [ -n ${https_proxy} ] && [ -n ${https_port} ]; then
-                OPTS="-Dhttps.proxyHost=\"${https_proxy}\" -Dhttps.proxyPort=\"${https_port}\""
+                PROXY_OPTS="-Dhttps.proxyHost=\"${https_proxy}\" -Dhttps.proxyPort=\"${https_port}\""
             else
-               OPTS=""
+               PROXY_OPTS=""
             fi;
             '''
-          env.PROXY_OPTS=$OPTS
        }
        }
    }             
