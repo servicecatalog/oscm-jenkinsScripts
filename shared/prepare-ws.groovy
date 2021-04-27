@@ -32,7 +32,7 @@ void execute() {
                     "-e https_proxy=\"${http_proxy}\" " +
                     "-e HTTP_PROXY=\"${http_proxy}\" " +
                     "-e HTTPS_PROXY=\"${http_proxy}\" " +
-                    "-e ANT_OPTS=\"-Dhttp.proxyHost=\"${HTTP_PROXY_PIPE}\" -Dhttp.proxyPort=\"${HTTP_PORT_PIPE}\"  -Dhttps.proxyHost=\"${HTTPs_PROXY_PIPE}\" -Dhttps.proxyPort=\"${HTTPs_PORT_PIPE}\" \" " +
+                    "-e ANT_OPTS=\"${PROXY_OPTS} \" " +
                     "gc-ant -f /build/oscm-devruntime/javares/build-oscmaas.xml BUILD.LIB"
         }
     }
@@ -50,7 +50,7 @@ void execute() {
                     "-e https_proxy=\"${https_proxy}\" " +
                     "-e HTTP_PROXY=\"${http_proxy}\" " +
                     "-e HTTPS_PROXY=\"${https_proxy}\" " +
-                    "-e ANT_OPTS=\"-Dhttp.proxyHost=\"${HTTP_PROXY_PIPE}\" -Dhttp.proxyPort=\"${HTTP_PORT_PIPE}\"  -Dhttps.proxyHost=\"${HTTPs_PROXY_PIPE}\" -Dhttps.proxyPort=\"${HTTPs_PORT_PIPE}\" \" " +
+                    "-e ANT_OPTS=\"${PROXY_OPTS} \" " +
                     "-e PATH=/usr/local/dart-sass:${env.PATH} " +
                     "gc-ant -f /build/oscm-devruntime/javares/build-oscmaas.xml BUILD.BES"
         }

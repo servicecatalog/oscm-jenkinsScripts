@@ -209,7 +209,7 @@ def execute() {
                     "-e https_proxy=\"${http_proxy}\" " +
                     "-e HTTP_PROXY=\"${http_proxy}\" " +
                     "-e HTTPS_PROXY=\"${http_proxy}\" " +
-                    "-e ANT_OPTS=\" -Dhttp.proxyHost=\"${HTTP_PROXY_PIPE}\" -Dhttp.proxyPort=\"${HTTP_PORT_PIPE}\"  -Dhttps.proxyHost=\"${HTTPS_PROXY_PIPE}\" -Dhttps.proxyPort=\"${HTTPS_PORT_PIPE}\"\" " +
+                    "-e ANT_OPTS=\" ${PROXY_OPTS}\" " +
                     "gc-ant -f /build/oscm-devruntime/javares/build-oscmaas.xml BUILD.LIB"
         }
     }
@@ -249,7 +249,7 @@ def execute() {
                     "-e https_proxy=\"${https_proxy}\" " +
                     "-e HTTP_PROXY=\"${http_proxy}\" " +
                     "-e HTTPS_PROXY=\"${https_proxy}\" " +
-                    "-e ANT_OPTS=\"-Dhttp.proxyHost=\"${HTTP_PROXY}\" -Duser.home=/build -Dhttp.proxyHost=\"${HTTP_PROXY_PIPE}\" -Dhttp.proxyPort=\"${HTTP_PORT_PIPE}\"  -Dhttps.proxyHost=\"${HTTPS_PROXY_PIPE}\" -Dhttps.proxyPort=\"${HTTPS_PORT_PIPE}\" \" " +
+                    "-e ANT_OPTS=\" ${PROXY_OPTS}\" " +
                     "-e PATH=/usr/local/dart-sass:${env.PATH} " +
                     "gc-ant -f /build/oscm-devruntime/javares/build-oscmaas.xml BUILD.BES"
         }
@@ -268,7 +268,7 @@ def execute() {
                     "-e https_proxy=\"${https_proxy}\" " +
                     "-e HTTP_PROXY=\"${http_proxy}\" " +
                     "-e HTTPS_PROXY=\"${https_proxy}\" " +
-                    "-e MAVEN_OPTS=\"-Xmx512m -Duser.home=/build -Duser.home=/build -Dhttp.proxyHost=\"${HTTP_PROXY_PIPE}\" -Dhttp.proxyPort=\"${HTTP_PORT_PIPE}\"  -Dhttps.proxyHost=\"${HTTPS_PROXY_PIPE}\" -Dhttps.proxyPort=\"${HTTPS_PORT_PIPE}\" \" " +
+                    "-e MAVEN_OPTS=\"-Xmx512m -Duser.home=/build ${PROXY_OPTS}\" \" " +
                     "oscm-maven clean install -f /build/oscm-app-maven/pom.xml"
         }
     }
@@ -286,7 +286,7 @@ def execute() {
                     "-e https_proxy=\"${https_proxy}\" " +
                     "-e HTTP_PROXY=\"${http_proxy}\" " +
                     "-e HTTPS_PROXY=\"${https_proxy}\" " +
-                    "-e MAVEN_OPTS=\"-Xmx512m -Duser.home=/build -Duser.home=/build -Dhttp.proxyHost=\"${HTTP_PROXY_PIPE}\" -Dhttp.proxyPort=\"${HTTP_PORT_PIPE}\"  -Dhttps.proxyHost=\"${HTTPS_PROXY_PIPE}\" -Dhttps.proxyPort=\"${HTTPS_PORT_PIPE}\" \" " +
+                    "-e MAVEN_OPTS=\"-Xmx512m -Duser.home=/build ${PROXY_OPTS}\" \" " +
                     "oscm-maven clean package -f /build/oscm-app-shell/pom.xml"
         }
     }
@@ -304,7 +304,7 @@ def execute() {
                     "-e https_proxy=\"${https_proxy}\" " +
                     "-e HTTP_PROXY=\"${http_proxy}\" " +
                     "-e HTTPS_PROXY=\"${https_proxy}\" " +
-                    "-e MAVEN_OPTS=\"-Xmx512m -Duser.home=/build -Duser.home=/build -Dhttp.proxyHost=\"${HTTP_PROXY_PIPE}\" -Dhttp.proxyPort=\"${HTTP_PORT_PIPE}\"  -Dhttps.proxyHost=\"${HTTPS_PROXY_PIPE}\" -Dhttps.proxyPort=\"${HTTPS_PORT_PIPE}\" \" " +
+                    "-e MAVEN_OPTS=\"-Xmx512m -Duser.home=/build -Duser.home=/build ${PROXY_OPTS}\" \" " +
                     "oscm-maven clean package -f /build/oscm-approval/pom.xml"
         }
     }
@@ -322,7 +322,7 @@ def execute() {
                     "-e https_proxy=\"${https_proxy}\" " +
                     "-e HTTP_PROXY=\"${http_proxy}\" " +
                     "-e HTTPS_PROXY=\"${https_proxy}\" " +
-                    "-e MAVEN_OPTS=\"-Xmx512m -Duser.home=/build -Duser.home=/build -Dhttp.proxyHost=\"${HTTP_PROXY_PIPE}\" -Dhttp.proxyPort=\"${HTTP_PORT_PIPE}\"  -Dhttps.proxyHost=\"${HTTPS_PROXY_PIPE}\" -Dhttps.proxyPort=\"${HTTPS_PORT_PIPE}\" \" " +
+                    "-e MAVEN_OPTS=\"-Xmx512m -Duser.home=/build${PROXY_OPTS}\" \" " +
                     "oscm-maven clean install -f /build/oscm-rest-api/pom.xml"
         }
     }
@@ -340,7 +340,7 @@ def execute() {
                     "-e https_proxy=\"${https_proxy}\" " +
                     "-e HTTP_PROXY=\"${http_proxy}\" " +
                     "-e HTTPS_PROXY=\"${https_proxy}\" " +
-                    "-e MAVEN_OPTS=\"-Xmx512m -Duser.home=/build -Duser.home=/build -Dhttp.proxyHost=\"${HTTP_PROXY_PIPE}\" -Dhttp.proxyPort=\"${HTTP_PORT_PIPE}\"  -Dhttps.proxyHost=\"${HTTPS_PROXY_PIPE}\" -Dhttps.proxyPort=\"${HTTPS_PORT_PIPE}\"\" " +
+                    "-e MAVEN_OPTS=\"-Xmx512m -Duser.home=/build ${PROXY_OPTS}\"\" " +
                     "oscm-maven clean package -f /build/oscm-identity/pom.xml"
         }
     }
