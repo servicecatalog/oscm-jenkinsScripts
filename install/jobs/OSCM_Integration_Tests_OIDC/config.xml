@@ -101,7 +101,7 @@
         <hudson.model.StringParameterDefinition>
           <name>CONTROLLER_USER_PASS</name>
           <description>Password required for the controller admin</description>
-          <defaultValue>admin123OSCM</defaultValue>
+          <defaultValue></defaultValue>
           <trim>false</trim>
         </hudson.model.StringParameterDefinition>
         <hudson.model.StringParameterDefinition>
@@ -113,7 +113,7 @@
         <hudson.model.StringParameterDefinition>
           <name>ADMIN_USER_PWD</name>
           <description>Password of PLATFORM OPERATOR administrator</description>
-          <defaultValue>admin123OSCM</defaultValue>
+          <defaultValue></defaultValue>
           <trim>false</trim>
         </hudson.model.StringParameterDefinition>
         <hudson.model.StringParameterDefinition>
@@ -125,19 +125,19 @@
         <hudson.model.StringParameterDefinition>
           <name>SUPPLIER_USER_PWD</name>
           <description></description>
-          <defaultValue>s.e.c.r.e.t.1234</defaultValue>
+          <defaultValue></defaultValue>
           <trim>false</trim>
         </hudson.model.StringParameterDefinition>
         <hudson.model.StringParameterDefinition>
           <name>USERNAME</name>
           <description></description>
-          <defaultValue>oscmautomaton</defaultValue>
+          <defaultValue></defaultValue>
           <trim>false</trim>
         </hudson.model.StringParameterDefinition>
         <hudson.model.PasswordParameterDefinition>
           <name>PASSWORD</name>
           <description></description>
-          <defaultValue>{AQAAABAAAABQR6HnyMK15K99lghMm0E4rVpGfwR//kI/hTOZ56JQXiezx9uNYn8sbMSMlPwo1ctNXh9f9xbeNGuZHz4VqGsZMdTNSOn0Rl34OjzML8kdGIfkF9KBEQ9sIgkt8fualMyC}</defaultValue>
+          <defaultValue></defaultValue>
         </hudson.model.PasswordParameterDefinition>
         <hudson.model.StringParameterDefinition>
           <name>DOMAIN</name>

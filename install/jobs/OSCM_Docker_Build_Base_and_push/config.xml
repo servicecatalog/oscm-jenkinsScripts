@@ -115,13 +115,13 @@
         <hudson.model.StringParameterDefinition>
           <name>USERNAME</name>
           <description>Username to push on Dockerhub</description>
-          <defaultValue>oscmautomaton</defaultValue>
+          <defaultValue></defaultValue>
           <trim>false</trim>
         </hudson.model.StringParameterDefinition>
         <hudson.model.PasswordParameterDefinition>
           <name>PASSWORD</name>
           <description>Password to push on Dockerhub</description>
-          <defaultValue>{AQAAABAAAAAg9yeqdtRledzSPKSjpNFt7kEbCCroa355GwSExlEFR2Xd4Iwwjp7SgqJnE29ZqLcZ}</defaultValue>
+          <defaultValue></defaultValue>
         </hudson.model.PasswordParameterDefinition>
         <hudson.model.StringParameterDefinition>
           <name>http_proxy</name>
