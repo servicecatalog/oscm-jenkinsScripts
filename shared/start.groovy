@@ -88,7 +88,7 @@ void execute(String FQDN = env.NODE_NAME, PROXY = true) {
                 -e "s|^\\(DB_SUPERPWD=\\).*|\\1secret|g" \
                 -e "s|^\\(SMTP_HOST=\\).*|\\1oscm-maildev|g" \
                 -e "s|^\\(SMTP_PORT=\\).*|\\125|g" \
-                -e "s|^\\(SMTP_FROM=\\).*|\\1oscm@$core.de|g" \
+                -e "s|^\\(SMTP_FROM=\\).*|\\1oscm@core.de|g" \
                 -e "s|^\\(SMTP_USER=\\).*|\\1none|g" \
                 -e "s|^\\(SMTP_PWD=\\).*|\\1none|g" \
                 -e "s|^\\(SMTP_AUTH=\\).*|\\1false|g" \
