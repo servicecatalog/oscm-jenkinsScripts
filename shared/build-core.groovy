@@ -209,7 +209,7 @@ def execute() {
                     "-e https_proxy=\"${http_proxy}\" " +
                     "-e HTTP_PROXY=\"${http_proxy}\" " +
                     "-e HTTPS_PROXY=\"${http_proxy}\" " +
-                    "-e ANT_OPTS=\"-Duser.home=/build -Dhttp.proxyHost=\"${HTTP_PROXY_PIPE}\" -Dhttp.proxyPort=\"${HTTP_PORT_PIPE}\"  -Dhttps.proxyHost=\"${HTTPs_PROXY_PIPE}\" -Dhttps.proxyPort=\"${HTTPs_PORT_PIPE}\"\" " +
+                    "-e ANT_OPTS=\" -Dhttp.proxyHost=\"${HTTP_PROXY_PIPE}\" -Dhttp.proxyPort=\"${HTTP_PORT_PIPE}\"  -Dhttps.proxyHost=\"${HTTPs_PROXY_PIPE}\" -Dhttps.proxyPort=\"${HTTPs_PORT_PIPE}\"\" " +
                     "gc-ant -f /build/oscm-devruntime/javares/build-oscmaas.xml BUILD.LIB"
         }
     }
