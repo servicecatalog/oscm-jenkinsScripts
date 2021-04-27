@@ -67,7 +67,7 @@ def execute() {
                     returnStdout: true
             ).trim()
             MAVEN_OPTS = sh(
-                    script: 'echo "-Dhttp.proxyHost=${http_proxy} -Dhttp.proxyPort=8080 -Dhttps.proxyHost=${https_proxy} -Dhttps.proxyPort=${https_port}"',
+                    script: 'echo "${MAVEN_OPTS}"',
                     returnStdout: true
             ).trim()
         }
