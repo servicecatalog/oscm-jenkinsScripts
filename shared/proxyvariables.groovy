@@ -23,7 +23,7 @@ void execute() {
                OPTS=""
             fi;
             '''
-          env.PROXY_OPTS = $OPTS
+          env.PROXY_OPTS=$OPTS
        }
        }
    }             
