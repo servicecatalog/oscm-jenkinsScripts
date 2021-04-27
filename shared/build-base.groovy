@@ -123,7 +123,7 @@
                     "-e https_proxy=\"${http_proxy}\" " +
                     "-e HTTP_PROXY=\"${http_proxy}\" " +
                     "-e HTTPS_PROXY=\"${http_proxy}\" " +
-                    "-e ANT_OPTS=\"-Dhttp.proxyHost=\"${http_proxy}\" -Dhttp.proxyPort=\"${http_port}\" -Dhttps.proxyHost=\"${https_proxy}\" -Dhttps.proxyPort=\"${https_port}\" \" " +
+                    "-e ANT_OPTS=\"-Dhttp.proxyHost=\"${HTTP_PROXY}\" -Dhttp.proxyPort=\"${HTTP_PORT}\"  -Dhttps.proxyHost=\"${HTTPs_PROXY}\" -Dhttps.proxyPort=\"${HTTPs_PORT}\" \" " +
                     "gc-ant -f /build/oscm-devruntime/javares/build-oscmaas.xml BUILD.LIB"
         }
     }
@@ -141,7 +141,7 @@
                     "-e https_proxy=\"${https_proxy}\" " +
                     "-e HTTP_PROXY=\"${http_proxy}\" " +
                     "-e HTTPS_PROXY=\"${https_proxy}\" " +
-                    "-e ANT_OPTS=\"-Dhttp.proxyHost=\"${http_proxy}\" -Dhttp.proxyPort=\"${http_port}\" -Dhttps.proxyHost=\"${https_proxy}\" -Dhttps.proxyPort=\"${https_port}\" \" " +
+                    "-e ANT_OPTS=\"-Dhttp.proxyHost=\"${HTTP_PROXY}\" -Dhttp.proxyPort=\"${HTTP_PORT}\"  -Dhttps.proxyHost=\"${HTTPs_PROXY}\" -Dhttps.proxyPort=\"${HTTPs_PORT}\" \" " +
                     "-e PATH=/usr/local/dart-sass:${env.PATH} " +
                     "gc-ant -f /build/oscm-devruntime/javares/build-oscmaas.xml BUILD.BES"
         }
@@ -161,7 +161,7 @@
                     "-e https_proxy=\"${https_proxy}\" " +
                     "-e HTTP_PROXY=\"${http_proxy}\" " +
                     "-e HTTPS_PROXY=\"${https_proxy}\" " +
-                    "-e MAVEN_OPTS=\"-Xmx512m -Duser.home=/build -Dhttp.proxyHost=\"${http_proxy}\" -Dhttp.proxyPort=\"${http_port}\"  -Dhttps.proxyHost=\"${https_proxy}\" -Dhttps.proxyPort=\"${https_port}\" \" " +
+                    "-e MAVEN_OPTS=\"-Xmx512m -Duser.home=/build -Dhttp.proxyHost=\"${HTTP_PROXY}\" -Dhttp.proxyPort=\"${HTTP_PORT}\"  -Dhttps.proxyHost=\"${HTTPs_PROXY}\" -Dhttps.proxyPort=\"${HTTPs_PORT}\" \" " +
                     "oscm-maven clean install -f /build/oscm-app-maven/pom.xml"
         }
     }
