@@ -13,9 +13,13 @@ void execute() {
     
         stage('Build - set proxy variables') {
 	        script {
-	        if ( "${http_proxy}" != ''  && "${https_proxy}" != '' && "${http_port}" != '' &&  "${https_port}" != '' ) {
-               env.ANT_OPTS="-Dhttp.proxyHost=\"${http_proxy}\" -Dhttp.proxyPort=\"${http_port}\" -Dhttps.proxyHost=\"${https_proxy}\" -Dhttps.proxyPort=\"${https_port}\""
-               env.MAVEN_OPTS="-Xmx512m -Duser.home=/build -Dhttp.proxyHost=\"${http_proxy}\" -Dhttp.proxyPort=\"${http_port}\" -Dhttps.proxyHost=\"${https_proxy}\" -Dhttps.proxyPort=\"${https_port}\""
+	        	String[] http;
+	        	String[] https;
+	        if ( "${http_proxy}" != ''  && "${https_proxy}" != '') {
+      			http = http_proxy.split(':');
+      			https = https_proxy.split(':');
+               env.ANT_OPTS="-Dhttp.proxyHost=\"${http[0]}\" -Dhttp.proxyPort=\"${http[1]}\" -Dhttps.proxyHost=\"${https[0]}\" -Dhttps.proxyPort=\"${https[1]}\""
+               env.MAVEN_OPTS="-Xmx512m -Duser.home=/build -Dhttp.proxyHost=\"${http[0]}\" -Dhttp.proxyPort=\"${http[1]}\" -Dhttps.proxyHost=\"${https[0]}\" -Dhttps.proxyPort=\"${https[1]}\""
             } else if ( "${http_proxy}" != '' && "${http_port}" != '' ) {
                env.ANT_OPTS="-Dhttp.proxyHost=\"${http_proxy}\" -Dhttp.proxyPort=\"${http_port}\""
                env.MAVEN_OPTS="-Xmx512m -Duser.home=/build -Dhttp.proxyHost=\"${http_proxy}\" -Dhttp.proxyPort=\"${http_port}\""
@@ -29,6 +33,16 @@ void execute() {
 	       }
        }
    }  
+   
+   def _getProxy(var proxy) {
+      String a = "Hello-World";
+      String[] str;
+      str = a.split(':');
+      
+      for( String values : str )
+      println(values);
+   } 
+   
     _setProxyVariables()
 }
 return this
