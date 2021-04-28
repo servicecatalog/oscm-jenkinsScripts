@@ -19,7 +19,7 @@ void execute() {
             }
 	        else {
 	               env.ANT_OPTS=""
-	               env.MAVEN_OPTS=""
+	               env.MAVEN_OPTS="-Xmx512m -Duser.home=/build"
 	        }       
 	       }
        }
