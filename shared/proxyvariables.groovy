@@ -25,16 +25,6 @@ void execute() {
        }
    }  
               
-     def _echo = {
-          stage('Print Varliabe'){
-            steps{
-                echo env.ANT_OPTS
-                echo env.MAVEN_OPTS
-            }
-        }
-    }
-    
     _setProxyVariables()
-    _echo()
 }
 return this
