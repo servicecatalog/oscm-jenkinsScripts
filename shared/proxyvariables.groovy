@@ -22,15 +22,13 @@ void execute() {
             } else if ( && ${https_proxy} != '' &&  ${https_port} != '' ) {
                env.ANT_OPTS=" -Dhttps.proxyHost=\"${https_proxy}\" -Dhttps.proxyPort=\"${https_port}\""
                env.MAVEN_OPTS="-Xmx512m -Duser.home=/build -Dhttps.proxyHost=\"${https_proxy}\" -Dhttps.proxyPort=\"${https_port}\""
-            
 	        } else {
-	               env.ANT_OPTS=""
-	               env.MAVEN_OPTS="-Xmx512m -Duser.home=/build"
+	           env.ANT_OPTS=""
+	           env.MAVEN_OPTS="-Xmx512m -Duser.home=/build"
 	        }       
 	       }
        }
    }  
-              
     _setProxyVariables()
 }
 return this
