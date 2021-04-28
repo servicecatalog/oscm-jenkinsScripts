@@ -41,8 +41,8 @@ void execute() {
      def _echo = {
           stage('Print Varliabe'){
             steps{
-                echo ANT_OPTS
-                echo MAVEN_OPTS
+                echo ${ANT_OPTS}
+                echo ${MAVEN_OPTS}
             }
         }
     }
