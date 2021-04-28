@@ -24,7 +24,7 @@ void execute() {
                 http = "${http_proxy}".split(':');
                 env.ANT_OPTS="-Dhttp.proxyHost=\"${http[0]}\" -Dhttp.proxyPort=\"${http[1]}\""
                 env.MAVEN_OPTS="-Xmx512m -Duser.home=/build -Dhttp.proxyHost=\"${http[0]}\" -Dhttp.proxyPort=\"${http[1]}\""
-            } else if ( "${https_proxy}" != '' &&  "${https_port}" != '' ) {
+            } else if ( "${https_proxy}" != '' ) {
                 https = "${https_proxy}".split(':');
                 env.ANT_OPTS=" -Dhttps.proxyHost=\"${https[0]}\" -Dhttps.proxyPort=\"${https[1]}\""
                 env.MAVEN_OPTS="-Xmx512m -Duser.home=/build -Dhttps.proxyHost=\"${https[0]}\" -Dhttps.proxyPort=\"${https[1]}\""
