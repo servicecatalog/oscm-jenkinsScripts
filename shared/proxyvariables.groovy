@@ -15,8 +15,12 @@ void execute() {
 	        if ( "${http_proxy}" != ''  && "${https_proxy}" != '') {
                 URI httpUri = new URI("${http_proxy}") 
                 URI httpsUri = new URI("${https_proxy}") 
-                env.ANT_OPTS="-Dhttp.proxyHost=${httpUri?.getHost()} -Dhttp.proxyPort=${httpUri?.getPort()} -Dhttps.proxyHost=${httpsUri?.getHost()} -Dhttps.proxyPort=${httpsUri?.getPort()}"
-                env.MAVEN_OPTS="-Xmx512m -Dhttp.proxyHost=${httpUri?.getHost()} -Dhttp.proxyPort=${httpUri?.getPort()} -Dhttps.proxyHost=${httpsUri?.getHost()} -Dhttps.proxyPort=${httspUri?.getPort()}"
+                def httpHost = httpUri?.getHost()
+                def httpPort = httpUri?.getPort()
+                def httpsHost = httpsUri?.getHost()
+                def httpsPort = httpsUri?.getPort()
+                env.ANT_OPTS="-Dhttp.proxyHost=${httpHost} -Dhttp.proxyPort=${httpPort} -Dhttps.proxyHost=${httpsHost} -Dhttps.proxyPort=${httpsPort}"
+                env.MAVEN_OPTS="-Xmx512m -Dhttp.proxyHost=${httpHost} -Dhttp.proxyPort=${httpPort} -Dhttps.proxyHost=${httpsHost} -Dhttps.proxyPort=${httpsPort}"
             } else if ( "${http_proxy}" != '') {
                 URI httpUri = new URI("${http_proxy}") 
                 env.ANT_OPTS="-Dhttp.proxyHost=httpUri?.getHost() -Dhttp.proxyPort=httpUri?.getPort()"
