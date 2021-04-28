@@ -35,6 +35,6 @@ void execute() {
     }
     
     _setProxyVariables()
-    _echo
+    _echo()
 }
 return this
