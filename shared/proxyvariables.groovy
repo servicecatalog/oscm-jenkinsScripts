@@ -13,8 +13,6 @@ void execute() {
     
         stage('Build - set proxy variables') {
 	        script {
-	        ANT_OPTS
-	        MAVEN_OPTS
 	        if ( "${http_proxy}" != ''  && ${https_proxy} != '' && ${http_port} != '' &&  ${https_port} != '' ) {
 	               env.ANT_OPTS="-Dhttp.proxyHost=proxy.intern.est.fujitsu.com -Dhttp.proxyPort=8080 -Dhttps.proxyHost=proxy.intern.est.fujitsu.com -Dhttps.proxyPort=8080"
 	               env.MAVEN_OPTS="-Xmx512m -Duser.home=/build -Dhttp.proxyHost=proxy.intern.est.fujitsu.com -Dhttp.proxyPort=8080 -Dhttps.proxyHost=proxy.intern.est.fujitsu.com -Dhttps.proxyPort=8080"
