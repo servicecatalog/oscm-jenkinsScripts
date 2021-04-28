@@ -34,15 +34,6 @@ void execute() {
        }
    }  
    
-   def _getProxy(var proxy) {
-      String a = "Hello-World";
-      String[] str;
-      str = a.split(':');
-      
-      for( String values : str )
-      println(values);
-   } 
-   
     _setProxyVariables()
 }
 return this
