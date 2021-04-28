@@ -15,7 +15,9 @@ void execute() {
 	        if ( "${http_proxy}" != ''  && "${https_proxy}" != '') {
                 URI httpUri = new URI("${http_proxy}") 
                 URI httpsUri = new URI("${https_proxy}") 
-                env.ANT_OPTS="-Dhttp.proxyHost=\"httpUri?.getHost()\" -Dhttp.proxyPort=\"httpUri?.getPort()\" -Dhttps.proxyHost=\"httpsUri?.getHost()}\" -Dhttps.proxyPort=\"httpUri?.getPort()\""
+                println (httpUri?.getHost())
+                println (httpsUri?.getHost())
+                env.ANT_OPTS="-Dhttp.proxyHost=\"httpUri?.getHost()\" -Dhttp.proxyPort=\"httpUri?.getPort()\" -Dhttps.proxyHost=\"httpsUri?.getHost()\" -Dhttps.proxyPort=\"httpUri?.getPort()\""
                 env.MAVEN_OPTS="-Xmx512m -Dhttp.proxyHost=\"httpUri?.getHost()\" -Dhttp.proxyPort=\"httpUri?.getPort()\" -Dhttps.proxyHost=\"httpsUri?.getHost()}\" -Dhttps.proxyPort=\"httpUri?.getPort()\""
             } else if ( "${http_proxy}" != '') {
                 http = "${http_proxy}".replaceAll("http:\\", "").split(':');
