@@ -8,7 +8,7 @@
  
 void execute() {
 
-             static String getPort(String[] proxy) {
+             def getPort(String[] proxy) {
                    def port
                    if( proxy.length > 1) {
                      port = proxy[1]
