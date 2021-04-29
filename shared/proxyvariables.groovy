@@ -30,7 +30,7 @@ void execute() {
                 def httpHost = http[0]
                 def httpsHost = https[0]
                 def httpPort = getPort(http)
-                def httpsPort getPort(https)
+                def httpsPort = getPort(https)
                 if( http.length > 1) {
                     http[1]
                 }
