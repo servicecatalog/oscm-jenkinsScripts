@@ -8,6 +8,13 @@
  
 void execute() {
 
+             static String getPort(String[] proxy) {
+                   def port
+                   if( proxy.length > 1) {
+                     port = proxy[1]
+                }
+                return port
+                } 
 
     def _setProxyVariables = {
     
@@ -15,14 +22,6 @@ void execute() {
         
                 env.RUN_PROXY_ARGS ="-e http_proxy=\"${http_proxy}\" -e https_proxy=\"${https_proxy}\" -e HTTP_PROXY=\"${http_proxy}\" -e HTTPS_PROXY=\"${https_proxy}\""
                 env.BUILD_PROXY_ARGS="--build-arg http_proxy=\"${http_proxy}\" --build-arg https_proxy=\"${https_proxy}\" --build-arg HTTP_PROXY=\"${http_proxy}\" --build-arg HTTPS_PROXY=\"${https_proxy}\" " 
-                
-               static String getPort(String[] proxy) {
-                   def port
-                   if( proxy.length > 1) {
-                     port = proxy[1]
-                }
-                return port
-                } 
                 
 	        if ( "${http_proxy}" != ''  && "${https_proxy}" != '') {
       			http = "${http_proxy}".replaceAll(".*://", "").split(':');
