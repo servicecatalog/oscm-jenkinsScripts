@@ -23,10 +23,10 @@ void execute() {
                 def httpsHost = https[0]
                 def httpPort
                 def httpsPort
-                if( http.lenght > 1) {
+                if( http.length > 1) {
                    httpPort = http[1]
                 }
-                if( https.lenght > 1) {
+                if( https.length > 1) {
                    httpsPort = https[1]
                 }
                 env.ANT_OPTS="-Dhttp.proxyHost=${httpHost} -Dhttp.proxyPort=${httpPort} -Dhttps.proxyHost=${httpsHost} -Dhttps.proxyPort=${httpsPort}"
