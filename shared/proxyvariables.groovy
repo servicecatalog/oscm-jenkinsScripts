@@ -18,7 +18,7 @@ void execute() {
                 
 	        if ( "${http_proxy}" != ''  && "${https_proxy}" != '') {
       			http = "${http_proxy}".replaceAll(".*://", "").split(':');
-      			https = "${https_proxy}".replaceAll(":.*://", "").split(':');
+      			https = "${https_proxy}".replaceAll(".*://", "").split(':');
                 def httpHost = http[0]
                 def httpsHost = https[0]
                 def httpPort
