@@ -28,10 +28,7 @@ void execute() {
                     "--name gc-ant-ivy-${BUILD_ID} " +
                     "--rm " +
                     "-v ${WORKSPACE}:/build " +
-                    "-e http_proxy=\"${http_proxy}\" " +
-                    "-e https_proxy=\"${http_proxy}\" " +
-                    "-e HTTP_PROXY=\"${http_proxy}\" " +
-                    "-e HTTPS_PROXY=\"${http_proxy}\" " +
+                    " ${RUN_PROXY_ARGS} " +
                     "-e ANT_OPTS=\"${ANT_OPTS} \" " +
                     "gc-ant -f /build/oscm-devruntime/javares/build-oscmaas.xml BUILD.LIB"
         }
@@ -46,10 +43,7 @@ void execute() {
                     "--user $user:$group " +
                     "--rm " +
                     "-v ${WORKSPACE}:/build " +
-                    "-e http_proxy=\"${http_proxy}\" " +
-                    "-e https_proxy=\"${https_proxy}\" " +
-                    "-e HTTP_PROXY=\"${http_proxy}\" " +
-                    "-e HTTPS_PROXY=\"${https_proxy}\" " +
+                    " ${RUN_PROXY_ARGS} " +
                     "-e ANT_OPTS=\"${ANT_OPTS} \" " +
                     "-e PATH=/usr/local/dart-sass:${env.PATH} " +
                     "gc-ant -f /build/oscm-devruntime/javares/build-oscmaas.xml BUILD.BES"
