@@ -207,7 +207,7 @@
         stage('Build - base nginx image') {
             docker.build(
                     "oscm-nginx",
-                    "${BUILD_PROXY_ARGS} " +
+                    "${BUILD_PROXY_ARGS}" +
                             "${WORKSPACE}/oscm-dockerbuild/oscm-nginx"
             )
         }
@@ -217,7 +217,7 @@
         stage('Build - branding image oscm-branding') {
             docker.build(
                     "oscm-branding:${DOCKER_TAG}",
-                    "${BUILD_PROXY_ARGS} " +
+                    "${BUILD_PROXY_ARGS}" +
                             "${WORKSPACE}/oscm-dockerbuild/oscm-branding"
             )
         }
@@ -227,7 +227,7 @@
         stage('Build - webserver image oscm-help') {
             docker.build(
                     "oscm-help:${DOCKER_TAG}",
-                    "${BUILD_PROXY_ARGS}" " +
+                    "${BUILD_PROXY_ARGS}" +
                             "${WORKSPACE}/oscm-dockerbuild/oscm-help"
             )
         }
