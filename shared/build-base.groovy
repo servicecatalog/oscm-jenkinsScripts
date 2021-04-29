@@ -133,7 +133,7 @@
                     "--user $user:$group " +
                     "--rm " +
                     "-v ${WORKSPACE}:/build " +
-                    "${RUN_PROXY_ARGS " +
+                    "${RUN_PROXY_ARGS} " +
                     "-e ANT_OPTS=\" ${ANT_OPTS}\" " +
                     "-e PATH=/usr/local/dart-sass:${env.PATH} " +
                     "gc-ant -f /build/oscm-devruntime/javares/build-oscmaas.xml BUILD.BES"
