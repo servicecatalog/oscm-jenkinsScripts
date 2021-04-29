@@ -13,29 +13,22 @@ void execute() {
     
 
         stage('Build - set proxy variables') { 
-        
-                env.RUN_PROXY_ARGS ="-e http_proxy=\"${http_proxy}\" -e https_proxy=\"${https_proxy}\" -e HTTP_PROXY=\"${http_proxy}\" -e HTTPS_PROXY=\"${https_proxy}\""
-                env.BUILD_PROXY_ARGS="--build-arg http_proxy=\"${http_proxy}\" --build-arg https_proxy=\"${https_proxy}\" --build-arg HTTP_PROXY=\"${http_proxy}\" --build-arg HTTPS_PROXY=\"${https_proxy}\" " 
-                
-	        if ( "${http_proxy}" != ''  && "${https_proxy}" != '') {
-      			http = splitProxy("${http_proxy}")
+              	http = splitProxy("${http_proxy}")
       			https = splitProxy("${https_proxy}")
                 def httpHost = http[0]
                 def httpsHost = https[0]
                 def httpPort = getPort(http)
                 def httpsPort = getPort(https)
+                env.RUN_PROXY_ARGS ="-e http_proxy=\"${http_proxy}\" -e https_proxy=\"${https_proxy}\" -e HTTP_PROXY=\"${http_proxy}\" -e HTTPS_PROXY=\"${https_proxy}\""
+                env.BUILD_PROXY_ARGS="--build-arg http_proxy=\"${http_proxy}\" --build-arg https_proxy=\"${https_proxy}\" --build-arg HTTP_PROXY=\"${http_proxy}\" --build-arg HTTPS_PROXY=\"${https_proxy}\" " 
+                
+	        if ( "${http_proxy}" != ''  && "${https_proxy}" != '') {
                 env.ANT_OPTS="-Dhttp.proxyHost=${httpHost} -Dhttp.proxyPort=${httpPort} -Dhttps.proxyHost=${httpsHost} -Dhttps.proxyPort=${httpsPort}"
                 env.MAVEN_OPTS="-Xmx512m -Duser.home=/build -Dhttp.proxyHost=${httpHost} -Dhttp.proxyPort=${httpPort} -Dhttps.proxyHost=${httpsHost} -Dhttps.proxyPort=${httpsPort}"
             } else if ( "${http_proxy}" != '') {
-                URI httpUri = new URI("${http_proxy}") 
-                def httpHost = httpUri?.getHost()
-                def httpPort = httpUri?.getPort()
-                env.ANT_OPTS="-Dhttp.proxyHost=${httpHost} -Dhttp.proxyPort=${httpPort}"
+                env.ANT_OPTS="-Dhttp.proxyHost=${httpHost} -Dhttp.proxyPort=${httpPort} "
                 env.MAVEN_OPTS="-Xmx512m -Duser.home=/build -Dhttp.proxyHost=${httpHost} -Dhttp.proxyPort=${httpPort}"
             } else if ( "${https_proxy}" != '' ) {
-                URI httpsUri = new URI("${https_proxy}") 
-                def httpsHost = httpsUri?.getHost()
-                def httpsPort = httpsUri?.getPort()
                 env.ANT_OPTS=" -Dhttps.proxyHost=${httpsHost} -Dhttps.proxyPort=${httpsPort}"
                 env.MAVEN_OPTS="-Xmx512m -Duser.home=/build -Dhttps.proxyHost=${httpsHost} -Dhttps.proxyPort=${httpsPort}"
            } else {
