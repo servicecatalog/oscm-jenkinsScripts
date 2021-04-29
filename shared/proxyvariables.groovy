@@ -5,19 +5,19 @@
  * Creation Date: 26-04-2021                                                 *
  *                                                                           *
  ****************************************************************************/
- 
-void execute() {
-
-
-    def _setProxyVariables = {
-    
-                 def getPort(String[] proxy) {
+                  def getPort(String[] proxy) {
                    def port
                    if( proxy.length > 1) {
                      port = proxy[1]
                 }
                 return port
                 } 
+void execute() {
+
+
+    def _setProxyVariables = {
+    
+
         stage('Build - set proxy variables') { 
         
                 env.RUN_PROXY_ARGS ="-e http_proxy=\"${http_proxy}\" -e https_proxy=\"${https_proxy}\" -e HTTP_PROXY=\"${http_proxy}\" -e HTTPS_PROXY=\"${https_proxy}\""
