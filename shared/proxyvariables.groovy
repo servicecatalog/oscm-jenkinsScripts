@@ -48,6 +48,7 @@ def appendIfSet(String proxy_opts, String argument, String proxyFqdnPart) {
     if ( proxyFqdnPart != '') {
         PROXY_OPTS = "\"${PROXY_OPTS}\" \"${argument}\"=\"${proxyFqdnPart}\""
     }
+    return PROXY_OPTS
 } 
 
 def splitProxy(String proxy) {
