@@ -35,8 +35,8 @@ void execute() {
             if ( httpPort != '') {
                 env.PROXY_OPTS="\"${env.PROXY_OPTS}\" -Dhttp.proxyPort=\"${httpPort}\""
             }
-            env.MAVEN_OPTS="-Xmx512m -Duser.home=/build \"${env.PROXY_OPTS}""
-            env.ANT_OPTS="${env.PROXY_OPTS}"       
+            env.MAVEN_OPTS="-Xmx512m -Duser.home=/build \"${env.PROXY_OPTS}\""
+            env.ANT_OPTS=\"${env.PROXY_OPTS}\"       
        }
    }  
    
