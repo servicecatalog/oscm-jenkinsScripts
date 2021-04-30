@@ -46,7 +46,7 @@ def getPort(String[] proxy) {
 
 def appendIfSet(String proxy_opts, String argument, String proxyFqdnPart) {
     if ( proxyFqdnPart != '') {
-        proxy_opts = ${proxy_opts} ${argument}=${proxyFqdnPart}
+        proxy_opts = "${proxy_opts} ${argument}=${proxyFqdnPart}"
     }
     return proxy_opts
 } 
