@@ -24,18 +24,18 @@ void execute() {
             env.BUILD_PROXY_ARGS="--build-arg http_proxy=\"${http_proxy}\" --build-arg https_proxy=\"${https_proxy}\" --build-arg HTTP_PROXY=\"${http_proxy}\" --build-arg HTTPS_PROXY=\"${https_proxy}\" " 
             env.PROXY_OPTS=""
             if ( httpsHost != '') {
-                env.PROXY_OPTS="${env.PROXY_OPTS}"-Dhttps.proxyHost="${httpsHost}"
+                env.PROXY_OPTS="\"${env.PROXY_OPTS}\" -Dhttps.proxyHost=\"${httpsHost}\""
             }
             if ( httpHost != '') {
-                env.PROXY_OPTS"=${env.PROXY_OPTS}"-Dhttp.proxyHost="${httpHost}"
+                env.PROXY_OPTS="\"${env.PROXY_OPTS}\" -Dhttp.proxyHost=\"${httpHost}\""
             }
             if ( httpsPort != '') {
-                env.PROXY_OPTS="${env.PROXY_OPTS}"-Dhttps.proxyPort="${httpsPort}"
+                env.PROXY_OPTS="\"${env.PROXY_OPTS}\" -Dhttps.proxyPort=\"${httpsPort}\""
             }
             if ( httpPort != '') {
-                env.PROXY_OPTS="${env.PROXY_OPTS}"-Dhttp.proxyPort="${httpPort}"
+                env.PROXY_OPTS="\"${env.PROXY_OPTS}\" -Dhttp.proxyPort=\"${httpPort}\""
             }
-            env.MAVEN_OPTS="-Xmx512m -Duser.home=/build \"${env.PROXY_OPTS}\""
+            env.MAVEN_OPTS="-Xmx512m -Duser.home=/build \"${env.PROXY_OPTS}""
             env.ANT_OPTS="${env.PROXY_OPTS}"       
        }
    }  
