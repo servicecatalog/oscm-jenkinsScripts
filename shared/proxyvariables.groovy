@@ -28,8 +28,8 @@ void execute() {
             env.PROXY_OPTS = appendIfSet(env.PROXY_OPTS, "-Dhttp.proxyHost", httpHost)
             env.PROXY_OPTS = appendIfSet(env.PROXY_OPTS, "-Dhttps.proxyPort", httpsPort)
             env.PROXY_OPTS = appendIfSet(env.PROXY_OPTS, "-Dhttp.proxyPort", httpPort)
-            env.MAVEN_OPTS="-Xmx512m -Duser.home=/build \"${env.PROXY_OPTS}\""
-            env.ANT_OPTS="\"${env.PROXY_OPTS}\""
+            env.MAVEN_OPTS="-Xmx512m -Duser.home=/build ${env.PROXY_OPTS}"
+            env.ANT_OPTS="${env.PROXY_OPTS}"
        }
    }  
    
@@ -46,7 +46,7 @@ def getPort(String[] proxy) {
 
 def appendIfSet(String proxy_opts, String argument, String proxyFqdnPart) {
     if ( proxyFqdnPart != '') {
-        proxy_opts = "${proxy_opts} ${argument}=${proxyFqdnPart}"
+        proxy_opts = ${proxy_opts} ${argument}=${proxyFqdnPart}
     }
     return proxy_opts
 } 
