@@ -23,19 +23,20 @@ void execute() {
             env.RUN_PROXY_ARGS ="-e http_proxy=\"${http_proxy}\" -e https_proxy=\"${https_proxy}\" -e HTTP_PROXY=\"${http_proxy}\" -e HTTPS_PROXY=\"${https_proxy}\""
             env.BUILD_PROXY_ARGS="--build-arg http_proxy=\"${http_proxy}\" --build-arg https_proxy=\"${https_proxy}\" --build-arg HTTP_PROXY=\"${http_proxy}\" --build-arg HTTPS_PROXY=\"${https_proxy}\" " 
                 
-	        if ( "${http_proxy}" != ''  && "${https_proxy}" != '') {
-                env.ANT_OPTS="-Dhttp.proxyHost=${httpHost} -Dhttp.proxyPort=${httpPort} -Dhttps.proxyHost=${httpsHost} -Dhttps.proxyPort=${httpsPort}"
-                env.MAVEN_OPTS="-Xmx512m -Duser.home=/build -Dhttp.proxyHost=${httpHost} -Dhttp.proxyPort=${httpPort} -Dhttps.proxyHost=${httpsHost} -Dhttps.proxyPort=${httpsPort}"
-            } else if ( "${http_proxy}" != '') {
-                env.ANT_OPTS="-Dhttp.proxyHost=${httpHost} -Dhttp.proxyPort=${httpPort} "
-                env.MAVEN_OPTS="-Xmx512m -Duser.home=/build -Dhttp.proxyHost=${httpHost} -Dhttp.proxyPort=${httpPort}"
-            } else if ( "${https_proxy}" != '' ) {
-                env.ANT_OPTS=" -Dhttps.proxyHost=${httpsHost} -Dhttps.proxyPort=${httpsPort}"
-                env.MAVEN_OPTS="-Xmx512m -Duser.home=/build -Dhttps.proxyHost=${httpsHost} -Dhttps.proxyPort=${httpsPort}"
-           } else {
-                env.ANT_OPTS=""
-                env.MAVEN_OPTS="-Xmx512m -Duser.home=/build"
-           }       
+            if ( "${httpsHost}" != '') {
+                env.PROXY_OPTS=${env.PROXY_OPTS}"-Dhttps.proxyHost=${httpsHost}"
+            }
+            if ( "${httpHost}" != '') {
+                env.PROXY_OPTS=${env.PROXY_OPTS}"-Dhttp.proxyHost=${httpHost}"
+            }
+            if ( "${httpsPort}" != '') {
+                env.PROXY_OPTS=${env.PROXY_OPTS}"-Dhttps.proxyPort=${httpsPort}"
+            }
+            if ( "${httpPort}" != '') {
+                env.PROXY_OPTS=${env.PROXY_OPTS}"-Dhttp.proxyPort=${httpPort}"
+            }
+            env.MAVEN_OPTS="-Xmx512m -Duser.home=/build"${env.PROXY_OPTS}
+            env.ANT_OPTS=${env.PROXY_OPTS}       
        }
    }  
    
