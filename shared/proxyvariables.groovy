@@ -23,18 +23,11 @@ void execute() {
             env.RUN_PROXY_ARGS ="-e http_proxy=\"${http_proxy}\" -e https_proxy=\"${https_proxy}\" -e HTTP_PROXY=\"${http_proxy}\" -e HTTPS_PROXY=\"${https_proxy}\""
             env.BUILD_PROXY_ARGS="--build-arg http_proxy=\"${http_proxy}\" --build-arg https_proxy=\"${https_proxy}\" --build-arg HTTP_PROXY=\"${http_proxy}\" --build-arg HTTPS_PROXY=\"${https_proxy}\" " 
             env.PROXY_OPTS=""
-            if ( httpsHost != '') {
-                env.PROXY_OPTS="\"${env.PROXY_OPTS}\" -Dhttps.proxyHost=\"${httpsHost}\""
-            }
-            if ( httpHost != '') {
-                env.PROXY_OPTS="\"${env.PROXY_OPTS}\" -Dhttp.proxyHost=\"${httpHost}\""
-            }
-            if ( httpsPort != '') {
-                env.PROXY_OPTS="\"${env.PROXY_OPTS}\" -Dhttps.proxyPort=\"${httpsPort}\""
-            }
-            if ( httpPort != '') {
-                env.PROXY_OPTS="\"${env.PROXY_OPTS}\" -Dhttp.proxyPort=\"${httpPort}\""
-            }
+            
+             appendIfSet(env.PROXY_OPTS,-Dhttps.proxyHost, ${httpsHost})
+             appendIfSet(env.PROXY_OPTS,-Dhttp.proxyHost, ${httpHost})
+             appendIfSet(env.PROXY_OPTS,-Dhttps.proxyPort, ${httpsPort})
+             appendIfSet(env.PROXY_OPTS,-Dhttp.proxyPort, ${httpPort})
             env.MAVEN_OPTS="-Xmx512m -Duser.home=/build \"${env.PROXY_OPTS}\""
             env.ANT_OPTS="\"${env.PROXY_OPTS}\""
        }
@@ -49,6 +42,13 @@ def getPort(String[] proxy) {
         port = proxy[1]
     }
     return port
+} 
+
+def appendIfSet(String proxy_opts, String argument, String proxyFqdnPart) {
+    if( if ( httpsPort != '') {
+        proxy_opts = "\"${env.PROXY_OPTS}\" \"${argument}\"=\"${proxyFqdnPart}\""
+    }
+    return proxy_opts
 } 
 
 def splitProxy(String proxy) {
