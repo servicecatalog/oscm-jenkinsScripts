@@ -44,11 +44,11 @@ def getPort(String[] proxy) {
     return port
 } 
 
-def appendIfSet(String proxy_opts, String argument, String proxyFqdnPart) {
-    if ( proxyFqdnPart != '') {
-        proxy_opts = "${proxy_opts} ${argument}=${proxyFqdnPart}"
+def appendIfSet(String opt, String arg, String val) {
+    if ( val != '') {
+        opt = "${opt} ${arg}=${val}"
     }
-    return proxy_opts
+    return opt
 } 
 
 def splitProxy(String proxy) {
