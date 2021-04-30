@@ -24,10 +24,10 @@ void execute() {
             env.BUILD_PROXY_ARGS="--build-arg http_proxy=\"${http_proxy}\" --build-arg https_proxy=\"${https_proxy}\" --build-arg HTTP_PROXY=\"${http_proxy}\" --build-arg HTTPS_PROXY=\"${https_proxy}\" " 
             env.PROXY_OPTS=""
             
-            appendIfSet(env.PROXY_OPTS, "-Dhttps.proxyHost", httpsHost)
-            appendIfSet(env.PROXY_OPTS, "-Dhttp.proxyHost", httpHost)
-            appendIfSet(env.PROXY_OPTS, "-Dhttps.proxyPort", httpsPort)
-            appendIfSet(env.PROXY_OPTS, "-Dhttp.proxyPort", httpPort)
+            appendIfSet("-Dhttps.proxyHost", httpsHost)
+            appendIfSet("-Dhttp.proxyHost", httpHost)
+            appendIfSet("-Dhttps.proxyPort", httpsPort)
+            appendIfSet("-Dhttp.proxyPort", httpPort)
             env.MAVEN_OPTS="-Xmx512m -Duser.home=/build \"${env.PROXY_OPTS}\""
             env.ANT_OPTS="\"${env.PROXY_OPTS}\""
        }
@@ -46,9 +46,8 @@ def getPort(String[] proxy) {
 
 def appendIfSet(String proxy_opts, String argument, String proxyFqdnPart) {
     if ( proxyFqdnPart != '') {
-        proxy_opts = "\"${proxy_opts}\" \"${argument}\"=\"${proxyFqdnPart}\""
+        PROXY_OPTS = "\"${PROXY_OPTS}\" \"${argument}\"=\"${proxyFqdnPart}\""
     }
-    return proxy_opts
 } 
 
 def splitProxy(String proxy) {
