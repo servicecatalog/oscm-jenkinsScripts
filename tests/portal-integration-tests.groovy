@@ -80,10 +80,7 @@ def execute() {
                         "--network host " +
                         "--add-host oscm-identity:127.0.0.1 " +
                         "-v ${WORKSPACE}:/build " +
-                        "-e http_proxy=\"${http_proxy}\" " +
-                        "-e https_proxy=\"${https_proxy}\" " +
-                        "-e HTTP_PROXY=\"${http_proxy}\" " +
-                        "-e HTTPS_PROXY=\"${https_proxy}\" " +
+                        " ${RUN_PROXY_ARGS} " +
                         "-e MAVEN_OPTS=\"${MAVEN_OPTS} \" " +
                         "oscm-maven clean install -e -f /build/oscm-ui-tests/pom.xml"
             }
