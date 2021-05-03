@@ -19,6 +19,9 @@ void execute() {
             def httpsHost = https[0]
             def httpPort = getPort(http)
             def httpsPort = getPort(https)
+            
+             
+            env.WS_PROXY = setWsProxy();
                 
             env.RUN_PROXY_ARGS ="-e http_proxy=\"${http_proxy}\" -e https_proxy=\"${https_proxy}\" -e HTTP_PROXY=\"${http_proxy}\" -e HTTPS_PROXY=\"${https_proxy}\""
             env.BUILD_PROXY_ARGS="--build-arg http_proxy=\"${http_proxy}\" --build-arg https_proxy=\"${https_proxy}\" --build-arg HTTP_PROXY=\"${http_proxy}\" --build-arg HTTPS_PROXY=\"${https_proxy}\" " 
@@ -43,6 +46,15 @@ def getPort(String[] proxy) {
     }
     return port
 } 
+
+def setWsProxy() {
+  def wsProxy ="";
+  if (${http_proxy} != '') {
+      wsProxy = "-x ${http_proxy} "
+   }
+   return wsProxy;
+}
+
 
 def appendIfSet(String opt, String arg, String val) {
     if ( val != '') {
