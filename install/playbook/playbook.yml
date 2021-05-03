@@ -44,6 +44,7 @@
         name:
           - fontconfig
           - adoptopenjdk-11-hotspot
+          - adoptopenjdk-11-hotspot-jre
           - git
         state: latest
         #     environment:
