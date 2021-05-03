@@ -49,7 +49,7 @@ def getPort(String[] proxy) {
 
 def setWsProxy(String proxy) {
   def wsProxy =""
-  if (${http_proxy} != '') {
+  if (proxy != '') {
       wsProxy = "-x ${proxy} "
    }
    return wsProxy
