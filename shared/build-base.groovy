@@ -120,6 +120,7 @@
                     "--rm " +
                     "-v ${WORKSPACE}:/build " +
                     " ${RUN_PROXY_ARGS} " +
+                    "-e ANT_OPTS=\" ${ANT_OPTS}\" " +
                     "gc-ant -f /build/oscm-devruntime/javares/build-oscmaas.xml BUILD.LIB"
         }
     }
@@ -150,7 +151,7 @@
                     "--user $user:$group " +
                     "--rm " +
                     "-v ${WORKSPACE}:/build " +
-                    "${RUN_PROXY_ARGS}" +
+                    "${RUN_PROXY_ARGS} " +
                     "-e MAVEN_OPTS=\"${MAVEN_OPTS} \" " +
                     "oscm-maven clean install -f /build/oscm-app-maven/pom.xml"
         }
@@ -173,7 +174,7 @@
         stage('Build - server image oscm-gf') {
             docker.build(
                     "oscm-gf",
-                    "${BUILD_PROXY_ARGS}" +
+                    "${BUILD_PROXY_ARGS} " +
                             "${WORKSPACE}/oscm-dockerbuild/oscm-gf"
             )
             sh(
@@ -207,7 +208,7 @@
         stage('Build - base nginx image') {
             docker.build(
                     "oscm-nginx",
-                    "${BUILD_PROXY_ARGS}" +
+                    "${BUILD_PROXY_ARGS} " +
                             "${WORKSPACE}/oscm-dockerbuild/oscm-nginx"
             )
         }
@@ -217,7 +218,7 @@
         stage('Build - branding image oscm-branding') {
             docker.build(
                     "oscm-branding:${DOCKER_TAG}",
-                    "${BUILD_PROXY_ARGS}" +
+                    "${BUILD_PROXY_ARGS} " +
                             "${WORKSPACE}/oscm-dockerbuild/oscm-branding"
             )
         }
@@ -227,7 +228,7 @@
         stage('Build - webserver image oscm-help') {
             docker.build(
                     "oscm-help:${DOCKER_TAG}",
-                    "${BUILD_PROXY_ARGS}" +
+                    "${BUILD_PROXY_ARGS} " +
                             "${WORKSPACE}/oscm-dockerbuild/oscm-help"
             )
         }
