@@ -120,6 +120,7 @@
                     "--rm " +
                     "-v ${WORKSPACE}:/build " +
                     " ${RUN_PROXY_ARGS} " +
+                    "-e ANT_OPTS=\" ${ANT_OPTS}\" " +
                     "gc-ant -f /build/oscm-devruntime/javares/build-oscmaas.xml BUILD.LIB"
         }
     }
