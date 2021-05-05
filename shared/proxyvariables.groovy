@@ -15,10 +15,10 @@ void execute() {
         stage('Build - set proxy variables') { 
             http = splitProxy("${http_proxy}")
             https = splitProxy("${https_proxy}")
-            def httpHost = http[0]
-            def httpsHost = https[0]
-            def httpPort = getPort(http)
-            def httpsPort = getPort(https)
+            env.httpHost = http[0]
+            env.httpsHost = https[0]
+            env.httpPort = getPort(http)
+            env.httpsPort = getPort(https)
                 
             env.RUN_PROXY_ARGS ="-e http_proxy=\"${http_proxy}\" -e https_proxy=\"${https_proxy}\" -e HTTP_PROXY=\"${http_proxy}\" -e HTTPS_PROXY=\"${https_proxy}\""
             env.BUILD_PROXY_ARGS="--build-arg http_proxy=\"${http_proxy}\" --build-arg https_proxy=\"${https_proxy}\" --build-arg HTTP_PROXY=\"${http_proxy}\" --build-arg HTTPS_PROXY=\"${https_proxy}\" " 
