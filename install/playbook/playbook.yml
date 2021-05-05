@@ -1,11 +1,3 @@
-#*****************************************************************************
-#*                                                                           *
-#* Copyright FUJITSU LIMITED 2021                                            *                                                                     *
-#* Creation Date: 22-04-2021                                                 *
-#*                                                                           *
-#*****************************************************************************
-# Copyright (c) 2020 Darin Pope
-
 - name: Install base software on all
   hosts: all
   gather_facts: yes
@@ -39,12 +31,11 @@
       yum:
         name: git
         state: absent
-    - name: Install fontconfig, AdoptOpenJDK and git
+    - name: Install fontconfig, OpenJDK and git
       yum:
         name:
           - fontconfig
-          - adoptopenjdk-11-hotspot
-          - adoptopenjdk-11-hotspot-jre
+          - java-11-openjdk
           - git
         state: latest
         #     environment:
@@ -113,8 +104,8 @@
         src: "/etc/ansible/jenkins.conf"
     - name: Create pipelines
       copy:
-        dest: "/var/lib/jenkins/jobs/pull-and-start/config.xml"
-        src: "/etc/ansible/pull-and-start/config.xml"
+        dest: "/var/lib/jenkins/jobs/"
+        src: "/etc/ansible/jobs/"
     - name: download jenkins-plugin-manager
       get_url:
         url: https://github.com/jenkinsci/plugin-installation-manager-tool/releases/download/2.5.0/jenkins-plugin-manager-2.5.0.jar
@@ -187,7 +178,7 @@
       get_url:
         url: https://github.com/docker/compose/releases/download/1.27.4/docker-compose-linux-x86_64
         dest: /usr/local/bin/docker-compose
-    - name: set docker-compose permissions
+    - name: set docker-compose rechte
       file:
         path: "/usr/local/bin/docker-compose"
         mode: "+x"
@@ -213,6 +204,8 @@
           - docker-ce-cli
           - containerd.io
           - unzip
+          - java-1.8.0-openjdk
+          - java-1.8.0-openjdk-devel
         state: latest
         #environment:
         #http_proxy: http://proxy.intern.est.fujitsu.com:8080
