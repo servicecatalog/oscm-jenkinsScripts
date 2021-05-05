@@ -52,7 +52,7 @@ def setPort(String port) {
     if( port == '') {
         port = "0"
     }
-    return host
+    return port
 }
 
 
