@@ -30,11 +30,31 @@ void execute() {
             env.PROXY_OPTS = appendIfSet(env.PROXY_OPTS, "-Dhttp.proxyPort", httpPort)
             env.MAVEN_OPTS="-Xmx512m -Duser.home=/build ${env.PROXY_OPTS}"
             env.ANT_OPTS="${env.PROXY_OPTS}"
+            
+            env.httpHost = setHost(httpHost)
+            env.httpsHost = setHost(httpsHost)
+            env.httpPort = setPort(httpPort)
+            env.httpsPort = setPort(httpsPort)
        }
    }  
    
     _setProxyVariables()
 }
+
+def setHost(String host) {
+    if( host == '') {
+        host = "noProxy"
+    }
+    return host
+}
+
+def setPort(String port) {
+    if( port == '') {
+        port = "0"
+    }
+    return host
+}
+
 
 def getPort(String[] proxy) {
     def port = ""
