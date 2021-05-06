@@ -94,7 +94,7 @@ void execute(String FQDN = env.NODE_NAME, PROXY = true) {
                 -e "s|^\\(SMTP_AUTH=\\).*|\\1false|g" \
                 -e "s|^\\(SMTP_TLS=\\).*|\\1false|g" \
                 -e "s|^\\(CONTAINER_CALLBACK_THREADS=\\).*|\\150|g" \
-                -e "s|^\\(PROXY_ENABLED=\\).*|\\1true|g" \
+                -e "s|^\\(PROXY_ENABLED=\\).*|\\1${proxyEnabled}|g" \
                 -e "s|^\\(PROXY_HTTP_HOST=\\).*|\\1${httpHost}|g" \
                 -e "s|^\\(PROXY_HTTP_PORT=\\).*|\\1${httpPort}|g" \
                 -e "s|^\\(PROXY_HTTPS_HOST=\\).*|\\1${httpsHost}|g" \

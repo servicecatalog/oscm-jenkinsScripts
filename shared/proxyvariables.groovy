@@ -33,7 +33,7 @@ void execute() {
             
             env.httpRequried = setOidcProxyRequired(httpHost)
             env.httpsRequried = setOidcProxyRequired(httpsHost)
-            
+            env.proxyEnabled = setOidcProxyRequired(httpHost)
             
             env.httpHost = setHost(httpHost)
             env.httpsHost = setHost(httpsHost)
