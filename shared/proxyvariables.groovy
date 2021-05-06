@@ -31,8 +31,6 @@ void execute() {
             env.MAVEN_OPTS="-Xmx512m -Duser.home=/build ${env.PROXY_OPTS}"
             env.ANT_OPTS="${env.PROXY_OPTS}"
             
-            env.httpRequried = setOidcProxyRequired(httpHost)
-            env.httpsRequried = setOidcProxyRequired(httpsHost)
             env.proxyEnabled = setOidcProxyRequired(httpHost)
             
             env.httpHost = setDefaultHost(httpHost)

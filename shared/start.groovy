@@ -99,8 +99,6 @@ void execute(String FQDN = env.NODE_NAME, PROXY = true) {
                 -e "s|^\\(PROXY_HTTP_PORT=\\).*|\\1${httpPort}|g" \
                 -e "s|^\\(PROXY_HTTPS_HOST=\\).*|\\1${httpsHost}|g" \
                 -e "s|^\\(PROXY_HTTPS_PORT=\\).*|\\1${httpsPort}|g" \
-                -e "s|^\\(PROXY_HTTPS_REQUIRED=\\).*|\\1${httpsRequried}|g" \
-                -e "s|^\\(PROXY_HTTP_REQUIRED=\\).*|\\1${httpRequried}|g" \
                 -e "s|^\\(PROXY_NOPROXY=\\).*|\\1noproxy|g" \
                 -e "s|^\\(CONTAINER_MAX_SIZE=\\).*|\\150|g" \
                 -e "s|^\\(LOG_LEVEL=\\).*|\\1ERROR|g" \
