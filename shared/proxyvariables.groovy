@@ -31,10 +31,9 @@ void execute() {
             env.MAVEN_OPTS="-Xmx512m -Duser.home=/build ${env.PROXY_OPTS}"
             env.ANT_OPTS="${env.PROXY_OPTS}"
             
-            env.httpHost = setHost(httpHost)
-            env.httpsHost = setHost(httpsHost)
-            env.httpPort = setPort(httpPort)
-            env.httpsPort = setPort(httpsPort)
+            env.httpsRequried = 
+            env.httpsRequried
+            
        }
    }  
    
@@ -46,6 +45,14 @@ def setHost(String host) {
         host = "noProxy"
     }
     return host
+}
+
+def setOidcProxyRequired(String val) {
+	required = "false"
+    if( val != '' ) {
+        required = "true"
+    }
+    return required
 }
 
 def setPort(String port) {
