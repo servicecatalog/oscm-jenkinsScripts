@@ -35,14 +35,17 @@ void execute() {
             env.httpsRequried = setOidcProxyRequired(httpsHost)
             env.proxyEnabled = setOidcProxyRequired(httpHost)
             
-
+            env.httpHost = setDefaultHost(httpHost)
+            env.httpsHost = setDefaultHost(httpsHost)
+            env.httpPort = setDefaultPort(httpPort)
+            env.httpsPort = setDefaultPort(httpsPort)
        }
    }  
    
     _setProxyVariables()
 }
 
-def setHost(String host) {
+def setDefaultHost(String host) {
     if( host == '') {
         host = "noProxy"
     }
@@ -57,7 +60,7 @@ def setOidcProxyRequired(String val) {
     return required
 }
 
-def setPort(String port) {
+def setDefaultPort(String port) {
     if( port == '') {
         port = "0"
     }
