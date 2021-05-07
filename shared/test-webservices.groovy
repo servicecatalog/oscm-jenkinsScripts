@@ -20,7 +20,7 @@ void execute() {
 
     def _setupAnt = {
         stage('Test webservices - download and setup ant') {
-            sh "curl ${ANT_URL} -x ${http_proxy} -o ${TEST_DIR}/apache-ant.tar.gz"
+            sh "curl ${ANT_URL} ${CURL_PROXY} -o ${TEST_DIR}/apache-ant.tar.gz"
             sh "mkdir -p ${TEST_DIR}/apache-ant"
             sh "tar -xf ${TEST_DIR}/apache-ant.tar.gz -C ${TEST_DIR}/apache-ant --strip-components=1"
             ANT_BIN = sh(
@@ -36,7 +36,7 @@ void execute() {
 
     def _setupIvy = {
         stage('Test webservices - download and setup ivy') {
-            sh "curl ${IVY_URL} -x ${http_proxy} -o ${TEST_DIR}/apache-ivy.tar.gz"
+            sh "curl ${IVY_URL} ${CURL_PROXY} -o ${TEST_DIR}/apache-ivy.tar.gz"
             sh "mkdir -p ${TEST_DIR}/apache-ivy"
             sh "tar -xf ${TEST_DIR}/apache-ivy.tar.gz -C ${TEST_DIR}/apache-ivy --strip-components=1"
             sh "mkdir -p $HOME/.ant/lib"
