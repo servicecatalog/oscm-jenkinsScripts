@@ -15,7 +15,6 @@ void execute() {
         stage('Build - set proxy variables') { 
             http = splitProxy("${http_proxy}")
             https = splitProxy("${https_proxy}")
-
             env.httpHost = http[0]
             env.httpsHost = https[0]
             env.httpPort = getPort(http)
