@@ -21,7 +21,7 @@ void execute() {
             def httpsPort = getPort(https)
             
              
-            env.CURL_PROXY = setWsProxy("${http_proxy}")
+            env.CURL_PROXY = setCurlProxy("${http_proxy}")
                 
             env.RUN_PROXY_ARGS ="-e http_proxy=\"${http_proxy}\" -e https_proxy=\"${https_proxy}\" -e HTTP_PROXY=\"${http_proxy}\" -e HTTPS_PROXY=\"${https_proxy}\""
             env.BUILD_PROXY_ARGS="--build-arg http_proxy=\"${http_proxy}\" --build-arg https_proxy=\"${https_proxy}\" --build-arg HTTP_PROXY=\"${http_proxy}\" --build-arg HTTPS_PROXY=\"${https_proxy}\" " 
@@ -47,12 +47,12 @@ def getPort(String[] proxy) {
     return port
 } 
 
-def setWsProxy(String proxy) {
-  def wsProxy =""
+def setCurlProxy(String proxy) {
+  def crl =""
   if (proxy != '') {
-      wsProxy = "-x ${proxy} "
+      crl = "-x ${proxy} "
    }
-   return wsProxy
+   return crl
 }
 
 
