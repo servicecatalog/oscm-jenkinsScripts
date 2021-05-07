@@ -120,7 +120,7 @@
         <hudson.model.StringParameterDefinition>
           <name>SUPPLIER_USER_PWD</name>
           <description></description>
-          <defaultValue>s.e.c.r.e.t.1234</defaultValue>
+          <defaultValue></defaultValue>
           <trim>false</trim>
         </hudson.model.StringParameterDefinition>
         <hudson.model.StringParameterDefinition>
@@ -132,7 +132,7 @@
         <hudson.model.PasswordParameterDefinition>
           <name>PASSWORD</name>
           <description></description>
-          <defaultValue>{AQAAABAAAACQc33HL3McQTYkh6u912n4Teb9PYxG0/SJQwYgbjsRpboTPjLPS5lgwLCAiPJeIsbC/SJUHGcHPe4E7atr9rZXOM7mQWj0uMsFItWOP1TgiI2WPXvQurPdl/kMNITjAwnAld+UcOqG+NkO4paPOFs4quKCAwp0XCMBdPWjRS0SLPRC7D4e/JAEUP0XmP/H15l0pt8tTDU2fg22wYJwAO3hsA==}</defaultValue>
+          <defaultValue></defaultValue>
         </hudson.model.PasswordParameterDefinition>
         <hudson.model.StringParameterDefinition>
           <name>http_proxy</name>
