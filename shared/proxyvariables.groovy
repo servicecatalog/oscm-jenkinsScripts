@@ -31,7 +31,7 @@ void execute() {
             env.MAVEN_OPTS="-Xmx512m -Duser.home=/build ${env.PROXY_OPTS}"
             env.ANT_OPTS="${env.PROXY_OPTS}"
             
-            env.proxyEnabled = setOidcProxyRequired(httpHost)
+            env.proxyEnabled = setProxyEnabled(httpHost)
             
             env.httpHost = setDefaultHost(httpHost)
             env.httpsHost = setDefaultHost(httpsHost)
@@ -50,7 +50,7 @@ def setDefaultHost(String host) {
     return host
 }
 
-def setOidcProxyRequired(String val) {
+def setProxyEnabled(String val) {
 	required = "false"
     if( val != '' ) {
         required = "true"
