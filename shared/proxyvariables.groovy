@@ -15,11 +15,10 @@ void execute() {
         stage('Build - set proxy variables') { 
             http = splitProxy("${http_proxy}")
             https = splitProxy("${https_proxy}")
-            def httpHost = http[0]
-            def httpsHost = https[0]
-            def httpPort = getPort(http)
-            def httpsPort = getPort(https)
-            
+            env.httpHost = http[0]
+            env.httpsHost = https[0]
+            env.httpPort = getPort(http)
+            env.httpsPort = getPort(https)
              
             env.CURL_PROXY = setCurlProxy("${http_proxy}")
                 
@@ -33,11 +32,41 @@ void execute() {
             env.PROXY_OPTS = appendIfSet(env.PROXY_OPTS, "-Dhttp.proxyPort", httpPort)
             env.MAVEN_OPTS="-Xmx512m -Duser.home=/build ${env.PROXY_OPTS}"
             env.ANT_OPTS="${env.PROXY_OPTS}"
+            
+            env.proxyEnabled = setProxyEnabled(httpHost)
+            
+            env.httpHost = setDefaultHost(httpHost)
+            env.httpsHost = setDefaultHost(httpsHost)
+            env.httpPort = setDefaultPort(httpPort)
+            env.httpsPort = setDefaultPort(httpsPort)
        }
    }  
    
     _setProxyVariables()
 }
+
+def setDefaultHost(String host) {
+    if( host == '') {
+        host = "noProxy"
+    }
+    return host
+}
+
+def setProxyEnabled(String val) {
+	required = "false"
+    if( val != '' ) {
+        required = "true"
+    }
+    return required
+}
+
+def setDefaultPort(String port) {
+    if( port == '') {
+        port = "0"
+    }
+    return port
+}
+
 
 def getPort(String[] proxy) {
     def port = ""
