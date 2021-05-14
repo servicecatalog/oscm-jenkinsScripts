@@ -1,0 +1,126 @@
+- name: Agent installation
+  hosts: all
+  gather_facts: no
+  become: true
+  tasks:
+    - name: Install OpenJDK and Git
+      yum:
+        name:
+          - java-1.8.0-openjdk
+          - java-1.8.0-openjdk-devel
+          - git
+        state: latest
+    - name: Enable and start firewalld service
+      systemd:
+        name: firewalld
+        state: started
+        enabled: yes
+    - name: Permit traffic in default zone on port 22/tcp
+      firewalld:
+        port: 22/tcp
+        permanent: yes
+        state: enabled
+        immediate: yes
+    - name: Remove any installed docker
+      yum:
+        name:
+          - docker
+          - docker-client
+          - docker-client-latest
+          - docker-common
+          - docker-latest
+          - docker-latest-logrotate
+          - docker-logrotate
+          - docker-engine
+        state: absent
+    - name: Install docker-compose
+      get_url:
+        url: https://github.com/docker/compose/releases/download/1.27.4/docker-compose-linux-x86_64
+        dest: /usr/local/bin/docker-compose
+    - name: Set docker-compose rights
+      file:
+        path: "/usr/local/bin/docker-compose"
+        mode: "+x"
+    - name: Add docker-compose bin dir to system-wide $PATH.
+      copy:
+        dest: /etc/profile.d/custom-path.sh
+        content: 'PATH=$PATH:/usr/local/bin'
+    - name: docker-ce-stable yum repository
+      yum_repository:
+        name: docker-ce-stable
+        description: Docker CE Stable - $basearch
+        baseurl: https://download.docker.com/linux/centos/7/$basearch/stable
+        enabled: yes
+        gpgcheck: yes
+        gpgkey: https://download.docker.com/linux/centos/gpg
+    - name: Install Docker and unzip
+      yum:
+        name:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+          - unzip
+        state: latest
+    - name: Add docker group
+      group:
+        name: docker
+        state: present
+    - name: Create a jenkins group
+      group:
+       name: jenkins
+       state: present
+    - name: Create a jenkins user
+      user:
+        name: jenkins
+        groups:
+        - jenkins
+        - docker
+        state: present
+        createhome: yes
+        home: /var/lib/jenkins
+    - name: Create directories for Jenkins
+      file:
+        path: "{{ item }}"
+        state: directory
+        owner: jenkins
+        group: jenkins
+        recurse: yes
+      with_items:
+        - '/var/lib/jenkins'
+    - name: Do a ssh reset in order to reflect the $USER group changes
+      meta: reset_connection
+    - name: start Docker service
+      systemd:
+        name: docker
+        state: started
+    - name: create Maven directory
+      file:
+        path: "/opt/tools/maven"
+        state: directory
+        owner: vagrant
+        group: vagrant
+        recurse: yes
+    - name: download Maven 3.6.3
+      unarchive:
+        src: https://mirrors.sonic.net/apache/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz
+        dest: /opt/tools/maven
+        remote_src: yes
+    - name: Create Maven latest symlink
+      file:
+        src: /opt/tools/maven/apache-maven-3.6.3
+        dest: /opt/tools/maven/latest
+        owner: vagrant
+        group: vagrant
+        state: link
+    - name: Setup Maven profile
+      copy:
+        dest: /etc/profile.d/maven.sh
+        content: |
+          PATH=/opt/tools/maven/latest/bin:$PATH
+    - name: Set final ownership to /opt/tools
+      file:
+        path: "/opt/tools"
+        state: directory
+        owner: vagrant
+        group: vagrant
+        recurse: yes
