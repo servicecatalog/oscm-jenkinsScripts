@@ -91,34 +91,3 @@
       systemd:
         name: docker
         state: started
-    - name: create Maven directory
-      file:
-        path: "/opt/tools/maven"
-        state: directory
-        owner: vagrant
-        group: vagrant
-        recurse: yes
-    - name: download Maven 3.6.3
-      unarchive:
-        src: https://mirrors.sonic.net/apache/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz
-        dest: /opt/tools/maven
-        remote_src: yes
-    - name: Create Maven latest symlink
-      file:
-        src: /opt/tools/maven/apache-maven-3.6.3
-        dest: /opt/tools/maven/latest
-        owner: vagrant
-        group: vagrant
-        state: link
-    - name: Setup Maven profile
-      copy:
-        dest: /etc/profile.d/maven.sh
-        content: |
-          PATH=/opt/tools/maven/latest/bin:$PATH
-    - name: Set final ownership to /opt/tools
-      file:
-        path: "/opt/tools"
-        state: directory
-        owner: vagrant
-        group: vagrant
-        recurse: yes
