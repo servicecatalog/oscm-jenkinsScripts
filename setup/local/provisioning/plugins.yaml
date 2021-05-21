@@ -1,0 +1,79 @@
+#*****************************************************************************
+#*                                                                           *
+#* Copyright FUJITSU LIMITED 2021                                            *                                                                     *
+#* Creation Date: 22-04-2021                                                 *
+#*                                                                           *
+#*****************************************************************************
+
+plugins:
+ - artifactId: ace-editor
+ - artifactId: font-awesome-api
+ - artifactId: pipeline-stage-tags-metadata
+ - artifactId: ant
+ - artifactId: git-client
+ - artifactId: plain-credentials
+ - artifactId: apache-httpcomponents-client-4-api
+ - artifactId: git
+ - artifactId: plugin-util-api
+ - artifactId: artifactory
+ - artifactId: git-parameter
+ - artifactId: popper-api
+ - artifactId: authentication-tokens
+ - artifactId: git-server
+ - artifactId: run-condition
+ - artifactId: bootstrap4-api
+ - artifactId: gradle
+ - artifactId: scm-api
+ - artifactId: bouncycastle-api
+ - artifactId: ivy
+ - artifactId: script-security
+ - artifactId: branch-api
+ - artifactId: jackson2-api
+ - artifactId: snakeyaml-api
+ - artifactId: checks-api
+ - artifactId: javadoc
+ - artifactId: ssh-credentials
+ - artifactId: cloudbees-folder
+ - artifactId: jaxb
+ - artifactId: ssh-slaves
+ - artifactId: command-launcher
+ - artifactId: jdk-tool
+ - artifactId: structs
+ - artifactId: config-file-provider
+ - artifactId: jquery3-api
+ - artifactId: token-macro
+ - artifactId: configuration-as-code
+ - artifactId: jquery
+ - artifactId: trilead-api
+ - artifactId: copyartifact
+ - artifactId: jsch
+ - artifactId: workflow-api
+ - artifactId: credentials-binding
+ - artifactId: junit
+ - artifactId: workflow-basic-steps
+ - artifactId: credentials
+ - artifactId: mailer
+ - artifactId: workflow-cps-global-lib
+ - artifactId: display-url-api
+ - artifactId: matrix-project
+ - artifactId: workflow-cps
+ - artifactId: docker-build-publish
+ - artifactId: maven-plugin
+ - artifactId: workflow-durable-task-step
+ - artifactId: docker-build-step
+ - artifactId: job-dsl
+ - artifactId: pipeline-input-step
+ - artifactId: workflow-job
+ - artifactId: docker-commons
+ - artifactId: pipeline-model-api
+ - artifactId: workflow-multibranch
+ - artifactId: docker-workflow
+ - artifactId: pipeline-model-definition
+ - artifactId: workflow-scm-step
+ - artifactId: durable-task
+ - artifactId: pipeline-model-extensions
+ - artifactId: workflow-step-api
+ - artifactId: echarts-api
+ - artifactId: pipeline-stage-step
+ - artifactId: pipeline-stage-view
+ - artifactId: workflow-support

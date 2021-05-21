@@ -1,0 +1,155 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<flow-definition plugin="workflow-job@2.40">
+  <actions/>
+  <description></description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <jenkins.model.BuildDiscarderProperty>
+      <strategy class="hudson.tasks.LogRotator">
+        <daysToKeep>5</daysToKeep>
+        <numToKeep>-1</numToKeep>
+        <artifactDaysToKeep>-1</artifactDaysToKeep>
+        <artifactNumToKeep>-1</artifactNumToKeep>
+      </strategy>
+    </jenkins.model.BuildDiscarderProperty>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.model.ChoiceParameterDefinition>
+          <name>DOCKER_REGISTRY</name>
+          <description>Registry host and port for the final Docker image. Example: REGISTRY_DOCKER/ORGANIZATION_DOCKER/oscm-core:TAG_DOCKER</description>
+          <choices class="java.util.Arrays$ArrayList">
+            <a class="string-array">
+              <string>docker.io</string>
+            </a>
+          </choices>
+        </hudson.model.ChoiceParameterDefinition>
+        <hudson.model.ChoiceParameterDefinition>
+          <name>DOCKER_ORGANIZATION</name>
+          <description>Use servicecatalog vor DockerHub und oscm-registry for the intern artifactory</description>
+          <choices class="java.util.Arrays$ArrayList">
+            <a class="string-array">
+              <string>servicecatalog</string>
+            </a>
+          </choices>
+        </hudson.model.ChoiceParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>DOCKER_TAG</name>
+          <description>Tag for the docker image to pull from. Use your first name for personal builds.</description>
+          <defaultValue>latest</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.ChoiceParameterDefinition>
+          <name>NODE_NAME</name>
+          <description></description>
+          <choices class="java.util.Arrays$ArrayList">
+            <a class="string-array">
+              <string>192.168.32.115</string>
+            </a>
+          </choices>
+        </hudson.model.ChoiceParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>ADMIN_USER_ID</name>
+          <description>The admin user id</description>
+          <defaultValue>administrator</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>ADMIN_USER_PWD</name>
+          <description>Password credentials are required for the APP administrator.</description>
+          <defaultValue>admin123</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>SUPPLIER_USER_ID</name>
+          <description></description>
+          <defaultValue>supplier</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>CUSTOMER_USER_ID</name>
+          <description></description>
+          <defaultValue>customer</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>RESELLER_USER_ID</name>
+          <description></description>
+          <defaultValue>reseller</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>CONTROLLER_USER_NAME</name>
+          <description></description>
+          <defaultValue>supplier</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>CONTROLLER_USER_KEY</name>
+          <description></description>
+          <defaultValue>10000</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>CONTROLLER_USER_PASS</name>
+          <description></description>
+          <defaultValue>supplier</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>DOMAIN</name>
+          <description></description>
+          <defaultValue>intern.est.fujitsu.com</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.BooleanParameterDefinition>
+          <name>SAMPLE_DATA</name>
+          <description>Load sample data?
+&lt;br&gt;&lt;b&gt;&lt;span style=&quot;color:#ff0000;&quot;&gt;Important:&lt;/span&gt; &lt;/b&gt;If you choose &lt;i&gt;without&lt;/i&gt; sample data, you need adapt &lt;b&gt;CONTROLLER_USER_ID&lt;/b&gt; and &lt;b&gt;CONTROLLER_USER_PASS&lt;/b&gt;</description>
+          <defaultValue>true</defaultValue>
+        </hudson.model.BooleanParameterDefinition>
+        <hudson.model.BooleanParameterDefinition>
+          <name>TOMEE_DEBUG</name>
+          <description></description>
+          <defaultValue>true</defaultValue>
+        </hudson.model.BooleanParameterDefinition>
+        <hudson.model.ChoiceParameterDefinition>
+          <name>AUTH_MODE</name>
+          <description></description>
+          <choices class="java.util.Arrays$ArrayList">
+            <a class="string-array">
+              <string>INTERNAL</string>
+              <string>OIDC</string>
+            </a>
+          </choices>
+        </hudson.model.ChoiceParameterDefinition>
+        <hudson.model.BooleanParameterDefinition>
+          <name>COMPLETE_CLEANUP</name>
+          <description>Tick this checkbox, if you want to &lt;b&gt;&lt;span style=&quot;color:#ff0000;font-size: 1rem;&quot;&gt;delete existing databases&lt;/span&gt;&lt;/b&gt; and your whole workspace. Or leave it unchecked, if you want to update an existing installation.
+Existing env files are saved before update.</description>
+          <defaultValue>false</defaultValue>
+        </hudson.model.BooleanParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+  </properties>
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsScmFlowDefinition" plugin="workflow-cps@2.90">
+    <scm class="hudson.plugins.git.GitSCM" plugin="git@4.7.0">
+      <configVersion>2</configVersion>
+      <userRemoteConfigs>
+        <hudson.plugins.git.UserRemoteConfig>
+          <url>https://github.com/servicecatalog/oscm-jenkinsscripts.git</url>
+        </hudson.plugins.git.UserRemoteConfig>
+      </userRemoteConfigs>
+      <branches>
+        <hudson.plugins.git.BranchSpec>
+          <name>master</name>cd
+        </hudson.plugins.git.BranchSpec>
+      </branches>
+      <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
+      <submoduleCfg class="empty-list"/>
+      <extensions/>
+    </scm>
+    <scriptPath>pull-and-start.groovy</scriptPath>
+    <lightweight>true</lightweight>
+  </definition>
+  <triggers/>
+  <disabled>false</disabled>
