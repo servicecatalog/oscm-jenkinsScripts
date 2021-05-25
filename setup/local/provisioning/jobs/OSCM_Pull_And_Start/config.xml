@@ -80,32 +80,26 @@
         <hudson.model.StringParameterDefinition>
           <name>CONTROLLER_USER_NAME</name>
           <description></description>
-          <defaultValue>supplier</defaultValue>
+          <defaultValue>administrator</defaultValue>
           <trim>false</trim>
         </hudson.model.StringParameterDefinition>
         <hudson.model.StringParameterDefinition>
           <name>CONTROLLER_USER_KEY</name>
           <description></description>
-          <defaultValue>10000</defaultValue>
+          <defaultValue>1000</defaultValue>
           <trim>false</trim>
         </hudson.model.StringParameterDefinition>
         <hudson.model.StringParameterDefinition>
           <name>CONTROLLER_USER_PASS</name>
           <description></description>
-          <defaultValue>supplier</defaultValue>
-          <trim>false</trim>
-        </hudson.model.StringParameterDefinition>
-        <hudson.model.StringParameterDefinition>
-          <name>DOMAIN</name>
-          <description></description>
-          <defaultValue>intern.est.fujitsu.com</defaultValue>
+          <defaultValue>admin123</defaultValue>
           <trim>false</trim>
         </hudson.model.StringParameterDefinition>
         <hudson.model.BooleanParameterDefinition>
           <name>SAMPLE_DATA</name>
           <description>Load sample data?
 &lt;br&gt;&lt;b&gt;&lt;span style=&quot;color:#ff0000;&quot;&gt;Important:&lt;/span&gt; &lt;/b&gt;If you choose &lt;i&gt;without&lt;/i&gt; sample data, you need adapt &lt;b&gt;CONTROLLER_USER_ID&lt;/b&gt; and &lt;b&gt;CONTROLLER_USER_PASS&lt;/b&gt;</description>
-          <defaultValue>true</defaultValue>
+          <defaultValue>false</defaultValue>
         </hudson.model.BooleanParameterDefinition>
         <hudson.model.BooleanParameterDefinition>
           <name>TOMEE_DEBUG</name>
@@ -128,6 +122,30 @@
 Existing env files are saved before update.</description>
           <defaultValue>false</defaultValue>
         </hudson.model.BooleanParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>http_proxy</name>
+          <description></description>
+          <defaultValue></defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>https_proxy</name>
+          <description></description>
+          <defaultValue></defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>http_port</name>
+          <description></description>
+          <defaultValue></defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>https_port</name>
+          <description></description>
+          <defaultValue></defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
       </parameterDefinitions>
     </hudson.model.ParametersDefinitionProperty>
   </properties>
