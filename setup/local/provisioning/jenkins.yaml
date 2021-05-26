@@ -21,7 +21,9 @@ jenkins:
   - name: "linux"
   - name: "master"
   labelString: "Controller"
-  markupFormatter: "plainText"
+  markupFormatter:
+    rawHtml:
+      disableSyntaxHighlighting: false
   mode: EXCLUSIVE
   myViewsTabBar: "standard"
   nodes:
@@ -78,24 +80,6 @@ security:
   sSHD:
     port: -1
 unclassified:
-  artifactoryBuilder:
-    jfrogPipelinesServer:
-      bypassProxy: false
-      connectionRetries: 3
-      credentialsConfig:
-        ignoreCredentialPluginDisabled: true
-        overridingCredentials: false
-        # user has probably to be replaced with hashicorp vault
-        password: "{AQAAABAAAAAQ2HdyjzJ8rkuFF3uPSobSvaVGVh6sR/t3hs1vGw5YTpI=}"
-        username: "****"
-      timeout: 300
-    useCredentialsPlugin: false
-  buildDiscarders:
-    configuredBuildDiscarders:
-    - "jobBuildDiscarder"
-  fingerprints:
-    fingerprintCleanupDisabled: false
-    storage: "file"
   gitSCM:
     addGitTagAction: false
     allowSecondFetch: false
