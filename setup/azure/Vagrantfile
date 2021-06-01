@@ -1,8 +1,8 @@
 Vagrant.configure('2') do |config|
 
   config.vm.box = 'azure'
-  
-  config.ssh.private_key_path = 'C:\Users\KOWALCZYKA\.ssh\id_rsa'
+
+  config.ssh.private_key_path = 'path to your ssh private key which will be used for authenticating to VM'
 
   config.vm.provider :azure do |azure, override|
     azure.tenant_id = ENV['AZURE_TENANT_ID']
