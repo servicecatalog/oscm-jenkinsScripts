@@ -2,6 +2,8 @@
   hosts: localhost
   gather_facts: no
   become: true
+  vars:
+    kv_uri: https://oscm-vault.vault.azure.net/
   tasks:
     - name: Ensure Endpoint repository is installed
       yum_repository:
@@ -19,3 +21,38 @@
           - java-1.8.0-openjdk-devel
           - git
         state: latest
+
+   - name: Include vars for key vault
+     include_vars:
+      file: vaultList.yml
+      name: vaultList
+
+   - name: Set facts
+     set_fact:
+      az_object_id: "{{ lookup('env', 'AZURE_OBJECT_ID') }}"
+      az_tenant_id: "{{ lookup('env', 'AZURE_TENANT_ID') }}"
+      az_client_id: "{{ lookup('env', 'AZURE_CLIENT_ID') }}"
+      az_sub_id: "{{ lookup('env', 'AZURE_SUBSCRIPTION_ID') }}"
+      az_secret: "{{ lookup('env', 'AZURE_SECRET') }}"
+
+   - name: Get latest version of a secret
+     azure.azcollection.azure_rm_keyvaultsecret_info:
+       subscription_id: "{{ az_sub_id }}"
+       client_id: "{{ az_client_id }}"
+       tenant: "{{ az_tenant_id }}"
+       secret: "{{ az_secret }}"
+       vault_uri: "{{ kv_uri }}"
+       name: "{{ item }}"
+     register: secret
+     with_items:
+           - "{{ vaultList.vault }}"
+
+   - name: Create pipelines
+     become: yes
+     copy:
+       dest: "/etc/ansible/jobs/"
+       src: "/etc/ansible/test/jobs/"
+   - include_tasks: paths.yml
+     loop: "{{ vaultList.vault }}"
+     loop_control:
+        loop_var: "vault_key"

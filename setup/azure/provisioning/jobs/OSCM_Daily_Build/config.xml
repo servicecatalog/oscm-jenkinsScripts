@@ -1,0 +1,180 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<!--
+ *****************************************************************************
+ *                                                                           *
+ * Copyright FUJITSU LIMITED 2020                                            *
+ *                                                                           *
+ * Creation Date: 22-04-2021                                                 *
+ *                                                                           *
+ *****************************************************************************
+ -->
+<flow-definition plugin="workflow-job@2.40">
+  <actions/>
+  <description></description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <jenkins.model.BuildDiscarderProperty>
+      <strategy class="hudson.tasks.LogRotator">
+        <daysToKeep>-1</daysToKeep>
+        <numToKeep>5</numToKeep>
+        <artifactDaysToKeep>-1</artifactDaysToKeep>
+        <artifactNumToKeep>-1</artifactNumToKeep>
+      </strategy>
+    </jenkins.model.BuildDiscarderProperty>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.model.ChoiceParameterDefinition>
+          <name>NODE_NAME</name>
+          <description></description>
+          <choices class="java.util.Arrays$ArrayList">
+            <a class="string-array">
+              <string>192.168.32.115</string>
+            </a>
+          </choices>
+        </hudson.model.ChoiceParameterDefinition>
+        <hudson.model.ChoiceParameterDefinition>
+          <name>DOCKER_TAG</name>
+          <description>Docker tag name for created images&lt;br/&gt;
+&lt;span style=&quot;color:#ff0000;&quot;&gt;Caution: Don&apos;t use &apos;latest&apos;.&lt;/span&gt; Use your private label to avoid overwriting results of cuncurrent builds.</description>
+          <choices class="java.util.Arrays$ArrayList">
+            <a class="string-array">
+              <string>test</string>
+            </a>
+          </choices>
+        </hudson.model.ChoiceParameterDefinition>
+        <hudson.model.ChoiceParameterDefinition>
+          <name>DOCKER_REGISTRY</name>
+          <description>Registry host and port for the final Docker images</description>
+          <choices class="java.util.Arrays$ArrayList">
+            <a class="string-array">
+              <string>docker.io</string>
+            </a>
+          </choices>
+        </hudson.model.ChoiceParameterDefinition>
+        <hudson.model.ChoiceParameterDefinition>
+          <name>DOCKER_ORGANIZATION</name>
+          <description>Use servicecatalog vor DockerHub und oscm-registry for the intern artifactory</description>
+          <choices class="java.util.Arrays$ArrayList">
+            <a class="string-array">
+              <string>servicecatalog</string>
+            </a>
+          </choices>
+        </hudson.model.ChoiceParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>REPO_TAG_OSCM</name>
+          <description>Branch or tag in the oscm git repository: https://github.com/servicecatalog/oscm</description>
+          <defaultValue>master</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>REPO_TAG_DOCKERBUILD</name>
+          <description>Branch or tag in the oscm-dockerbuild git repository: https://github.com/servicecatalog/oscm-dockerbuild</description>
+          <defaultValue>master</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>REPO_TAG_OSCM_APP</name>
+          <description>Branch or tag in the oscm-app git repository: https://github.com/servicecatalog/oscm-app</description>
+          <defaultValue>master</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>REPO_TAG_IDENTITY</name>
+          <description>Branch or tag in the oscm-identity git repository: https://github.com/servicecatalog/oscm-idenity</description>
+          <defaultValue>master</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>REPO_TAG_APPROVAL</name>
+          <description>Branch or tag in the oscm-identity git repository: https://github.com/servicecatalog/oscm-approval</description>
+          <defaultValue>master</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>REPO_TAG_DOCUMENTATION</name>
+          <description></description>
+          <defaultValue>master</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>REPO_TAG_APP_SHELL</name>
+          <description></description>
+          <defaultValue>master</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>REPO_TAG_REST_API</name>
+          <description>Branch or tag in the oscm-identity git repository: https://github.com/servicecatalog/oscm-rest-api</description>
+          <defaultValue>master</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.BooleanParameterDefinition>
+          <name>TOMEE_DEBUG</name>
+          <description>Enable to allow tomee remote debug</description>
+          <defaultValue>false</defaultValue>
+        </hudson.model.BooleanParameterDefinition>
+        <hudson.model.BooleanParameterDefinition>
+          <name>COMPLETE_CLEANUP</name>
+          <description>Delete the database and whole workspace</description>
+          <defaultValue>true</defaultValue>
+        </hudson.model.BooleanParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>USERNAME</name>
+          <description>Username to push on Dockerhub</description>
+          <defaultValue>GIT-USERNAME</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.PasswordParameterDefinition>
+          <name>PASSWORD</name>
+          <description>Password to push on Dockerhub</description>
+          <defaultValue>GIT-PASSWORD</defaultValue>
+        </hudson.model.PasswordParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>http_proxy</name>
+          <description></description>
+          <defaultValue></defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>https_proxy</name>
+          <description></description>
+          <defaultValue></defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>http_port</name>
+          <description></description>
+          <defaultValue></defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>https_port</name>
+          <description></description>
+          <defaultValue></defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+  </properties>
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsScmFlowDefinition" plugin="workflow-cps@2.90">
+    <scm class="hudson.plugins.git.GitSCM" plugin="git@4.7.1">
+      <configVersion>2</configVersion>
+      <userRemoteConfigs>
+        <hudson.plugins.git.UserRemoteConfig>
+          <url>https://github.com/servicecatalog/oscm-jenkinsscripts.git</url>
+        </hudson.plugins.git.UserRemoteConfig>
+      </userRemoteConfigs>
+      <branches>
+        <hudson.plugins.git.BranchSpec>
+          <name>master</name>
+        </hudson.plugins.git.BranchSpec>
+      </branches>
+      <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
+      <submoduleCfg class="empty-list"/>
+      <extensions/>
+    </scm>
+    <scriptPath>build-and-push-all.groovy</scriptPath>
+    <lightweight>true</lightweight>
+  </definition>
+  <triggers/>
+  <disabled>false</disabled>

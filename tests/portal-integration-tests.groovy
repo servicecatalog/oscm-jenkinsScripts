@@ -78,7 +78,7 @@ def execute() {
                         "--user $user:$group " +
                         "--rm " +
                         "--network host " +
-                        "--add-host oscm-identity:127.0.0.1 " +
+                        "--add-host oscm-identity " +
                         "-v ${WORKSPACE}:/build " +
                         " ${RUN_PROXY_ARGS} " +
                         "-e MAVEN_OPTS=\"${MAVEN_OPTS} \" " +

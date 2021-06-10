@@ -1,0 +1,17 @@
+- name: replace password in pipeline
+  become: yes
+  replace:
+       path: "{{ item.path }}"
+       regexp: "{{ vault_key }}"
+       replace: "{{ secret | to_json | from_json | community.general.json_query(item.query) | join(' ') }}"
+  with_items:
+           - { path: 'jobs/OSCM_Pull_And_Start/config.xml',  query : "results[?item=='{{ vault_key }}'].secrets[0].secret" }
+           - { path: 'jobs/OSCM_Daily_Build/config.xml',  query : "results[?item=='{{ vault_key }}'].secrets[0].secret" }
+           - { path: 'jobs/OSCM_Tests_IT_INTERNAL/config.xml',  query : "results[?item=='{{ vault_key }}'].secrets[0].secret" }
+           - { path: 'jobs/OSCM_Tests_IT_OIDC/config.xml',  query : "results[?item=='{{ vault_key }}'].secrets[0].secret" }
+           - { path: 'jobs/OSCM_Tests_WS_INTERNAL/config.xml',  query : "results[?item=='{{ vault_key }}'].secrets[0].secret" }
+           - { path: 'jobs/OSCM_Tests_WS_OIDC/config.xml',  query : "results[?item=='{{ vault_key }}'].secrets[0].secret" }
+           - { path: 'jobs/OSCM_Docker_Build_Base_and_push/config.xml',  query : "results[?item=='{{ vault_key }}'].secrets[0].secret" }
+           - { path: 'jobs/OSCM_Docker_Build_Core_and_push/config.xml',  query : "results[?item=='{{ vault_key }}'].secrets[0].secret" }
+           - { path: 'jobs/OSCM_Docker_Build_Tools_and_push/config.xml',  query : "results[?item=='{{ vault_key }}'].secrets[0].secret" }
+           - { path: 'init.groovy.d/init_10_create_admin_user.groovy',  query : "results[?item=='{{ vault_key }}'].secrets[0].secret" }
