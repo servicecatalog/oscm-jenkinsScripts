@@ -1,26 +1,57 @@
 Vagrant.configure('2') do |config|
 
   config.vm.box = 'azure'
-
+  
   config.ssh.private_key_path = 'path to your ssh private key which will be used for authenticating to VM'
 
-  config.vm.provider :azure do |azure, override|
+  config.vm.define "agent" do |agent|
+    agent.vm.hostname = "agent"
+    agent.vm.provider :azure do |azure, override|
 
-    override.vm.synced_folder ".", "/vagrant", disabled: true
+      override.vm.synced_folder ".", "/vagrant", disabled: true
 
-    azure.tenant_id = ENV['AZURE_TENANT_ID']
-    azure.client_id = ENV['AZURE_CLIENT_ID']
-    azure.client_secret = ENV['AZURE_CLIENT_SECRET']
-    azure.subscription_id = ENV['AZURE_SUBSCRIPTION_ID']
+      azure.tenant_id = ENV['AZURE_TENANT_ID']
+      azure.client_id = ENV['AZURE_CLIENT_ID']
+      azure.client_secret = ENV['AZURE_CLIENT_SECRET']
+      azure.subscription_id = ENV['AZURE_SUBSCRIPTION_ID']
 
-    azure.resource_group_name = 'oscm-vagrant'
-    azure.location = 'westeurope'
-    azure.vm_name = 'vagranttest'
-    azure.vm_size = 'Standard_B1s'
-    azure.vm_image_urn = 'OpenLogic:CentOS:7.5:latest'
+      azure.resource_group_name = 'oscm-jenkins'
+      azure.location = 'westeurope'
+      azure.vm_name = 'vagrant-oscm-agent'
+      azure.vm_size = 'Standard_B2s'
+      azure.vm_image_urn = 'OpenLogic:CentOS:7.5:latest'
+    end
+
+    agent.vm.provision "file", source: "provisioning/agent.yml", destination: "/home/vagrant/agent.yml"
+    agent.vm.provision "shell", path: "provisioning/agent.sh"
   end
 
-  config.vm.provision "file", source: "provisioning/playbook.yml", destination: "/home/vagrant/playbook.yml"
-  config.vm.provision "shell", path: "provisioning/script1.sh"
+  config.vm.define "jenkins" do |jenkins|
+    jenkins.vm.hostname = "jenkins"
+    jenkins.vm.provider :azure do |azure, override|
+
+      override.vm.synced_folder ".", "/vagrant", disabled: true
+
+      azure.tenant_id = ENV['AZURE_TENANT_ID']
+      azure.client_id = ENV['AZURE_CLIENT_ID']
+      azure.client_secret = ENV['AZURE_CLIENT_SECRET']
+      azure.subscription_id = ENV['AZURE_SUBSCRIPTION_ID']
+
+      azure.resource_group_name = 'oscm-jenkins'
+      azure.location = 'westeurope'
+      azure.vm_name = 'vagrant-oscm-jenkins'
+      azure.vm_size = 'Standard_B1s'
+      azure.vm_image_urn = 'OpenLogic:CentOS:7.5:latest'
+
+      azure.tcp_endpoints = '8080'
+    end
+
+    jenkins.vm.provision "file", source: "provisioning/master.yml", destination: "/home/vagrant/master.yml"
+    jenkins.vm.provision "shell", path: "provisioning/master.sh"
+  end
+
+
+
+
 
 end

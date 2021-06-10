@@ -6,6 +6,6 @@ echo "Getting ansible installed"
 
 yum install ansible -y
 
-echo "Executing ansible playbook"
+echo "Executing ansible master playbook"
 
-ansible-playbook /home/vagrant/playbook.yml
+ansible-playbook /home/vagrant/master.yml

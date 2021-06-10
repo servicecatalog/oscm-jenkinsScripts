@@ -12,10 +12,25 @@
         gpgcheck: yes
         enabled: yes
         state: present
-    - name: Install OpenJDK, Git
+    - name: Ensure Jenkins repository is installed
+      yum_repository:
+        name: jenkins
+        description: Official Jenkins Yum Repo
+        baseurl: http://pkg.jenkins.io/redhat-stable
+        gpgkey: https://pkg.jenkins.io/redhat-stable/jenkins.io.key
+        gpgcheck: yes
+        enabled: yes
+        state: present
+    - name: Install OpenJDK, Git and Jenkins
       yum:
         name:
           - java-1.8.0-openjdk
           - java-1.8.0-openjdk-devel
           - git
+          - jenkins
         state: latest
+    - name: Enable and Start the Jenkins Service
+      service:
+        name: jenkins
+        enabled: yes
+        state: started

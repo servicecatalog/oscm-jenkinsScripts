@@ -1,0 +1,21 @@
+- name: agent_key setup
+  hosts: localhost
+  gather_facts: no
+  become: true
+  tasks:
+    - name: Ensure Endpoint repository is installed
+      yum_repository:
+        name: endpoint
+        description: End Point repository (required for installing Git in version 2.x)
+        baseurl: https://packages.endpoint.com/rhel/$releasever/os/$basearch/
+        gpgkey: https://packages.endpoint.com/endpoint-rpmsign-7.pub
+        gpgcheck: yes
+        enabled: yes
+        state: present
+    - name: Install OpenJDK, Git and Jenkins
+      yum:
+        name:
+          - java-1.8.0-openjdk
+          - java-1.8.0-openjdk-devel
+          - git
+        state: latest
