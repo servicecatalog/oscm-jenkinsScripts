@@ -5,20 +5,11 @@
   vars:
     kv_uri: https://oscm-vault.vault.azure.net/
   tasks:
-    - name: Ensure Endpoint repository is installed
-      yum_repository:
-        name: endpoint
-        description: End Point repository (required for installing Git in version 2.x)
-        baseurl: https://packages.endpoint.com/rhel/$releasever/os/$basearch/
-        gpgkey: https://packages.endpoint.com/endpoint-rpmsign-7.pub
-        gpgcheck: yes
-        enabled: yes
-        state: present
     - name: Install OpenJDK, Git
-      yum:
+      apt:
+        update_cache: yes
         name:
-          - java-1.8.0-openjdk
-          - java-1.8.0-openjdk-devel
+          - openjdk-8-jdk
           - git
         state: latest
 
@@ -51,7 +42,7 @@
       become: yes
       copy:
         dest: "/etc/ansible/jobs/"
-        src: "/etc/ansible/test/jobs/"
+        src: "jobs/"
     - include_tasks: paths.yml
       loop: "{{ vaultList.vault }}"
       loop_control:
