@@ -41,8 +41,8 @@
     - name: Create pipelines
       become: yes
       copy:
-        dest: "/etc/ansible/jobs/"
-        src: "jobs/"
+        dest: "/home/vagrant/jobs/"
+        src: "/home/vagrant/jobs/"
     - include_tasks: paths.yml
       loop: "{{ vaultList.vault }}"
       loop_control:
