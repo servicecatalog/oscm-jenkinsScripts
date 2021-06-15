@@ -1,7 +1,7 @@
 Vagrant.configure('2') do |config|
 
   config.vm.box = 'azure'
-  
+
   config.ssh.private_key_path = 'path to your ssh private key which will be used for authenticating to VM'
 
   config.vm.define "agent" do |agent|
@@ -20,6 +20,7 @@ Vagrant.configure('2') do |config|
       azure.vm_name = 'vagrant-oscm-agent'
       azure.vm_size = 'Standard_B2s'
       azure.vm_image_urn = 'OpenLogic:CentOS:7.5:latest'
+
     end
 
     agent.vm.provision "file", source: "provisioning/agent.yml", destination: "/home/vagrant/agent.yml"
@@ -43,9 +44,15 @@ Vagrant.configure('2') do |config|
       azure.vm_size = 'Standard_B1s'
       azure.vm_image_urn = 'OpenLogic:CentOS:7.5:latest'
 
-      azure.tcp_endpoints = '8080'
+      azure.tcp_endpoints = ['8080', '443']
     end
 
+    jenkins.vm.provision "file", source: "provisioning/jenkins.conf", destination: "/home/vagrant/provisioning/jenkins.conf"
+    jenkins.vm.provision "file", source: "provisioning/plugins.yaml", destination: "/home/vagrant/provisioning/plugins.yaml"
+    jenkins.vm.provision "file", source: "C:/Users/KOWALCZYKA/.ssh/id_rsa", destination: "/home/vagrant/agent_key"
+    jenkins.vm.provision "file", source: "provisioning/jenkins.yaml", destination: "/home/vagrant/provisioning/jenkins.yaml"
+    jenkins.vm.provision "file", source: "provisioning/init.groovy.d/", destination: "/home/vagrant/provisioning/"
+    jenkins.vm.provision "file", source: "provisioning/jobs/", destination: "/home/vagrant/provisioning/"
     jenkins.vm.provision "file", source: "provisioning/master.yml", destination: "/home/vagrant/master.yml"
     jenkins.vm.provision "shell", path: "provisioning/master.sh"
   end

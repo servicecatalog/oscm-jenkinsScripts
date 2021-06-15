@@ -10,8 +10,8 @@ As this setup is for local usage, Vagrant with VirtualBox (as a provider) is use
 
 To make it running, simply execute
 
-``` 
-vagrant up 
+```
+vagrant up --no-parallel
 ```
 
 This will initialize two vagrant boxes and run local ansible provisioner on them. When the job is executed successfully, you are able to connect to the Jenkins server.
@@ -20,21 +20,20 @@ They are configured to work with single agent (192.168.32.115).
 
 Additionally, to stop the boxes use
 
-``` 
-vagrant halt 
+```
+vagrant halt
 ```
 
 To reboot the boxes use
 
-``` 
-vagrant reload 
+```
+vagrant reload
 ```
 
 And to kill the boxes use
 
-``` 
+```
 vagrant destroy
 ```
 
 *Have fun!*
-
