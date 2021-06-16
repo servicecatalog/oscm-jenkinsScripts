@@ -25,6 +25,10 @@
        az_client_id: "{{ lookup('env', 'AZURE_CLIENT_ID') }}"
        az_sub_id: "{{ lookup('env', 'AZURE_SUBSCRIPTION_ID') }}"
        az_secret: "{{ lookup('env', 'AZURE_SECRET') }}"
+       
+    - name: Print return information from the previous task
+      ansible.builtin.debug:
+         var: az_secret
 
     - name: Get latest version of a secret
       azure.azcollection.azure_rm_keyvaultsecret_info:
@@ -38,11 +42,7 @@
       with_items:
             - "{{ vaultList.vault }}"
 
-    - name: Create pipelines
-      become: yes
-      copy:
-        dest: "/home/vagrant/jobs/"
-        src: "/home/vagrant/jobs/"
+
     - include_tasks: paths.yml
       loop: "{{ vaultList.vault }}"
       loop_control:
