@@ -55,11 +55,14 @@
 **/
 
 node("${NODE_NAME}") {
-	def clean = evaluate readTrusted('shared/cleanup.groovy')
-    def pull = evaluate readTrusted('shared/pull.groovy')
-    def start = evaluate readTrusted('shared/start.groovy')
 
-    clean.execute()
-    pull.execute()
-    start.execute()
+	def clean = evaluate readTrusted('shared/cleanup.groovy')
+  def defVariables = evaluate readTrusted('shared/proxyvariables.groovy')
+  def pull = evaluate readTrusted('shared/pull.groovy')
+  def start = evaluate readTrusted('shared/start.groovy')
+
+  clean.execute()
+  defVariables.execute()
+  pull.execute()
+  start.execute()
 }

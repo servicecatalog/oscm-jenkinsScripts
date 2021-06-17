@@ -110,6 +110,7 @@ node("${NODE_NAME}") {
 
     // Pull and start
     def clean = evaluate readTrusted('shared/cleanup.groovy')
+    def defVariables = evaluate readTrusted('shared/proxyvariables.groovy')
     def pull = evaluate readTrusted('shared/pull.groovy')
     def checkoutTests = evaluate readTrusted('shared/checkout-tests.groovy')
     def start = evaluate readTrusted('shared/start.groovy')
@@ -118,6 +119,7 @@ node("${NODE_NAME}") {
     def tests = evaluate readTrusted('tests/portal-integration-tests.groovy')
     
     clean.execute()
+    defVariables.execute()
     pull.execute()
     checkoutTests.execute()
     start.execute('localhost', true)

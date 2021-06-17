@@ -137,10 +137,7 @@
                     "--name gc-ant-ivy-${BUILD_ID} " +
                     "--rm " +
                     "-v ${WORKSPACE}:/build " +
-                    "-e http_proxy=\"${http_proxy}\" " +
-                    "-e https_proxy=\"${http_proxy}\" " +
-                    "-e HTTP_PROXY=\"${http_proxy}\" " +
-                    "-e HTTPS_PROXY=\"${http_proxy}\" " +
+                    " ${RUN_PROXY_ARGS} " +
                     "-e ANT_OPTS=\" ${ANT_OPTS}\" " +
                     "gc-ant -f /build/oscm-devruntime/javares/build-oscmaas.xml BUILD.LIB"
         }
@@ -155,10 +152,7 @@
                     "--user $user:$group " +
                     "--rm " +
                     "-v ${WORKSPACE}:/build " +
-                    "-e http_proxy=\"${http_proxy}\" " +
-                    "-e https_proxy=\"${https_proxy}\" " +
-                    "-e HTTP_PROXY=\"${http_proxy}\" " +
-                    "-e HTTPS_PROXY=\"${https_proxy}\" " +
+                    "${RUN_PROXY_ARGS} " +
                     "-e ANT_OPTS=\" ${ANT_OPTS}\" " +
                     "-e PATH=/usr/local/dart-sass:${env.PATH} " +
                     "gc-ant -f /build/oscm-devruntime/javares/build-oscmaas.xml BUILD.BES"
@@ -175,10 +169,7 @@
                     "--user $user:$group " +
                     "--rm " +
                     "-v ${WORKSPACE}:/build " +
-                    "-e http_proxy=\"${http_proxy}\" " +
-                    "-e https_proxy=\"${https_proxy}\" " +
-                    "-e HTTP_PROXY=\"${http_proxy}\" " +
-                    "-e HTTPS_PROXY=\"${https_proxy}\" " +
+                    "${RUN_PROXY_ARGS} " +
                     "-e MAVEN_OPTS=\"${MAVEN_OPTS} \" " +
                     "oscm-maven clean install -f /build/oscm-app-maven/pom.xml"
         }
@@ -201,10 +192,7 @@
         stage('Build - server image oscm-gf') {
             docker.build(
                     "oscm-gf",
-                    "--build-arg http_proxy=\"${http_proxy}\" " +
-                            "--build-arg https_proxy=\"${https_proxy}\" " +
-                            "--build-arg HTTP_PROXY=\"${http_proxy}\" " +
-                            "--build-arg HTTPS_PROXY=\"${https_proxy}\" " +
+                    "${BUILD_PROXY_ARGS} " +
                             "${WORKSPACE}/oscm-dockerbuild/oscm-gf"
             )
             sh(
@@ -217,10 +205,7 @@
         stage('Build - core image oscm-core') {
             docker.build(
                     "oscm-core:${DOCKER_TAG}",
-                    "--build-arg http_proxy=\"${http_proxy}\" " +
-                            "--build-arg https_proxy=\"${https_proxy}\" " +
-                            "--build-arg HTTP_PROXY=\"${http_proxy}\" " +
-                            "--build-arg HTTPS_PROXY=\"${https_proxy}\" " +
+                    "${BUILD_PROXY_ARGS} " +
                             "${WORKSPACE}/oscm-dockerbuild/oscm-core"
             )
         }
@@ -231,10 +216,7 @@
         stage('Build - db image oscm-db') {
             docker.build(
                     "oscm-db:${DOCKER_TAG}",
-                    "--build-arg http_proxy=\"${http_proxy}\" " +
-                            "--build-arg https_proxy=\"${https_proxy}\" " +
-                            "--build-arg HTTP_PROXY=\"${http_proxy}\" " +
-                            "--build-arg HTTPS_PROXY=\"${https_proxy}\" " +
+                    "${BUILD_PROXY_ARGS} " +
                             "${WORKSPACE}/oscm-dockerbuild/oscm-db"
             )
         }
@@ -244,10 +226,7 @@
         stage('Build - base nginx image') {
             docker.build(
                     "oscm-nginx",
-                    "--build-arg http_proxy=\"${http_proxy}\" " +
-                            "--build-arg https_proxy=\"${https_proxy}\" " +
-                            "--build-arg HTTP_PROXY=\"${http_proxy}\" " +
-                            "--build-arg HTTPS_PROXY=\"${https_proxy}\" " +
+                    "${BUILD_PROXY_ARGS} " +
                             "${WORKSPACE}/oscm-dockerbuild/oscm-nginx"
             )
         }
@@ -257,10 +236,7 @@
         stage('Build - branding image oscm-branding') {
             docker.build(
                     "oscm-branding:${DOCKER_TAG}",
-                    "--build-arg http_proxy=\"${http_proxy}\" " +
-                            "--build-arg https_proxy=\"${https_proxy}\" " +
-                            "--build-arg HTTP_PROXY=\"${http_proxy}\" " +
-                            "--build-arg HTTPS_PROXY=\"${https_proxy}\" " +
+                    "${BUILD_PROXY_ARGS} " +
                             "${WORKSPACE}/oscm-dockerbuild/oscm-branding"
             )
         }
@@ -270,10 +246,7 @@
         stage('Build - webserver image oscm-help') {
             docker.build(
                     "oscm-help:${DOCKER_TAG}",
-                    "--build-arg http_proxy=\"${http_proxy}\" " +
-                            "--build-arg https_proxy=\"${https_proxy}\" " +
-                            "--build-arg HTTP_PROXY=\"${http_proxy}\" " +
-                            "--build-arg HTTPS_PROXY=\"${https_proxy}\" " +
+                    "${BUILD_PROXY_ARGS} " +
                             "${WORKSPACE}/oscm-dockerbuild/oscm-help"
             )
         }
@@ -283,10 +256,7 @@
         stage('Build - birt image oscm-birt') {
             docker.build(
                     "oscm-birt:${DOCKER_TAG}",
-                    "--build-arg http_proxy=\"${http_proxy}\" " +
-                            "--build-arg https_proxy=\"${https_proxy}\" " +
-                            "--build-arg HTTP_PROXY=\"${http_proxy}\" " +
-                            "--build-arg HTTPS_PROXY=\"${https_proxy}\" " +
+                    "${BUILD_PROXY_ARGS} " +
                             "${WORKSPACE}/oscm-dockerbuild/oscm-birt"
             )
         }
@@ -297,10 +267,7 @@
         stage('Build - proxy image oscm-proxy') {
             docker.build(
                     "oscm-proxy:${DOCKER_TAG}",
-                    "--build-arg http_proxy=\"${http_proxy}\" " +
-                            "--build-arg https_proxy=\"${https_proxy}\" " +
-                            "--build-arg HTTP_PROXY=\"${http_proxy}\" " +
-                            "--build-arg HTTPS_PROXY=\"${https_proxy}\" " +
+                    "${BUILD_PROXY_ARGS} " +
                             "${WORKSPACE}/oscm-dockerbuild/oscm-proxy"
             )
         }
@@ -310,11 +277,8 @@
         stage('Build - maildev image oscm-maildev') {
             docker.build(
                     "oscm-maildev:${DOCKER_TAG}",
-                    "--build-arg http_proxy=\"${http_proxy}\" " +
-                            "--build-arg https_proxy=\"${https_proxy}\" " +
-                            "--build-arg HTTP_PROXY=\"${http_proxy}\" " +
-                            "--build-arg HTTPS_PROXY=\"${https_proxy}\" " +
-                            "${WORKSPACE}/oscm-maildev"
+                    "${BUILD_PROXY_ARGS} " +
+                            "${WORKSPACE}/oscm-dockerbuild/oscm-maildev"
             )
         }
     }

@@ -223,10 +223,7 @@ def execute() {
                     "--name gc-ant-ivy-${BUILD_ID} " +
                     "--rm " +
                     "-v ${WORKSPACE}:/build " +
-                    "-e http_proxy=\"${http_proxy}\" " +
-                    "-e https_proxy=\"${http_proxy}\" " +
-                    "-e HTTP_PROXY=\"${http_proxy}\" " +
-                    "-e HTTPS_PROXY=\"${http_proxy}\" " +
+                    " ${RUN_PROXY_ARGS} " +
                     "-e ANT_OPTS=\" ${ANT_OPTS}\" " +
                     "gc-ant -f /build/oscm-devruntime/javares/build-oscmaas.xml BUILD.LIB"
         }
@@ -263,10 +260,7 @@ def execute() {
                     "--user $user:$group " +
                     "--rm " +
                     "-v ${WORKSPACE}:/build " +
-                    "-e http_proxy=\"${http_proxy}\" " +
-                    "-e https_proxy=\"${https_proxy}\" " +
-                    "-e HTTP_PROXY=\"${http_proxy}\" " +
-                    "-e HTTPS_PROXY=\"${https_proxy}\" " +
+                    " ${RUN_PROXY_ARGS} " +
                     "-e ANT_OPTS=\" ${ANT_OPTS}\" " +
                     "-e PATH=/usr/local/dart-sass:${env.PATH} " +
                     "gc-ant -f /build/oscm-devruntime/javares/build-oscmaas.xml BUILD.BES"
@@ -282,10 +276,7 @@ def execute() {
                     "--user $user:$group " +
                     "--rm " +
                     "-v ${WORKSPACE}:/build " +
-                    "-e http_proxy=\"${http_proxy}\" " +
-                    "-e https_proxy=\"${https_proxy}\" " +
-                    "-e HTTP_PROXY=\"${http_proxy}\" " +
-                    "-e HTTPS_PROXY=\"${https_proxy}\" " +
+                    " ${RUN_PROXY_ARGS} " +
                     "-e MAVEN_OPTS=\"${MAVEN_OPTS} \" " +
                     "oscm-maven clean install -f /build/oscm-app-maven/pom.xml"
         }
@@ -300,10 +291,7 @@ def execute() {
                     "--user $user:$group " +
                     "--rm " +
                     "-v ${WORKSPACE}:/build " +
-                    "-e http_proxy=\"${http_proxy}\" " +
-                    "-e https_proxy=\"${https_proxy}\" " +
-                    "-e HTTP_PROXY=\"${http_proxy}\" " +
-                    "-e HTTPS_PROXY=\"${https_proxy}\" " +
+                    " ${RUN_PROXY_ARGS} " +
                     "-e MAVEN_OPTS=\"${MAVEN_OPTS} \" " +
                     "oscm-maven clean package -f /build/oscm-app-shell/pom.xml"
         }
@@ -318,10 +306,7 @@ def execute() {
                     "--user $user:$group " +
                     "--rm " +
                     "-v ${WORKSPACE}:/build " +
-                    "-e http_proxy=\"${http_proxy}\" " +
-                    "-e https_proxy=\"${https_proxy}\" " +
-                    "-e HTTP_PROXY=\"${http_proxy}\" " +
-                    "-e HTTPS_PROXY=\"${https_proxy}\" " +
+                    " ${RUN_PROXY_ARGS} " +
                     "-e MAVEN_OPTS=\"${MAVEN_OPTS}\" " +
                     "oscm-maven clean package -f /build/oscm-approval/pom.xml"
         }
@@ -336,10 +321,7 @@ def execute() {
                     "--user $user:$group " +
                     "--rm " +
                     "-v ${WORKSPACE}:/build " +
-                    "-e http_proxy=\"${http_proxy}\" " +
-                    "-e https_proxy=\"${https_proxy}\" " +
-                    "-e HTTP_PROXY=\"${http_proxy}\" " +
-                    "-e HTTPS_PROXY=\"${https_proxy}\" " +
+                    " ${RUN_PROXY_ARGS} " +
                     "-e MAVEN_OPTS=\"${MAVEN_OPTS}\" " +
                     "oscm-maven clean install -f /build/oscm-rest-api/pom.xml"
         }
@@ -354,10 +336,7 @@ def execute() {
                     "--user $user:$group " +
                     "--rm " +
                     "-v ${WORKSPACE}:/build " +
-                    "-e http_proxy=\"${http_proxy}\" " +
-                    "-e https_proxy=\"${https_proxy}\" " +
-                    "-e HTTP_PROXY=\"${http_proxy}\" " +
-                    "-e HTTPS_PROXY=\"${https_proxy}\" " +
+                    " ${RUN_PROXY_ARGS} " +
                     "-e MAVEN_OPTS=\"${MAVEN_OPTS}\" " +
                     "oscm-maven clean package -f /build/oscm-identity/pom.xml"
         }
@@ -385,10 +364,7 @@ def execute() {
         stage('Build - identity image oscm-identity') {
             docker.build(
                     "oscm-identity:${DOCKER_TAG}",
-                    "--build-arg http_proxy=\"${http_proxy}\" " +
-                            "--build-arg https_proxy=\"${https_proxy}\" " +
-                            "--build-arg HTTP_PROXY=\"${http_proxy}\" " +
-                            "--build-arg HTTPS_PROXY=\"${https_proxy}\" " +
+                            "${BUILD_PROXY_ARGS}" +
                             "${WORKSPACE}/oscm-dockerbuild/oscm-identity"
             )
         }
@@ -411,10 +387,7 @@ def execute() {
         stage('Build - core image oscm-core') {
             docker.build(
                     "oscm-core:${DOCKER_TAG}",
-                    "--build-arg http_proxy=\"${http_proxy}\" " +
-                            "--build-arg https_proxy=\"${https_proxy}\" " +
-                            "--build-arg HTTP_PROXY=\"${http_proxy}\" " +
-                            "--build-arg HTTPS_PROXY=\"${https_proxy}\" " +
+                            "${BUILD_PROXY_ARGS}" +
                             "${WORKSPACE}/oscm-dockerbuild/oscm-core"
             )
         }
@@ -424,10 +397,7 @@ def execute() {
         stage('Build - app image oscm-app') {
             docker.build(
                     "oscm-app:${DOCKER_TAG}",
-                    "--build-arg http_proxy=\"${http_proxy}\" " +
-                            "--build-arg https_proxy=\"${https_proxy}\" " +
-                            "--build-arg HTTP_PROXY=\"${http_proxy}\" " +
-                            "--build-arg HTTPS_PROXY=\"${https_proxy}\" " +
+                            "${BUILD_PROXY_ARGS}" +
                             "${WORKSPACE}/oscm-dockerbuild/oscm-app"
             )
         }
@@ -437,10 +407,7 @@ def execute() {
         stage('Build - init db image oscm-initdb') {
             docker.build(
                     "oscm-initdb:${DOCKER_TAG}",
-                    "--build-arg http_proxy=\"${http_proxy}\" " +
-                            "--build-arg https_proxy=\"${https_proxy}\" " +
-                            "--build-arg HTTP_PROXY=\"${http_proxy}\" " +
-                            "--build-arg HTTPS_PROXY=\"${https_proxy}\" " +
+                            "${BUILD_PROXY_ARGS}" +
                             "${WORKSPACE}/oscm-dockerbuild/oscm-initdb"
             )
         }
@@ -449,10 +416,7 @@ def execute() {
     def _buildDeployerImage = {
         stage('Build - deployer image') {
             docker.build("oscm-deployer:${DOCKER_TAG}",
-                    "--build-arg http_proxy=\"${http_proxy}\" " +
-                            "--build-arg https_proxy=\"${https_proxy}\" " +
-                            "--build-arg HTTP_PROXY=\"${http_proxy}\" " +
-                            "--build-arg HTTPS_PROXY=\"${https_proxy}\" " +
+                            "${BUILD_PROXY_ARGS}" +
                             "${WORKSPACE}/oscm-dockerbuild/oscm-deployer"
             )
         }

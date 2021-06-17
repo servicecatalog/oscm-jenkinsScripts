@@ -84,6 +84,7 @@ node("${NODE_NAME}") {
     
     
     def clean = evaluate readTrusted('shared/cleanup.groovy')
+    def defVariables = evaluate readTrusted('shared/proxyvariables.groovy')
     def pull = evaluate readTrusted('shared/pull.groovy')
     def checkoutTests = evaluate readTrusted('shared/checkout-tests.groovy')
     def prepareWS = evaluate readTrusted('shared/prepare-ws.groovy')
@@ -91,6 +92,7 @@ node("${NODE_NAME}") {
     def test = evaluate readTrusted('shared/test-webservices.groovy')
 
     clean.execute()
+    defVariables.execute()
     pull.execute()
     checkoutTests.execute()
     prepareWS.execute()

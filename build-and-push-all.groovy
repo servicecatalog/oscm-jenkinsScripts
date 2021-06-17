@@ -81,12 +81,14 @@
 
 node("${NODE_NAME}") {
     def clean = evaluate readTrusted('shared/cleanup.groovy')
+    def defVariables = evaluate readTrusted('shared/proxyvariables.groovy')
     def buildTool = evaluate readTrusted('shared/build-tools.groovy')
     def buildBase = evaluate readTrusted('shared/build-base.groovy')
     def buildCore = evaluate readTrusted('shared/build-core.groovy')
     def push = evaluate readTrusted('shared/push.groovy')
 
     clean.execute()
+    defVariables.execute()
     buildTool.execute()
     push.execute(true, false, "centos-based gc-ant maven")
     buildBase.execute()

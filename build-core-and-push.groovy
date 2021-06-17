@@ -81,12 +81,14 @@
 
 node("${NODE_NAME}") {
     def clean = evaluate readTrusted('shared/cleanup.groovy')
+    def defVariables = evaluate readTrusted('shared/proxyvariables.groovy')
     def build = evaluate readTrusted('shared/build-core.groovy')
     def push = evaluate readTrusted('shared/push.groovy')
 
     def IMAGES="core app deployer identity mail initdb"
 
     clean.execute()
+    defVariables.execute()
     build.execute()
     push.execute(true, false, IMAGES)
 }
