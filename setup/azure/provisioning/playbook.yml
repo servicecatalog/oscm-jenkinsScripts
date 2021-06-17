@@ -17,6 +17,9 @@
       include_vars:
        file: vaultList.yml
        name: vaultList
+       
+    - name: Source the bashrc file
+      ansible.builtin.shell: "echo $AZURE_TENANT_ID"
 
     - name: Set facts
       set_fact:
@@ -24,7 +27,7 @@
        az_tenant_id: "{{ lookup('env', 'AZURE_TENANT_ID') }}"
        az_client_id: "{{ lookup('env', 'AZURE_CLIENT_ID') }}"
        az_sub_id: "{{ lookup('env', 'AZURE_SUBSCRIPTION_ID') }}"
-       az_secret: "{{ lookup('env', 'AZURE_SECRET') }}"
+       az_secret: "{{ lookup('env', 'AZURE_CLIENT_SECRET') }}"
        
     - name: Print return information from the previous task
       ansible.builtin.debug:

@@ -1,5 +1,3 @@
-echo "Getting epel-release package available"
-
 apt-get install build-essential libssl-dev libffi-dev python-dev -y
 apt-get update
 apt-get install python3-pip -y
@@ -16,24 +14,14 @@ rm requirements-azure.txt
 ansible-galaxy collection install azure.azcollection 
 ansible-galaxy collection install community.general 
 
-echo "Executing ansible playbook"
 
  echo "export AZURE_SUBSCRIPTION_ID=${AZURE_SUBSCRIPTION_ID}" >> /etc/environment
  echo "export AZURE_CLIENT_ID=${AZURE_CLIENT_ID}" >> /etc/environment
  echo "export AZURE_OBJECT_ID=${AZURE_OBJECT_ID}" >> /etc/environment
  echo "export AZURE_TENANT_ID=${AZURE_TENANT_ID}" >> /etc/environment
- echo "export AZURE_SECRET=${AZURE_CLIENT_SECRET}" >> /etc/environment
- 
- echo "AZURE_SUBSCRIPTION_ID=${AZURE_SUBSCRIPTION_ID}" >> /etc/environment
- echo "AZURE_CLIENT_ID=${AZURE_CLIENT_ID}" >> /etc/environment
- echo "AZURE_OBJECT_ID=${AZURE_OBJECT_ID}" >> /etc/environment
- echo "AZURE_TENANT_ID=${AZURE_TENANT_ID}" >> /etc/environment
- echo "AZURE_SECRET=${AZURE_CLIENT_SECRET}" >> /etc/environment
- 
-echo ${AZURE_SUBSCRIPTION_ID}
-echo ${AZURE_CLIENT_ID}
-echo ${AZURE_TENANT_ID}
+ echo "export AZURE_CLIENT_SECRET=${AZURE_CLIENT_SECRET}" >> /etc/environment
 
-sleep 5
+
+echo "Executing ansible playbook"
 
 ansible-playbook /home/vagrant/playbook.yml
