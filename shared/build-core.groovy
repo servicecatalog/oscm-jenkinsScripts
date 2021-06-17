@@ -9,7 +9,7 @@
 /**
  To import and use, add below code to jenkinsFile run by jenkins:
  `
- def build = evaluate readTrusted('shared/build.groovy') 
+ def build = evaluate readTrusted('shared/build.groovy')
  build.execute()
  `
 
@@ -91,7 +91,7 @@ def execute() {
             }
         }
     }
-    
+
     def _prepareBuildTools = {
         stage('Build - pull build tools') {
              docker.image("${DOCKER_REGISTRY}/${DOCKER_ORGANIZATION}/oscm-gc-ant:${DOCKER_TAG}").pull()
@@ -102,11 +102,11 @@ def execute() {
                 'docker tag ${DOCKER_REGISTRY}/${DOCKER_ORGANIZATION}/oscm-gc-ant:${DOCKER_TAG} gc-ant; ' +
                 'docker tag ${DOCKER_REGISTRY}/${DOCKER_ORGANIZATION}/oscm-centos-based:${DOCKER_TAG} oscm-centos-based; ' +
                 'docker tag ${DOCKER_REGISTRY}/${DOCKER_ORGANIZATION}/oscm-gf:${DOCKER_TAG} oscm-gf; ' +
-                'docker tag ${DOCKER_REGISTRY}/${DOCKER_ORGANIZATION}/oscm-maven:${DOCKER_TAG} oscm-maven; ' 
+                'docker tag ${DOCKER_REGISTRY}/${DOCKER_ORGANIZATION}/oscm-maven:${DOCKER_TAG} oscm-maven; '
             )
         }
     }
-    
+
      def _prepareIndentityRepository = {
         stage('Build - clone oscm-identity repository') {
             sh "mkdir -p ${WORKSPACE}/oscm-identity"
@@ -199,6 +199,24 @@ def execute() {
         }
     }
 
+    def _prepareMailRepository = {
+       stage('Build - clone oscm-mail repository') {
+           sh "mkdir -p ${WORKSPACE}/oscm-mail"
+           dir("${WORKSPACE}/oscm-mail") {
+               checkout scm: [
+                       $class                           : 'GitSCM',
+                       branches                         : [[name: "master"]],
+                       doGenerateSubmoduleConfigurations: false,
+                       extensions                       : [[$class : 'CloneOption',
+                                                            noTags : false, reference: '',
+                                                            shallow: true]],
+                       submoduleCfg                     : [],
+                       userRemoteConfigs                : [[url: 'https://github.com/servicecatalog/oscm-mail']]
+               ]
+           }
+       }
+   }
+
     def _downloadLibraries = {
         stage('Build - download external libraries') {
             sh "docker run " +
@@ -210,7 +228,7 @@ def execute() {
                     "gc-ant -f /build/oscm-devruntime/javares/build-oscmaas.xml BUILD.LIB"
         }
     }
-    
+
      def _copyTenantConfig = {
         stage('Build - before oscm-core compiling') {
             sh "mkdir -p ${WORKSPACE}/oscm-portal/WebContent/oidc"
@@ -219,7 +237,7 @@ def execute() {
             }
         }
     }
-    
+
       def _copyArtifacts = {
         stage('Build - copy artifacts') {
             user = sh(returnStdout: true, script: 'id -u').trim()
@@ -308,7 +326,7 @@ def execute() {
                     "oscm-maven clean install -f /build/oscm-rest-api/pom.xml"
         }
     }
-    
+
       def _compileIdentity = {
         stage('Build - compile oscm-identity') {
             user = sh(returnStdout: true, script: 'id -u').trim()
@@ -324,12 +342,43 @@ def execute() {
         }
     }
 
+    def _compileMail = {
+      stage('Build - compile oscm-mail') {
+          user = sh(returnStdout: true, script: 'id -u').trim()
+          group = sh(returnStdout: true, script: 'id -g').trim()
+          sh "docker run " +
+                  "--name maven-mail-${BUILD_ID} " +
+                  "--user $user:$group " +
+                  "--rm " +
+                  "-v ${WORKSPACE}:/build " +
+                  "-e http_proxy=\"${http_proxy}\" " +
+                  "-e https_proxy=\"${https_proxy}\" " +
+                  "-e HTTP_PROXY=\"${http_proxy}\" " +
+                  "-e HTTPS_PROXY=\"${https_proxy}\" " +
+                  "-e MAVEN_OPTS=\"-Duser.home=/build -Dhttp.proxyHost=proxy.intern.est.fujitsu.com -Dhttp.proxyPort=8080 -Dhttps.proxyHost=proxy.intern.est.fujitsu.com -Dhttps.proxyPort=8080\" " +
+                  "oscm-maven clean package -f /build/oscm-mail/pom.xml"
+      }
+  }
+
         def _buildIdentityImage = {
         stage('Build - identity image oscm-identity') {
             docker.build(
                     "oscm-identity:${DOCKER_TAG}",
                             "${BUILD_PROXY_ARGS}" +
                             "${WORKSPACE}/oscm-dockerbuild/oscm-identity"
+            )
+        }
+    }
+
+    def _buildMailImage = {
+        stage('Build - mail image oscm-mail') {
+            docker.build(
+                    "oscm-mail:${DOCKER_TAG}",
+                    "--build-arg http_proxy=\"${http_proxy}\" " +
+                            "--build-arg https_proxy=\"${https_proxy}\" " +
+                            "--build-arg HTTP_PROXY=\"${http_proxy}\" " +
+                            "--build-arg HTTPS_PROXY=\"${https_proxy}\" " +
+                            "${WORKSPACE}/oscm-dockerbuild/oscm-mail"
             )
         }
     }
@@ -383,6 +432,7 @@ def execute() {
     _prepareShellAdapterRepository()
     _prepareRestAPIRepository()
     _prepareApprovalAdapterRepository()
+    _prepareMailRepository()
 
 
     _downloadLibraries()
@@ -394,9 +444,11 @@ def execute() {
     _compileApproval()
     _compileRestAPI()
     _compileIdentity()
+    _compileMail()
     _copyArtifacts()
-    
+
     _buildIdentityImage()
+    _buildMailImage()
     _buildCoreImage()
     _buildAppImage()
     _buildInitDBImage()
@@ -404,5 +456,3 @@ def execute() {
 }
 
 return this
-
- 

@@ -99,6 +99,15 @@ void execute() {
         }
     }
 
+    def _setupMaildevPorts = {
+        stage('Test webservices - setup maildev ports') {
+            sh "docker stop oscm-maildev"
+            sh "docker rm oscm-maildev"
+            sh "docker-compose -f docker-compose-oscm.yml run -d -p 8082:1080 --name oscm-maildev oscm-maildev"
+            sh "sleep 5"
+        }
+    }
+
     def _test = {
         stage('Test webservices - run webservice tests') {
             withEnv([
@@ -121,6 +130,7 @@ void execute() {
     _cloneRepo()
     _enableRemoteEjb()
     _setupCerts()
+    _setupMaildevPorts()
     _setupTenant()
     _setupSupplier()
     _test()

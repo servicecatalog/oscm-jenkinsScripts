@@ -6,7 +6,7 @@
  *                                                                           *
  ****************************************************************************/
  def execute() {
- 
+
      def _cloneOSCMRepository = {
         stage('Build - clone OSCM repository') {
             checkout scm: [
@@ -21,7 +21,7 @@
             ]
         }
     }
- 
+
      def _cloneOSCMAppRepository = {
         stage('Build - clone OSCM repository') {
             sh "mkdir -p ${WORKSPACE}/oscm-app-maven"
@@ -39,7 +39,7 @@
             }
         }
     }
-    
+
         def _prepareBuildTools = {
         stage('Build - pull build tools') {
              docker.image("${DOCKER_REGISTRY}/${DOCKER_ORGANIZATION}/oscm-gc-ant:${DOCKER_TAG}").pull()
@@ -48,7 +48,7 @@
              sh(
                 'docker tag ${DOCKER_REGISTRY}/${DOCKER_ORGANIZATION}/oscm-gc-ant:${DOCKER_TAG} gc-ant; ' +
                 'docker tag ${DOCKER_REGISTRY}/${DOCKER_ORGANIZATION}/oscm-centos-based:${DOCKER_TAG} oscm-centos-based; ' +
-                'docker tag ${DOCKER_REGISTRY}/${DOCKER_ORGANIZATION}/oscm-maven:${DOCKER_TAG} oscm-maven; ' 
+                'docker tag ${DOCKER_REGISTRY}/${DOCKER_ORGANIZATION}/oscm-maven:${DOCKER_TAG} oscm-maven; '
             )
         }
     }
@@ -106,7 +106,25 @@
             }
         }
     }
-        
+
+    def _prepareMaildevRepository = {
+        stage('Build - clone maildev repository') {
+            sh "mkdir -p ${WORKSPACE}/oscm-maildev"
+            dir("${WORKSPACE}/oscm-maildev") {
+                checkout scm: [
+                        $class                           : 'GitSCM',
+                        branches                         : [[name: 'master']],
+                        doGenerateSubmoduleConfigurations: false,
+                        extensions                       : [[$class : 'CloneOption',
+                                                             noTags : false, reference: '',
+                                                             shallow: true]],
+                        submoduleCfg                     : [],
+                        userRemoteConfigs                : [[url: 'https://github.com/servicecatalog/maildev.git']]
+                ]
+            }
+        }
+    }
+
     def _copyUserDocumentation = {
         stage('Build - copy user documentation') {
             sh "cp -r ${WORKSPACE}/documentation/Development/oscm-doc-user/resources/ ${WORKSPACE}/oscm-doc-user/";
@@ -156,7 +174,7 @@
                     "oscm-maven clean install -f /build/oscm-app-maven/pom.xml"
         }
     }
-    
+
     def _copyArtifacts = {
         stage('Build - copy artifacts') {
             user = sh(returnStdout: true, script: 'id -u').trim()
@@ -178,7 +196,7 @@
                             "${WORKSPACE}/oscm-dockerbuild/oscm-gf"
             )
             sh(
-                'docker tag oscm-gf oscm-gf:${DOCKER_TAG}; ' 
+                'docker tag oscm-gf oscm-gf:${DOCKER_TAG}; '
             )
         }
     }
@@ -265,31 +283,33 @@
         }
     }
 
+
+
 	_cloneOSCMRepository()
 	_cloneOSCMAppRepository()
 	_prepareBuildTools()
-    _prepareDockerbuildRepository()
-    _prepareDocumentationRepository()
-    _prepareApprovalAdapterRepository()
+  _prepareDockerbuildRepository()
+  _prepareDocumentationRepository()
+  _prepareApprovalAdapterRepository()
+  _prepareMaildevRepository()
 
-    _copyUserDocumentation()
+  _copyUserDocumentation()
 
-    _downloadLibraries()
-    
+  _downloadLibraries()
+
 	_compileCore()
 	_compileApp()
-    _copyArtifacts()
+  _copyArtifacts()
 
-	
-    _buildServerImage()
-    _buildDBImage()
-    _buildProxy()
-    _buildNginxImage()
-    _buildBrandingImage()
-    _buildWebserverImage()
-    _buildBirtImage()
-    _buildMailDev()
+
+  _buildServerImage()
+  _buildDBImage()
+  _buildProxy()
+  _buildNginxImage()
+  _buildBrandingImage()
+  _buildWebserverImage()
+  _buildBirtImage()
+  _buildMailDev()
 }
 
 return this
- 

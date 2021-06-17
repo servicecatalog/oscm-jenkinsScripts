@@ -67,6 +67,15 @@ def execute() {
         }
     }
 
+    def _setupMaildevPorts = {
+        stage('Tests - setup maildev ports') {
+            sh "docker stop oscm-maildev"
+            sh "docker rm oscm-maildev"
+            sh "docker-compose -f docker-compose-oscm.yml run -d -p 8082:1080 --name oscm-maildev oscm-maildev"
+            sh "sleep 5"
+        }
+    }
+
     def _installUITests = {
         stage('Tests - install ui tests') {
             catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
@@ -87,16 +96,18 @@ def execute() {
         }
     }
 
+
+
     def _cleanUp = {
         stage('Tests - clean up') {
             sh "if [ \$(docker volume ls -qf dangling=true | wc -l) != '0' ]; then docker volume ls -qf dangling=true | xargs -r docker volume rm > /dev/null; fi"
         }
     }
 
-    
     _prepareBuildTools()
     _updateTechnicalServicePath()
     _setupTenant()
+    _setupMaildevPorts()
     _installUITests()
     _cleanUp()
 }
