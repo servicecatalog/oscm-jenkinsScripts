@@ -101,17 +101,10 @@ void execute() {
 
     def _setupMaildevPorts = {
         stage('Test webservices - setup maildev ports') {
-            sh "STARTLN=`grep -n -e 'oscm-maildev:' ${WORKSPACE}/docker/docker-compose-oscm.yml | cut -d : -f 1`"
-            sh "head -n $STARTLN  ${WORKSPACE}/docker/docker-compose-oscm.yml > /tmp/wstest.yml"
-            sh "cat <<EOT >> test.yml"
-            sh "   image: \${IMAGE_MAILDEV}"
-            sh "   container_name: oscm-maildev"
-            sh "   restart: always"
-            sh "   ports:"
-            sh "     - 8082:1080"
-            sh "EOT"
-            sh "rm -f ${WORKSPACE}/docker/docker-compose-oscm.yml"
-            sh "mv /tmp/wstest.yml ${WORKSPACE}/docker/docker-compose-oscm.yml"
+            sh "docker stop oscm-maildev"
+            sh "docker rm oscm-maildev"
+            sh "docker-compose -f docker-compose-oscm.yml run -d -p 8082:1080 --name oscm-maildev oscm-maildev"
+            sh "sleep 5"
         }
     }
 
