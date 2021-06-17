@@ -99,6 +99,22 @@ void execute() {
         }
     }
 
+    def _setupMaildevPorts = {
+        stage('Test webservices - setup maildev ports') {
+            sh "STARTLN=`grep -n -e 'oscm-maildev:' ${WORKSPACE}/docker/docker-compose-oscm.yml | cut -d : -f 1`"
+            sh "head -n $STARTLN  ${WORKSPACE}/docker/docker-compose-oscm.yml > /tmp/wstest.yml"
+            sh "cat <<EOT >> test.yml"
+            sh "   image: \${IMAGE_MAILDEV}"
+            sh "   container_name: oscm-maildev"
+            sh "   restart: always"
+            sh "   ports:"
+            sh "     - 8082:1080"
+            sh "EOT"
+            sh "rm -f ${WORKSPACE}/docker/docker-compose-oscm.yml"
+            sh "mv /tmp/wstest.yml ${WORKSPACE}/docker/docker-compose-oscm.yml"
+        }
+    }
+
     def _test = {
         stage('Test webservices - run webservice tests') {
             withEnv([
@@ -121,6 +137,7 @@ void execute() {
     _cloneRepo()
     _enableRemoteEjb()
     _setupCerts()
+    _setupMaildevPorts()
     _setupTenant()
     _setupSupplier()
     _test()
