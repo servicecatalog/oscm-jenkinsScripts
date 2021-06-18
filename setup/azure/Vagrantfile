@@ -1,8 +1,9 @@
 Vagrant.configure('2') do |config|
 
-  config.vm.box = 'azure'
+  KEY_PATH = 'path to your ssh private key which will be used for authenticating to VM'
 
-  config.ssh.private_key_path = 'path to your ssh private key which will be used for authenticating to VM'
+  config.vm.box = 'azure'
+  config.ssh.private_key_path = KEY_PATH
 
   config.vm.define "agent" do |agent|
     agent.vm.hostname = "agent"
@@ -49,16 +50,12 @@ Vagrant.configure('2') do |config|
 
     jenkins.vm.provision "file", source: "provisioning/jenkins.conf", destination: "/home/vagrant/provisioning/jenkins.conf"
     jenkins.vm.provision "file", source: "provisioning/plugins.yaml", destination: "/home/vagrant/provisioning/plugins.yaml"
-    jenkins.vm.provision "file", source: "C:/Users/KOWALCZYKA/.ssh/id_rsa", destination: "/home/vagrant/agent_key"
+    jenkins.vm.provision "file", source: KEY_PATH, destination: "/home/vagrant/agent_key"
     jenkins.vm.provision "file", source: "provisioning/jenkins.yaml", destination: "/home/vagrant/provisioning/jenkins.yaml"
     jenkins.vm.provision "file", source: "provisioning/init.groovy.d/", destination: "/home/vagrant/provisioning/"
     jenkins.vm.provision "file", source: "provisioning/jobs/", destination: "/home/vagrant/provisioning/"
     jenkins.vm.provision "file", source: "provisioning/master.yml", destination: "/home/vagrant/master.yml"
     jenkins.vm.provision "shell", path: "provisioning/master.sh"
   end
-
-
-
-
 
 end
