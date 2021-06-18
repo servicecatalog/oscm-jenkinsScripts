@@ -31,7 +31,7 @@ ssh-keygen -m PEM -t rsa
 Now to make Vargrant setup everything, simply execute
 
 ```
-vagrant up
+vagrant up --no-parallel
 ```
 
 *Have fun!*
