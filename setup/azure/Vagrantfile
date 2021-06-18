@@ -1,6 +1,6 @@
 Vagrant.configure('2') do |config|
 
-  KEY_PATH = 'path to your ssh private key which will be used for authenticating to VM'
+  KEY_PATH = 'key'
 
   config.vm.box = 'azure'
   config.ssh.private_key_path = KEY_PATH
