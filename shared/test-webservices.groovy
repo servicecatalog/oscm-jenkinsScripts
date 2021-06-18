@@ -103,7 +103,9 @@ void execute() {
         stage('Test webservices - setup maildev ports') {
             sh "docker stop oscm-maildev"
             sh "docker rm oscm-maildev"
-            sh "docker-compose -f docker-compose-oscm.yml run -d -p 8082:1080 --name oscm-maildev oscm-maildev"
+            sh "curdir=$(pwd)"
+            sh "cd ${WORKSPACE}/docker && docker-compose -f docker-compose-oscm.yml run -d -p 8082:1080 --name oscm-maildev oscm-maildev"
+            sh "cd ${curdir}"
             sh "sleep 5"
         }
     }
