@@ -5,9 +5,9 @@
  * Creation Date: 16-07-2020                                                 *
  *                                                                           *
  ****************************************************************************/
- def execute() {
+def execute() {
 
-     def _cloneOSCMRepository = {
+    def _cloneOSCMRepository = {
         stage('Build - clone OSCM repository') {
             checkout scm: [
                     $class                           : 'GitSCM',
@@ -22,7 +22,7 @@
         }
     }
 
-     def _cloneOSCMAppRepository = {
+    def _cloneOSCMAppRepository = {
         stage('Build - clone OSCM repository') {
             sh "mkdir -p ${WORKSPACE}/oscm-app-maven"
             dir("${WORKSPACE}/oscm-app-maven") {
@@ -40,15 +40,15 @@
         }
     }
 
-        def _prepareBuildTools = {
+    def _prepareBuildTools = {
         stage('Build - pull build tools') {
-             docker.image("${DOCKER_REGISTRY}/${DOCKER_ORGANIZATION}/oscm-gc-ant:${DOCKER_TAG}").pull()
-             docker.image("${DOCKER_REGISTRY}/${DOCKER_ORGANIZATION}/oscm-centos-based:${DOCKER_TAG}").pull()
-             docker.image("${DOCKER_REGISTRY}/${DOCKER_ORGANIZATION}/oscm-maven:${DOCKER_TAG}").pull()
-             sh(
-                'docker tag ${DOCKER_REGISTRY}/${DOCKER_ORGANIZATION}/oscm-gc-ant:${DOCKER_TAG} gc-ant; ' +
-                'docker tag ${DOCKER_REGISTRY}/${DOCKER_ORGANIZATION}/oscm-centos-based:${DOCKER_TAG} oscm-centos-based; ' +
-                'docker tag ${DOCKER_REGISTRY}/${DOCKER_ORGANIZATION}/oscm-maven:${DOCKER_TAG} oscm-maven; '
+            docker.image("${DOCKER_REGISTRY}/${DOCKER_ORGANIZATION}/oscm-gc-ant:${DOCKER_TAG}").pull()
+            docker.image("${DOCKER_REGISTRY}/${DOCKER_ORGANIZATION}/oscm-centos-based:${DOCKER_TAG}").pull()
+            docker.image("${DOCKER_REGISTRY}/${DOCKER_ORGANIZATION}/oscm-maven:${DOCKER_TAG}").pull()
+            sh(
+                    'docker tag ${DOCKER_REGISTRY}/${DOCKER_ORGANIZATION}/oscm-gc-ant:${DOCKER_TAG} gc-ant; ' +
+                            'docker tag ${DOCKER_REGISTRY}/${DOCKER_ORGANIZATION}/oscm-centos-based:${DOCKER_TAG} oscm-centos-based; ' +
+                            'docker tag ${DOCKER_REGISTRY}/${DOCKER_ORGANIZATION}/oscm-maven:${DOCKER_TAG} oscm-maven; '
             )
         }
     }
@@ -143,7 +143,7 @@
         }
     }
 
-        def _compileCore = {
+    def _compileCore = {
         stage('Build - compile oscm-core') {
             user = sh(returnStdout: true, script: 'id -u').trim()
             group = sh(returnStdout: true, script: 'id -g').trim()
@@ -158,7 +158,6 @@
                     "gc-ant -f /build/oscm-devruntime/javares/build-oscmaas.xml BUILD.BES"
         }
     }
-
 
     def _compileApp = {
         stage('Build - compile oscm-app') {
@@ -196,7 +195,7 @@
                             "${WORKSPACE}/oscm-dockerbuild/oscm-gf"
             )
             sh(
-                'docker tag oscm-gf oscm-gf:${DOCKER_TAG}; '
+                    'docker tag oscm-gf oscm-gf:${DOCKER_TAG}; '
             )
         }
     }
@@ -210,7 +209,6 @@
             )
         }
     }
-
 
     def _buildDBImage = {
         stage('Build - db image oscm-db') {
@@ -262,7 +260,6 @@
         }
     }
 
-
     def _buildProxy = {
         stage('Build - proxy image oscm-proxy') {
             docker.build(
@@ -278,38 +275,35 @@
             docker.build(
                     "oscm-maildev:${DOCKER_TAG}",
                     "${BUILD_PROXY_ARGS} " +
-                            "${WORKSPACE}/oscm-dockerbuild/oscm-maildev"
+                            "${WORKSPACE}/oscm-maildev"
             )
         }
     }
 
+    _cloneOSCMRepository()
+    _cloneOSCMAppRepository()
+    _prepareBuildTools()
+    _prepareDockerbuildRepository()
+    _prepareDocumentationRepository()
+    _prepareApprovalAdapterRepository()
+    _prepareMaildevRepository()
 
+    _copyUserDocumentation()
 
-	_cloneOSCMRepository()
-	_cloneOSCMAppRepository()
-	_prepareBuildTools()
-  _prepareDockerbuildRepository()
-  _prepareDocumentationRepository()
-  _prepareApprovalAdapterRepository()
-  _prepareMaildevRepository()
+    _downloadLibraries()
 
-  _copyUserDocumentation()
+    _compileCore()
+    _compileApp()
+    _copyArtifacts()
 
-  _downloadLibraries()
-
-	_compileCore()
-	_compileApp()
-  _copyArtifacts()
-
-
-  _buildServerImage()
-  _buildDBImage()
-  _buildProxy()
-  _buildNginxImage()
-  _buildBrandingImage()
-  _buildWebserverImage()
-  _buildBirtImage()
-  _buildMailDev()
+    _buildServerImage()
+    _buildDBImage()
+    _buildProxy()
+    _buildNginxImage()
+    _buildBrandingImage()
+    _buildWebserverImage()
+    _buildBirtImage()
+    _buildMailDev()
 }
 
 return this
