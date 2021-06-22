@@ -43,7 +43,7 @@
           <description></description>
           <choices class="java.util.Arrays$ArrayList">
             <a class="string-array">
-              <string>192.168.32.115</string>
+              <string>vagrant-oscm-agent</string>
             </a>
           </choices>
         </hudson.model.ChoiceParameterDefinition>

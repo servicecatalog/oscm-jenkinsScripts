@@ -26,7 +26,7 @@
         <hudson.model.StringParameterDefinition>
           <name>NODE_NAME</name>
           <description>Where to set up the OSCM?</description>
-          <defaultValue>192.168.32.115</defaultValue>
+          <defaultValue>vagrant-oscm-agent</defaultValue>
           <trim>false</trim>
         </hudson.model.StringParameterDefinition>
         <hudson.model.StringParameterDefinition>
