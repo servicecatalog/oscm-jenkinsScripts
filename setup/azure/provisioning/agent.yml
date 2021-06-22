@@ -1,6 +1,6 @@
 - name: Agent installation
   hosts: localhost
-  gather_facts: no
+  gather_facts: yes
   become: true
   tasks:
     - name: Install OpenJDK, Git

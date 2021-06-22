@@ -1,10 +1,10 @@
-echo "Getting epel-release package available"
+apt-get install build-essential libssl-dev libffi-dev python-dev -y
+apt-get update
+apt-get install python3-pip -y
+apt-get install python-jmespath
 
-yum install epel-release -y
-
-echo "Getting ansible installed"
-
-yum install ansible -y
+pip3 install --upgrade pip
+pip3 install ansible[azure]==2.10.7
 
 echo "Executing ansible agent playbook"
 

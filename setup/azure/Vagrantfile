@@ -55,6 +55,8 @@ Vagrant.configure('2') do |config|
     jenkins.vm.provision "file", source: "provisioning/init.groovy.d/", destination: "/home/vagrant/provisioning/"
     jenkins.vm.provision "file", source: "provisioning/jobs/", destination: "/home/vagrant/provisioning/"
     jenkins.vm.provision "file", source: "provisioning/master.yml", destination: "/home/vagrant/master.yml"
+    jenkins.vm.provision "file", source: "provisioning/vaultList.yml", destination: "/home/vagrant/vaultList.yml"
+    jenkins.vm.provision "file", source: "provisioning/paths.yml", destination: "/home/vagrant/paths.yml"
     
     jenkins.vm.provision :shell do |s|
       s.env = {AZURE_TENANT_ID:ENV['AZURE_TENANT_ID'], AZURE_CLIENT_ID:ENV['AZURE_CLIENT_ID'], AZURE_OBJECT_ID:ENV['AZURE_OBJECT_ID'], AZURE_SUBSCRIPTION_ID:ENV['AZURE_SUBSCRIPTION_ID'], AZURE_CLIENT_SECRET:ENV['AZURE_CLIENT_SECRET']}

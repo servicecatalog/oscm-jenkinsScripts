@@ -24,4 +24,4 @@ ansible-galaxy collection install community.general
 
 echo "Executing ansible playbook"
 
-ansible-playbook /home/vagrant/master.yml
+ansible-playbook /home/vagrant/master.yml -vvv
