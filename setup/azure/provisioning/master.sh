@@ -22,6 +22,6 @@ ansible-galaxy collection install community.general
  echo "export AZURE_CLIENT_SECRET=${AZURE_CLIENT_SECRET}" >> /etc/environment
 
 
-echo "Executing ansible playbook"
+echo "Executing ansible master playbook"
 
-ansible-playbook /home/vagrant/master.yml -vvv
+ansible-playbook /home/vagrant/master.yml 
