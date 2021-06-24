@@ -78,3 +78,5 @@ plugins:
  - artifactId: pipeline-stage-view
  - artifactId: workflow-support
  - artifactId: antisamy-markup-formatter
+ - artifactId: azure-credentials
+ - artifactId: azure-keyvault
