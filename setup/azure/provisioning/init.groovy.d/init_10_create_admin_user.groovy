@@ -18,7 +18,7 @@ if (disableScript.exists()) {
 def instance = Jenkins.get()
 
 def hudsonRealm = new HudsonPrivateSecurityRealm(false)
-hudsonRealm.createAccount('admin','admin')
+hudsonRealm.createAccount('JENKINS-USER-ID','JENKINS-USER-PWD')
 
 def strategy = new FullControlOnceLoggedInAuthorizationStrategy()
 strategy.setAllowAnonymousRead(false)
