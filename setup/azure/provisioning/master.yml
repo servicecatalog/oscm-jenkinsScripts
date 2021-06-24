@@ -1,34 +1,60 @@
 - name: Jenkins installation
   hosts: localhost
-  gather_facts: no
+  gather_facts: yes
   become: true
+  vars:
+    kv_uri: https://oscm-vault.vault.azure.net/
   tasks:
-    - name: Ensure Endpoint repository is installed
-      yum_repository:
-        name: endpoint
-        description: End Point repository (required for installing Git in version 2.x)
-        baseurl: https://packages.endpoint.com/rhel/$releasever/os/$basearch/
-        gpgkey: https://packages.endpoint.com/endpoint-rpmsign-7.pub
-        gpgcheck: yes
-        enabled: yes
-        state: present
-    - name: Ensure Jenkins repository is installed
-      yum_repository:
-        name: jenkins
-        description: Official Jenkins Yum Repo
-        baseurl: http://pkg.jenkins.io/redhat-stable
-        gpgkey: https://pkg.jenkins.io/redhat-stable/jenkins.io.key
-        gpgcheck: yes
-        enabled: yes
-        state: present
-    - name: Install OpenJDK, Git and Jenkins
-      yum:
+    - name: Install OpenJDK, Git
+      apt:
+        update_cache: yes
         name:
-          - java-1.8.0-openjdk
-          - java-1.8.0-openjdk-devel
+          - openjdk-8-jdk
           - git
-          - jenkins
         state: latest
+    - name: add jenkins key
+      apt_key: 
+         url: https://pkg.jenkins.io/debian/jenkins.io.key
+      
+    - name: configure repository
+      apt_repository:
+        repo: deb https://pkg.jenkins.io/debian-stable binary/
+
+    - name: Install Jenkins
+      apt:
+         update_cache: yes
+         name: jenkins
+     
+    - name: Include vars for key vault
+      include_vars:
+       file: vaultList.yml
+       name: vaultList
+       
+    - name: Set facts
+      set_fact:
+       az_object_id: "{{ lookup('env', 'AZURE_OBJECT_ID') }}"
+       az_tenant_id: "{{ lookup('env', 'AZURE_TENANT_ID') }}"
+       az_client_id: "{{ lookup('env', 'AZURE_CLIENT_ID') }}"
+       az_sub_id: "{{ lookup('env', 'AZURE_SUBSCRIPTION_ID') }}"
+       az_secret: "{{ lookup('env', 'AZURE_CLIENT_SECRET') }}"
+       
+    - name: Get latest version of a secret
+      azure.azcollection.azure_rm_keyvaultsecret_info:
+        subscription_id: "{{ az_sub_id }}"
+        client_id: "{{ az_client_id }}"
+        tenant: "{{ az_tenant_id }}"
+        secret: "{{ az_secret }}"
+        vault_uri: "{{ kv_uri }}"
+        name: "{{ item }}"
+      register: secret
+      with_items:
+            - "{{ vaultList.vault }}"
+            
+    - include_tasks: paths.yml
+      loop: "{{ vaultList.vault }}"
+      loop_control:
+         loop_var: "vault_key"
+       
     - name: Create directories for Jenkins
       file:
         path: "{{ item }}"
@@ -43,24 +69,26 @@
         - '/var/lib/jenkins/jobs'
     - name: Update JENKINS_JAVA_OPTIONS
       lineinfile:
-        path: "/etc/sysconfig/jenkins"
+        path: "/etc/default/jenkins"
         regexp: ".*-Djava.awt.headless=true.*"
-        line: 'JENKINS_JAVA_OPTIONS="-Djava.awt.headless=true -Djenkins.install.runSetupWizard=false -Djava.io.tmpdir=/var/cache/jenkins/tmp/ -Dorg.apache.commons.jelly.tags.fmt.timeZone=Europe/Berlin -Duser.timezone=Europe/Berlin"'
+        line: 'JAVA_ARGS="-Djava.awt.headless=true -Djenkins.install.runSetupWizard=false -Djava.io.tmpdir=/var/cache/jenkins/tmp/ -Dorg.apache.commons.jelly.tags.fmt.timeZone=Europe/Berlin -Duser.timezone=Europe/Berlin"'
         state: present
     - name: Update JENKINS_ARGS
       lineinfile:
-        path: "/etc/sysconfig/jenkins"
+        path: "/etc/default/jenkins"
         regexp: ".*JENKINS_ARGS=.*"
-        line: 'JENKINS_ARGS="--pluginroot=/var/cache/jenkins/plugins"'
+        line: 'JENKINS_ARGS="--pluginroot=/var/lib/jenkins/plugins"'
         state: present
     - name: Create limits file
       copy:
         dest: "/etc/security/limits.d/30-jenkins.conf"
         src: "/home/vagrant/provisioning/jenkins.conf"
+         
     - name: Create pipelines
       copy:
         dest: "/var/lib/jenkins/jobs/"
         src: "/home/vagrant/provisioning/jobs/"
+
     - name: Download jenkins-plugin-manager
       get_url:
         url: https://github.com/jenkinsci/plugin-installation-manager-tool/releases/download/2.5.0/jenkins-plugin-manager-2.5.0.jar
@@ -100,4 +128,4 @@
     - name: Start jenkins service
       systemd:
         name: jenkins
-        state: started
+        state: restarted
