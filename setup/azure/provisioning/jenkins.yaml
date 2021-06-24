@@ -79,7 +79,23 @@ security:
     mode: PRODUCTION
   sSHD:
     port: -1
+credentials:
+  system:
+    domainCredentials:
+    - credentials:
+      - azure:
+          azureEnvironmentName: "Azure"
+          clientId: "${AZURE_CLIENT_ID}"
+          clientSecret: "${AZURE_CLIENT_SECRET}"
+          description: "An azure service principal"
+          id: "service-principal"
+          scope: SYSTEM
+          subscriptionId: "${AZURE_SUBSCRIPTION_ID}"
+          tenant: "${AZURE_TENANT_ID}"
 unclassified:
+  azureKeyVault:
+    keyVaultURL: https://oscm-vault.vault.azure.net/
+    credentialID: service-principal
   gitSCM:
     addGitTagAction: false
     allowSecondFetch: false
