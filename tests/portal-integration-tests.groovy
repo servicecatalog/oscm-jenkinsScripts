@@ -16,12 +16,12 @@ def execute() {
             script: 'echo $AUTH_MODE;',
             returnStdout: true
     ).trim()
-    
+
     def _prepareBuildTools = {
         stage('Build - pull build tools') {
              docker.image("${DOCKER_REGISTRY}/${DOCKER_ORGANIZATION}/oscm-maven:${DOCKER_TAG}").pull()
              sh(
-                'docker tag ${DOCKER_REGISTRY}/${DOCKER_ORGANIZATION}/oscm-maven:${DOCKER_TAG} oscm-maven; ' 
+                'docker tag ${DOCKER_REGISTRY}/${DOCKER_ORGANIZATION}/oscm-maven:${DOCKER_TAG} oscm-maven; '
             )
         }
     }
@@ -67,17 +67,6 @@ def execute() {
         }
     }
 
-    def _setupMaildevPorts = {
-        stage('Tests - setup maildev ports') {
-            dir("${WORKSPACE}/docker") {
-                sh "docker stop oscm-maildev"
-                sh "docker rm oscm-maildev"
-                sh "docker-compose -f docker-compose-oscm.yml run -d -p 8082:1080 --name oscm-maildev oscm-maildev"
-                sh "sleep 5"
-            }
-        }
-    }
-
     def _installUITests = {
         stage('Tests - install ui tests') {
             catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
@@ -109,7 +98,6 @@ def execute() {
     _prepareBuildTools()
     _updateTechnicalServicePath()
     _setupTenant()
-    _setupMaildevPorts()
     _installUITests()
     _cleanUp()
 }
