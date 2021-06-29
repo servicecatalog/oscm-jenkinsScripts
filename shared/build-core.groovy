@@ -351,11 +351,7 @@ def execute() {
                   "--user $user:$group " +
                   "--rm " +
                   "-v ${WORKSPACE}:/build " +
-                  "-e http_proxy=\"${http_proxy}\" " +
-                  "-e https_proxy=\"${https_proxy}\" " +
-                  "-e HTTP_PROXY=\"${http_proxy}\" " +
-                  "-e HTTPS_PROXY=\"${https_proxy}\" " +
-                  "-e MAVEN_OPTS=\"-Duser.home=/build -Dhttp.proxyHost=proxy.intern.est.fujitsu.com -Dhttp.proxyPort=8080 -Dhttps.proxyHost=proxy.intern.est.fujitsu.com -Dhttps.proxyPort=8080\" " +
+                  "-e MAVEN_OPTS=\"${MAVEN_OPTS}\" " +
                   "oscm-maven clean package -f /build/oscm-mail/pom.xml"
       }
   }
