@@ -99,6 +99,17 @@ void execute() {
         }
     }
 
+    def _stopUnusedContainers = {
+        stage('Test webservices - stop unneeded services') {
+            dir("${WORKSPACE}/docker") {
+                sh "free"
+                sh "docker stop oscm-mail oscm-app"
+                sh "docker rm oscm-mail oscm-app"
+                sh "sleep 5"
+            }
+        }
+    }
+
     def _setupMaildevPorts = {
         stage('Test webservices - setup maildev ports') {
             dir("${WORKSPACE}/docker") {
@@ -118,9 +129,11 @@ void execute() {
                     "ANT_OPTS=${ANT_OPTS} -Xmx4096m -Xms32m",
             ]) {
                 try {
+                    sh "free"
                     sh "${ANT_BIN} -buildfile ${TEST_DIR}/oscm/oscm-build/cruisecontrol.xml _runWebserviceTests"
                 } finally {
                     archiveArtifacts "testdir/oscm/oscm-build/result/reports/test-ws/**/*"
+                    sh "free"
                 }
             }
         }
@@ -132,6 +145,7 @@ void execute() {
     _cloneRepo()
     _enableRemoteEjb()
     _setupCerts()
+    _stopUnusedContainers()
     _setupMaildevPorts()
     _setupTenant()
     _setupSupplier()
