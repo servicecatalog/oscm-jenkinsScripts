@@ -99,6 +99,17 @@ void execute() {
         }
     }
 
+    def _stopUnusedContainers = {
+        stage('Test webservices - stop unneeded services') {
+            dir("${WORKSPACE}/docker") {
+                sh "free"
+                sh "docker stop oscm-mail oscm-app"
+                sh "docker rm oscm-mail oscm-app"
+                sh "sleep 5"
+            }
+        }
+    }
+
     def _setupMaildevPorts = {
         stage('Test webservices - setup maildev ports') {
             dir("${WORKSPACE}/docker") {
@@ -106,6 +117,7 @@ void execute() {
                 sh "docker rm oscm-maildev"
                 sh "docker-compose -f docker-compose-oscm.yml run -d -p 8082:1080 --name oscm-maildev oscm-maildev"
                 sh "sleep 5"
+                sh "free"
             }
         }
     }
@@ -132,6 +144,7 @@ void execute() {
     _cloneRepo()
     _enableRemoteEjb()
     _setupCerts()
+    _stopUnusedContainers()
     _setupMaildevPorts()
     _setupTenant()
     _setupSupplier()
