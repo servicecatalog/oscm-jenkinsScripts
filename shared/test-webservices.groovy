@@ -69,6 +69,22 @@ void execute() {
             sh "docker cp oscm-core:/opt/apache-tomee/conf/ssl.p12 /tmp/certs"
         }
     }
+    
+     def clientId = sh (
+            script: 'if [ -n "$CLIENT_ID" ]; then echo $CLIENT_ID; else echo $WS-TESTS-CLIENT-ID; fi',
+            returnStdout: true
+    ).trim()
+    
+    
+     def clientSecret = sh (
+            script: 'if [ -n "$CLIENT_SECRET" ]; then echo $CLIENT_SECRET; else echo $WS-TESTS-CLIENT-SECRET; fi',
+            returnStdout: true
+    ).trim()
+    
+    def supplierUserPWD = sh (
+            script: 'if [ -n "$SUPPLIER_USER_PWD" ]; then echo $SUPPLIER_USER_PWD; else echo $WS-SUPPLIER-USER-PWD; fi',
+            returnStdout: true
+    ).trim()
 
     def _setupTenant = {
         stage('Test webservices - setup tenant') {
@@ -77,8 +93,8 @@ void execute() {
             sh '''
             sed -i \
                 -e "s|^\\(oidc.provider\\+=\\).*|\\1default|g" \
-                -e "s|^\\(oidc.clientId\\+=\\).*|\\1${CLIENT_ID}|g" \
-                -e "s|^\\(oidc.clientSecret\\+=\\).*|\\1${CLIENT_SECRET}|g" \
+                -e "s|^\\(oidc.clientId\\+=\\).*|\\1${clientId}|g" \
+                -e "s|^\\(oidc.clientSecret\\+=\\).*|\\1${clientSecret}|g" \
                 -e "s|^\\(oidc.authUrl\\+=\\).*|\\1https://login.microsoftonline.com/ctmgsso.onmicrosoft.com/oauth2/v2.0/authorize|g" \
                 -e "s|^\\(oidc.authUrlScope\\+=\\).*|\\1openid profile offline_access https://graph.microsoft.com/user.read.all https://graph.microsoft.com/group.readwrite.all |g" \
                 -e "s|^\\(oidc.logoutUrl\\+=\\).*|\\1https://login.microsoftonline.com/ctmgsso.onmicrosoft.com/oauth2/v2.0/logout|g" \

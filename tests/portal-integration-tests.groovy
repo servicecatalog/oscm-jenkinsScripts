@@ -40,7 +40,18 @@ def execute() {
             }
         }
     }
-
+    
+     def clientId = sh (
+            script: 'if [ -n "$CLIENT_ID" ]; then echo $CLIENT_ID; else echo $UI-TESTS-CLIENT-ID; fi',
+            returnStdout: true
+    ).trim()
+    
+    
+     def clientSecret = sh (
+            script: 'if [ -n "$CLIENT_SECRET" ]; then echo $CLIENT_SECRET; else echo $UI-TESTS-CLIENT-SECRET; fi',
+            returnStdout: true
+    ).trim()
+    
     def _setupTenant = {
         stage('Test webservices - setup tenant') {
             if (authMode == 'OIDC') {
@@ -51,8 +62,8 @@ def execute() {
                 sh '''
             sed -i \
                 -e "s|^\\(oidc.provider\\+=\\).*|\\1default|g" \
-                -e "s|^\\(oidc.clientId\\+=\\).*|\\1${CLIENT_ID}|g" \
-                -e "s|^\\(oidc.clientSecret\\+=\\).*|\\1${CLIENT_SECRET}|g" \
+                -e "s|^\\(oidc.clientId\\+=\\).*|\\1${clientId}|g" \
+                -e "s|^\\(oidc.clientSecret\\+=\\).*|\\1${clientSecret}|g" \
                 -e "s|^\\(oidc.authUrl\\+=\\).*|\\1https://login.microsoftonline.com/ctmgsso.onmicrosoft.com/oauth2/v2.0/authorize|g" \
                 -e "s|^\\(oidc.logoutUrl\\+=\\).*|\\1https://login.microsoftonline.com/ctmgsso.onmicrosoft.com/oauth2/v2.0/logout|g" \
                 -e "s|^\\(oidc.tokenUrl\\+=\\).*|\\1https://login.microsoftonline.com/ctmgsso.onmicrosoft.com/oauth2/v2.0/token|g" \
