@@ -103,7 +103,7 @@ def execute(boolean loginRequired = false, publish = false, IMAGES) {
     
     def _loginToDst = {
        stage('Push - login to registry') {
-          azureKeyVault([[envVariable: 'USERNAME', name: 'USER', secretType: 'Secret'], [envVariable: 'PASSWORD', name: 'PASS', secretType: 'Secret']]) {
+          azureKeyVault([[envVariable: 'GIT-USERNAME', name: 'USER', secretType: 'Secret'], [envVariable: 'GIT-PASSWORD', name: 'PASS', secretType: 'Secret']]) {
               sh 'docker login -u ${USER} -p ${PASS}' + " ${dstReg}"
            }
        }
