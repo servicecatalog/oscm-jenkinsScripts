@@ -45,16 +45,6 @@
 
 def execute(boolean loginRequired = false, publish = false, IMAGES) {
 
-    def dstUsername = sh (
-            script: 'if [ -n "$USERNAME" ]; then echo $USERNAME; else echo $GIT-USERNAME; fi',
-            returnStdout: true
-    ).trim()
-    
-    
-     def dstPassword = sh (
-            script: 'if [ -n "$PASSWORD" ]; then echo $PASSWORD; else echo $GIT-PASSWORD; fi',
-            returnStdout: true
-    ).trim()
     
     def srcRegistry = sh (
             script: 'if [ -n "$DOCKER_SRC_REGISTRY" ]; then echo $DOCKER_SRC_REGISTRY; else echo $DOCKER_REGISTRY; fi',
@@ -109,10 +99,13 @@ def execute(boolean loginRequired = false, publish = false, IMAGES) {
             }
         }
     }
-
+    
+    
     def _loginToDst = {
        stage('Push - login to registry') {
-           sh 'docker login -u ${dstUsername} -p ${dstPassword}' + " ${dstReg}"
+          azureKeyVault([[envVariable: 'USERNAME', name: 'USER', secretType: 'Secret'], [envVariable: 'PASSWORD', name: 'PASS', secretType: 'Secret']]) {
+              sh 'docker login -u ${USER} -p ${PASS}' + " ${dstReg}"
+           }
        }
     }
 
