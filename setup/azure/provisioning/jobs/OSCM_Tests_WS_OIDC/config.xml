@@ -78,7 +78,7 @@
         <hudson.model.StringParameterDefinition>
           <name>JAVA_HOME_DIR</name>
           <description>The domain which is used to run OSCM</description>
-          <defaultValue>/etc/alternatives</defaultValue>
+          <defaultValue>/usr/lib/jvm/java-8-openjdk-amd64</defaultValue>
           <trim>false</trim>
         </hudson.model.StringParameterDefinition>
         <hudson.model.StringParameterDefinition>
