@@ -101,6 +101,7 @@ def execute(boolean loginRequired = false, publish = false, IMAGES) {
     }
     
     
+
     def _loginToDst = {
        stage('Push - login to registry') {
        withCredentials([string(credentialsId: 'GIT-USERNAME', variable: 'USER'), string(credentialsId: 'GIT-PASSWORD', variable: 'PASS')]) {

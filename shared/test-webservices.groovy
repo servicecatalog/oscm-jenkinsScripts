@@ -70,24 +70,10 @@ void execute() {
         }
     }
     
-     def clientId = sh (
-            script: 'if [ -n "$CLIENT_ID" ]; then echo $CLIENT_ID; else echo $WS-TESTS-CLIENT-ID; fi',
-            returnStdout: true
-    ).trim()
-    
-    
-     def clientSecret = sh (
-            script: 'if [ -n "$CLIENT_SECRET" ]; then echo $CLIENT_SECRET; else echo $WS-TESTS-CLIENT-SECRET; fi',
-            returnStdout: true
-    ).trim()
-    
-    def supplierUserPWD = sh (
-            script: 'if [ -n "$SUPPLIER_USER_PWD" ]; then echo $SUPPLIER_USER_PWD; else echo $WS-SUPPLIER-USER-PWD; fi',
-            returnStdout: true
-    ).trim()
 
     def _setupTenant = {
         stage('Test webservices - setup tenant') {
+        withCredentials([string(credentialsId: 'WS-TESTS-CLIENT-ID', variable: 'clientId'), string(credentialsId: '	WS-TESTS-CLIENT-SECRET', variable: 'clientSecret')]) {
             sh "cp ${WORKSPACE}/docker/config/oscm-identity/tenants/tenant-default.properties.template ${WORKSPACE}/docker/config/oscm-identity/tenants/tenant-default.properties"
 
             sh '''
@@ -107,11 +93,14 @@ void execute() {
 				${WORKSPACE}/docker/config/oscm-identity/tenants/tenant-default.properties;
             '''
         }
+        }
     }
 
     def _setupSupplier = {
         stage('Test webservices - setup supplier') {
-            sh "echo \"SUPPLIER_USER_PWD=${SUPPLIER_USER_PWD}\" >> ${WORKSPACE}/docker/var.env"
+         withCredentials([string(credentialsId: '	WS-SUPPLIER-USER-PWD', variable: 'supplierPWD')]) {
+            sh "echo \"SUPPLIER_USER_PWD=${supplierPWD}\" >> ${WORKSPACE}/docker/var.env"
+        }
         }
     }
 
