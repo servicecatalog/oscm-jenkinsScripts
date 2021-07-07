@@ -45,6 +45,8 @@ def execute() {
     def _setupTenant = {
         stage('Test webservices - setup tenant') {
             if (authMode == 'OIDC') {
+            $clientId = "";
+            $clientSecret = "";
         try {
            $clientId = ${CLIENT_ID}
            $clientSecret = ${CLIENT_SECRET}
