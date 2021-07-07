@@ -104,7 +104,7 @@ def execute(boolean loginRequired = false, publish = false, IMAGES) {
 
     def _loginToDst = {
        stage('Push - login to registry') {
-       if ("${USERNAME}" == null || "${USERNAME}" == "" || "${PASSWORD}" == null || "${PASSWORD}" == "") {
+       if (!binding.hasVariable('USERNAME') || !binding.hasVariable('PASSWORD')) {
            withCredentials([string(credentialsId: 'GIT-USERNAME', variable: 'USER'), string(credentialsId: 'GIT-PASSWORD', variable: 'PASS')]) {
        	      $USERNAME = ${USER}
        	      $PASSWORD = ${PASS}
