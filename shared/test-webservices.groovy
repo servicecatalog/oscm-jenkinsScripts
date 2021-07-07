@@ -74,12 +74,12 @@ void execute() {
     def _setupTenant = {
         stage('Test webservices - setup tenant') {
         try {
-           $clientId = ${CLIENT_ID}
-           $clientSecret = ${CLIENT_SECRET}
+           env.clientId = ${CLIENT_ID}
+           env.$clientSecret = ${CLIENT_SECRET}
         } catch (exc) {
             withCredentials([string(credentialsId: 'WS-TESTS-CLIENT-ID', variable: 'CLIENT_ID'), string(credentialsId: '	WS-TESTS-CLIENT-SECRET', variable: 'CLIENT_SECRET')]) {
-              $clientId = ${CLIENT_ID}
-              $clientSecret = ${CLIENT_SECRET}
+              env.clientId = ${CLIENT_ID}
+              env.clientSecret = ${CLIENT_SECRET}
           }
             sh "cp ${WORKSPACE}/docker/config/oscm-identity/tenants/tenant-default.properties.template ${WORKSPACE}/docker/config/oscm-identity/tenants/tenant-default.properties"
 
