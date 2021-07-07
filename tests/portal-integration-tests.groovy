@@ -50,10 +50,14 @@ def execute() {
         try {
            $clientId = ${CLIENT_ID}
            $clientSecret = ${CLIENT_SECRET}
+           echo $clientId
+           echo $clientSecret
         } catch (exc) {
-            withCredentials([string(credentialsId: 'WS-TESTS-CLIENT-ID', variable: 'CLIENT_ID'), string(credentialsId: '	WS-TESTS-CLIENT-SECRET', variable: 'CLIENT_SECRET')]) {
+            withCredentials([string(credentialsId: 'WS-TESTS-CLIENT-ID', variable: 'CLIENT_ID'), string(credentialsId: 'WS-TESTS-CLIENT-SECRET', variable: 'CLIENT_SECRET')]) {
               $clientId = ${CLIENT_ID}
               $clientSecret = ${CLIENT_SECRET}
+              echo $clientId
+              echo $clientSecret
             }
         }
                 sh "cp ${WORKSPACE}/docker/config/oscm-identity/tenants/tenant-default.properties.template ${WORKSPACE}/docker/config/oscm-identity/tenants/tenant-default.properties"
