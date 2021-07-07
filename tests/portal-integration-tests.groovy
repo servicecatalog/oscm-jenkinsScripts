@@ -45,7 +45,15 @@ def execute() {
     def _setupTenant = {
         stage('Test webservices - setup tenant') {
             if (authMode == 'OIDC') {
-            withCredentials([string(credentialsId: 'UI-TESTS-CLIENT-ID', variable: 'clientId'), string(credentialsId: '	UI-TESTS-CLIENT-SECRET', variable: 'clientSecret')]) {
+        try {
+           $clientId = ${CLIENT_ID}
+           $clientSecret = ${CLIENT_SECRET}
+        } catch (exc) {
+            withCredentials([string(credentialsId: 'WS-TESTS-CLIENT-ID', variable: 'CLIENT_ID'), string(credentialsId: '	WS-TESTS-CLIENT-SECRET', variable: 'CLIENT_SECRET')]) {
+              $clientId = ${CLIENT_ID}
+              $clientSecret = ${CLIENT_SECRET}
+            }
+        }
                 sh "cp ${WORKSPACE}/docker/config/oscm-identity/tenants/tenant-default.properties.template ${WORKSPACE}/docker/config/oscm-identity/tenants/tenant-default.properties"
 
                 sh "sed -ri 's|oidc.authUrlScope=.*|oidc.authUrlScope=openid profile offline_access https://graph.microsoft.com/user.read.all https://graph.microsoft.com/group.readwrite.all https://graph.microsoft.com/directory.readwrite.all|g' ${WORKSPACE}/docker/config/oscm-identity/tenants/tenant-default.properties"
@@ -65,7 +73,6 @@ def execute() {
                 -e "s|^\\(oidc.idpApiUri\\+=\\).*|\\1https://graph.microsoft.com|g" \
 				${WORKSPACE}/docker/config/oscm-identity/tenants/tenant-default.properties;
             '''
-            }
             }
         }
     }

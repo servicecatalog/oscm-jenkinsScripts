@@ -73,7 +73,14 @@ void execute() {
 
     def _setupTenant = {
         stage('Test webservices - setup tenant') {
-        withCredentials([string(credentialsId: 'WS-TESTS-CLIENT-ID', variable: 'clientId'), string(credentialsId: '	WS-TESTS-CLIENT-SECRET', variable: 'clientSecret')]) {
+        try {
+           $clientId = ${CLIENT_ID}
+           $clientSecret = ${CLIENT_SECRET}
+        } catch (exc) {
+            withCredentials([string(credentialsId: 'WS-TESTS-CLIENT-ID', variable: 'CLIENT_ID'), string(credentialsId: '	WS-TESTS-CLIENT-SECRET', variable: 'CLIENT_SECRET')]) {
+              $clientId = ${CLIENT_ID}
+              $clientSecret = ${CLIENT_SECRET}
+          }
             sh "cp ${WORKSPACE}/docker/config/oscm-identity/tenants/tenant-default.properties.template ${WORKSPACE}/docker/config/oscm-identity/tenants/tenant-default.properties"
 
             sh '''
@@ -93,13 +100,16 @@ void execute() {
 				${WORKSPACE}/docker/config/oscm-identity/tenants/tenant-default.properties;
             '''
         }
-        }
     }
 
     def _setupSupplier = {
         stage('Test webservices - setup supplier') {
-         withCredentials([string(credentialsId: '	WS-SUPPLIER-USER-PWD', variable: 'supplierPWD')]) {
-            sh "echo \"SUPPLIER_USER_PWD=${supplierPWD}\" >> ${WORKSPACE}/docker/var.env"
+        try {
+            sh "echo \"SUPPLIER_USER_PWD=${SUPPLIER_USER_PWD}\" >> ${WORKSPACE}/docker/var.env"
+         } catch (exc) {
+            withCredentials([string(credentialsId: '	WS-SUPPLIER-USER-PWD', variable: 'supplierPWD')]) {
+              sh "echo \"SUPPLIER_USER_PWD=${supplierPWD}\" >> ${WORKSPACE}/docker/var.env"
+            }
         }
         }
     }
