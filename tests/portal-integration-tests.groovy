@@ -46,16 +46,18 @@ def execute() {
         stage('Test webservices - setup tenant') {
             if (authMode == 'OIDC') {
                try {
+               sed -i \
                 -e "s|^\\(oidc.clientId\\+=\\).*|\\1${CLIENT_ID}|g" \
                 -e "s|^\\(oidc.clientSecret\\+=\\).*|\\1${CLIENT_SECRET}|g" \
                 ${WORKSPACE}/docker/config/oscm-identity/tenants/tenant-default.properties;
                } catch (exc) {
                  withCredentials([string(credentialsId: 'WS-TESTS-CLIENT-ID', variable: 'CLIENT_ID'), string(credentialsId: 'WS-TESTS-CLIENT-SECRET', variable: 'CLIENT_SECRET')]) {
+                 sed -i \
                    -e "s|^\\(oidc.clientId\\+=\\).*|\\1${CLIENT_ID}|g" \
                    -e "s|^\\(oidc.clientSecret\\+=\\).*|\\1${CLIENT_SECRET}|g" \
                    ${WORKSPACE}/docker/config/oscm-identity/tenants/tenant-default.properties;
-            }
-        }
+                 }
+              }
                 sh "cp ${WORKSPACE}/docker/config/oscm-identity/tenants/tenant-default.properties.template ${WORKSPACE}/docker/config/oscm-identity/tenants/tenant-default.properties"
 
                 sh '''
