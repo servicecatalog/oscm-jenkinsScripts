@@ -77,16 +77,6 @@ def execute() {
         }
     }
 
-    def _stopUnusedContainers = {
-        stage('Tests - stop unneeded services') {
-            dir("${WORKSPACE}/docker") {
-                sh "free"
-                sh "docker stop oscm-mail oscm-birt"
-                sh "docker rm oscm-mail oscm-birt"
-                sh "sleep 5"
-            }
-        }
-    }
 
     def _setupMaildevPorts = {
         stage('Tests - setup maildev ports') {
