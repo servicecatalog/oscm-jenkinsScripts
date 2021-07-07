@@ -73,14 +73,17 @@ void execute() {
 
     def _setupTenant = {
         stage('Test webservices - setup tenant') {
-        try {
-           $clientId = ${CLIENT_ID}
-           $clientSecret = ${CLIENT_SECRET}
-        } catch (exc) {
-            withCredentials([string(credentialsId: 'WS-TESTS-CLIENT-ID', variable: 'CLIENT_ID'), string(credentialsId: '	WS-TESTS-CLIENT-SECRET', variable: 'CLIENT_SECRET')]) {
-              $clientId = ${CLIENT_ID}
-              $clientSecret = ${CLIENT_SECRET}
-          }
+                try {
+                -e "s|^\\(oidc.clientId\\+=\\).*|\\1${CLIENT_ID}|g" \
+                -e "s|^\\(oidc.clientSecret\\+=\\).*|\\1${CLIENT_SECRET}|g" \
+                ${WORKSPACE}/docker/config/oscm-identity/tenants/tenant-default.properties;
+               } catch (exc) {
+                 withCredentials([string(credentialsId: 'WS-TESTS-CLIENT-ID', variable: 'CLIENT_ID'), string(credentialsId: 'WS-TESTS-CLIENT-SECRET', variable: 'CLIENT_SECRET')]) {
+                   -e "s|^\\(oidc.clientId\\+=\\).*|\\1${CLIENT_ID}|g" \
+                   -e "s|^\\(oidc.clientSecret\\+=\\).*|\\1${CLIENT_SECRET}|g" \
+                   ${WORKSPACE}/docker/config/oscm-identity/tenants/tenant-default.properties;
+                }
+              }
             sh "cp ${WORKSPACE}/docker/config/oscm-identity/tenants/tenant-default.properties.template ${WORKSPACE}/docker/config/oscm-identity/tenants/tenant-default.properties"
 
             sh '''
