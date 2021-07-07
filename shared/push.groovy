@@ -115,6 +115,7 @@ def execute(boolean loginRequired = false, publish = false, IMAGES) {
            }
        }
           sh 'docker login -u ${USERNAME} -p ${PASSWORD}' + " ${dstReg}"
+       }
     }
 
     def _pushImages = {
