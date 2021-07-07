@@ -100,14 +100,21 @@ def execute(boolean loginRequired = false, publish = false, IMAGES) {
         }
     }
     
+    def dstTag = sh (
+            script: 'if [ -n "$USERNAME" ]; then echo $USER; else echo $DOCKER_TAG; fi',
+            returnStdout: true
+    ).trim()
     
 
     def _loginToDst = {
        stage('Push - login to registry') {
-       withCredentials([string(credentialsId: 'GIT-USERNAME', variable: 'USER'), string(credentialsId: 'GIT-PASSWORD', variable: 'PASS')]) {
-              sh 'docker login -u ${USER} -p ${PASS}' + " ${dstReg}"
+       if ($USERNAME == null || $USERNAME == "" || PASSWORD == null || PASSWORD == "") {
+           withCredentials([string(credentialsId: 'GIT-USERNAME', variable: 'USER'), string(credentialsId: 'GIT-PASSWORD', variable: 'PASS')]) {
+       	      $USERNAME = ${USER}
+       	      $PASSWORD = ${PASS}
            }
        }
+          sh 'docker login -u ${USERNAME} -p ${PASSWORD}' + " ${dstReg}"
     }
 
     def _pushImages = {
