@@ -77,7 +77,6 @@ def execute() {
         }
     }
 
-
     def _setupMaildevPorts = {
         stage('Tests - setup maildev ports') {
             dir("${WORKSPACE}/docker") {
@@ -121,7 +120,6 @@ def execute() {
     _prepareBuildTools()
     _updateTechnicalServicePath()
     _setupTenant()
-    _stopUnusedContainers()
     _setupMaildevPorts()
     _installUITests()
     _cleanUp()
