@@ -108,7 +108,8 @@ def execute(boolean loginRequired = false, publish = false, IMAGES) {
               sh 'docker login -u ${USERNAME} -p ${PASSWORD}' + " ${dstReg}"
            } catch (exc) {
               withCredentials([string(credentialsId: 'GIT-USERNAME', variable: 'USERNAME'), string(credentialsId: 'GIT-PASSWORD', variable: 'PASSWORD')]) {
-              sh 'docker login -u ${USERNAME} -p ${PASSWORD}' + " ${dstReg}"
+                sh 'docker login -u ${USERNAME} -p ${PASSWORD}' + " ${dstReg}"
+              }
            }
         }
     }
