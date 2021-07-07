@@ -100,11 +100,7 @@ def execute(boolean loginRequired = false, publish = false, IMAGES) {
         }
     }
     
-    def dstTag = sh (
-            script: 'if [ -n "$USERNAME" ]; then echo $USER; else echo $DOCKER_TAG; fi',
-            returnStdout: true
-    ).trim()
-    
+
 
     def _loginToDst = {
        stage('Push - login to registry') {
