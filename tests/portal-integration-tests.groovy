@@ -51,7 +51,7 @@ def execute() {
         } catch (exc) {
             withCredentials([string(credentialsId: 'WS-TESTS-CLIENT-ID', variable: 'CLIENT_ID'), string(credentialsId: 'WS-TESTS-CLIENT-SECRET', variable: 'CLIENT_SECRET')]) {
               env.clientId = "${CLIENT_ID}"
-              env.clientSecret = "${CLIENT_SECRET}"
+              env.clientSecret = "${CLIENT_SECRET}
             }
         }
                 sh "cp ${WORKSPACE}/docker/config/oscm-identity/tenants/tenant-default.properties.template ${WORKSPACE}/docker/config/oscm-identity/tenants/tenant-default.properties"
@@ -73,6 +73,17 @@ def execute() {
                 -e "s|^\\(oidc.idpApiUri\\+=\\).*|\\1https://graph.microsoft.com|g" \
 				${WORKSPACE}/docker/config/oscm-identity/tenants/tenant-default.properties;
             '''
+            }
+        }
+    }
+
+    def _stopUnusedContainers = {
+        stage('Tests - stop unneeded services') {
+            dir("${WORKSPACE}/docker") {
+                sh "free"
+                sh "docker stop oscm-mail oscm-birt"
+                sh "docker rm oscm-mail oscm-birt"
+                sh "sleep 5"
             }
         }
     }
@@ -120,6 +131,7 @@ def execute() {
     _prepareBuildTools()
     _updateTechnicalServicePath()
     _setupTenant()
+    _stopUnusedContainers()
     _setupMaildevPorts()
     _installUITests()
     _cleanUp()
