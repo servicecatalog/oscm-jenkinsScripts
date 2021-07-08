@@ -49,7 +49,7 @@ def execute() {
            env.clientId = "${CLIENT_ID}"
            env.clientSecret = "${CLIENT_SECRET}"
         } catch (exc) {
-            withCredentials([string(credentialsId: 'WS-TESTS-CLIENT-ID', variable: 'CLIENT_ID'), string(credentialsId: 'WS-TESTS-CLIENT-SECRET', variable: 'CLIENT_SECRET')]) {
+            withCredentials([string(credentialsId: 'UI-TESTS-CLIENT-ID', variable: 'CLIENT_ID'), string(credentialsId: 'UI-TESTS-CLIENT-SECRET', variable: 'CLIENT_SECRET')]) {
               env.clientId = "${CLIENT_ID}"
               env.clientSecret = "${CLIENT_SECRET}"
             }
