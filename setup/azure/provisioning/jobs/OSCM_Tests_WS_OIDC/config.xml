@@ -82,24 +82,6 @@
           <trim>false</trim>
         </hudson.model.StringParameterDefinition>
         <hudson.model.StringParameterDefinition>
-          <name>CONTROLLER_USER_NAME</name>
-          <description>User ID required for the controller admin</description>
-          <defaultValue>ADMIN-USER-ID</defaultValue>
-          <trim>false</trim>
-        </hudson.model.StringParameterDefinition>
-        <hudson.model.StringParameterDefinition>
-          <name>CONTROLLER_USER_KEY</name>
-          <description>1000</description>
-          <defaultValue>1000</defaultValue>
-          <trim>false</trim>
-        </hudson.model.StringParameterDefinition>
-        <hudson.model.StringParameterDefinition>
-          <name>CONTROLLER_USER_PASS</name>
-          <description>Password required for the controller admin</description>
-          <defaultValue>ADMIN-USER-PWD</defaultValue>
-          <trim>false</trim>
-        </hudson.model.StringParameterDefinition>
-        <hudson.model.StringParameterDefinition>
           <name>ADMIN_USER_ID</name>
           <description>User id of PLATFORM OPERATOR administrator</description>
           <defaultValue>ADMIN-USER-ID</defaultValue>
