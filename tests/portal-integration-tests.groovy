@@ -40,10 +40,20 @@ def execute() {
             }
         }
     }
+    
 
     def _setupTenant = {
         stage('Test webservices - setup tenant') {
             if (authMode == 'OIDC') {
+        try {
+           env.clientId = "${CLIENT_ID}"
+           env.clientSecret = "${CLIENT_SECRET}"
+        } catch (exc) {
+            withCredentials([string(credentialsId: 'UI-TESTS-CLIENT-ID', variable: 'CLIENT_ID'), string(credentialsId: 'UI-TESTS-CLIENT-SECRET', variable: 'CLIENT_SECRET')]) {
+              env.clientId = "${CLIENT_ID}"
+              env.clientSecret = "${CLIENT_SECRET}"
+            }
+        }
                 sh "cp ${WORKSPACE}/docker/config/oscm-identity/tenants/tenant-default.properties.template ${WORKSPACE}/docker/config/oscm-identity/tenants/tenant-default.properties"
 
                 sh "sed -ri 's|oidc.authUrlScope=.*|oidc.authUrlScope=openid profile offline_access https://graph.microsoft.com/user.read.all https://graph.microsoft.com/group.readwrite.all https://graph.microsoft.com/directory.readwrite.all|g' ${WORKSPACE}/docker/config/oscm-identity/tenants/tenant-default.properties"
@@ -51,8 +61,8 @@ def execute() {
                 sh '''
             sed -i \
                 -e "s|^\\(oidc.provider\\+=\\).*|\\1default|g" \
-                -e "s|^\\(oidc.clientId\\+=\\).*|\\1${CLIENT_ID}|g" \
-                -e "s|^\\(oidc.clientSecret\\+=\\).*|\\1${CLIENT_SECRET}|g" \
+                -e "s|^\\(oidc.clientId\\+=\\).*|\\1${clientId}|g" \
+                -e "s|^\\(oidc.clientSecret\\+=\\).*|\\1${clientSecret}|g" \
                 -e "s|^\\(oidc.authUrl\\+=\\).*|\\1https://login.microsoftonline.com/ctmgsso.onmicrosoft.com/oauth2/v2.0/authorize|g" \
                 -e "s|^\\(oidc.logoutUrl\\+=\\).*|\\1https://login.microsoftonline.com/ctmgsso.onmicrosoft.com/oauth2/v2.0/logout|g" \
                 -e "s|^\\(oidc.tokenUrl\\+=\\).*|\\1https://login.microsoftonline.com/ctmgsso.onmicrosoft.com/oauth2/v2.0/token|g" \

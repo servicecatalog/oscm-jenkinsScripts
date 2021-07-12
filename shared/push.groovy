@@ -44,6 +44,8 @@
  **/
 
 def execute(boolean loginRequired = false, publish = false, IMAGES) {
+
+    
     def srcRegistry = sh (
             script: 'if [ -n "$DOCKER_SRC_REGISTRY" ]; then echo $DOCKER_SRC_REGISTRY; else echo $DOCKER_REGISTRY; fi',
             returnStdout: true
@@ -97,11 +99,19 @@ def execute(boolean loginRequired = false, publish = false, IMAGES) {
             }
         }
     }
+    
+
 
     def _loginToDst = {
        stage('Push - login to registry') {
-           sh 'docker login -u ${USERNAME} -p ${PASSWORD}' + " ${dstReg}"
-       }
+           try {
+              sh 'docker login -u ${USERNAME} -p ${PASSWORD}' + " ${dstReg}"
+           } catch (exc) {
+              withCredentials([string(credentialsId: 'GIT-USERNAME', variable: 'USERNAME'), string(credentialsId: 'GIT-PASSWORD', variable: 'PASSWORD')]) {
+                sh 'docker login -u ${USERNAME} -p ${PASSWORD}' + " ${dstReg}"
+              }
+           }
+        }
     }
 
     def _pushImages = {

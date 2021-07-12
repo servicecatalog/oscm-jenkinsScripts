@@ -69,16 +69,26 @@ void execute() {
             sh "docker cp oscm-core:/opt/apache-tomee/conf/ssl.p12 /tmp/certs"
         }
     }
+    
 
     def _setupTenant = {
         stage('Test webservices - setup tenant') {
+       try {
+           env.clientId = "${CLIENT_ID}"
+           env.clientSecret = "${CLIENT_SECRET}"
+        } catch (exc) {
+            withCredentials([string(credentialsId: 'WS-TESTS-CLIENT-ID', variable: 'CLIENT_ID'), string(credentialsId: 'WS-TESTS-CLIENT-SECRET', variable: 'CLIENT_SECRET')]) {
+              env.clientId = "${CLIENT_ID}"
+              env.clientSecret = "${CLIENT_SECRET}"
+            }
+        }
             sh "cp ${WORKSPACE}/docker/config/oscm-identity/tenants/tenant-default.properties.template ${WORKSPACE}/docker/config/oscm-identity/tenants/tenant-default.properties"
 
             sh '''
             sed -i \
                 -e "s|^\\(oidc.provider\\+=\\).*|\\1default|g" \
-                -e "s|^\\(oidc.clientId\\+=\\).*|\\1${CLIENT_ID}|g" \
-                -e "s|^\\(oidc.clientSecret\\+=\\).*|\\1${CLIENT_SECRET}|g" \
+                -e "s|^\\(oidc.clientId\\+=\\).*|\\1${clientId}|g" \
+                -e "s|^\\(oidc.clientSecret\\+=\\).*|\\1${clientSecret}|g" \
                 -e "s|^\\(oidc.authUrl\\+=\\).*|\\1https://login.microsoftonline.com/ctmgsso.onmicrosoft.com/oauth2/v2.0/authorize|g" \
                 -e "s|^\\(oidc.authUrlScope\\+=\\).*|\\1openid profile offline_access https://graph.microsoft.com/user.read.all https://graph.microsoft.com/group.readwrite.all |g" \
                 -e "s|^\\(oidc.logoutUrl\\+=\\).*|\\1https://login.microsoftonline.com/ctmgsso.onmicrosoft.com/oauth2/v2.0/logout|g" \
@@ -95,7 +105,13 @@ void execute() {
 
     def _setupSupplier = {
         stage('Test webservices - setup supplier') {
+        try {
             sh "echo \"SUPPLIER_USER_PWD=${SUPPLIER_USER_PWD}\" >> ${WORKSPACE}/docker/var.env"
+         } catch (exc) {
+            withCredentials([string(credentialsId: '	WS-SUPPLIER-USER-PWD', variable: 'supplierPWD')]) {
+              sh "echo \"SUPPLIER_USER_PWD=${supplierPWD}\" >> ${WORKSPACE}/docker/var.env"
+            }
+        }
         }
     }
 
