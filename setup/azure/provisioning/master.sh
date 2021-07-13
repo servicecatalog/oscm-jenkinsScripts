@@ -1,3 +1,4 @@
+!#/bin/sh
 apt-get install build-essential libssl-dev libffi-dev python-dev -y
 apt-get update
 apt-get install python3-pip -y
