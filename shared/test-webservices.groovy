@@ -73,7 +73,7 @@ void execute() {
 
     def _setupTenant = {
         stage('Test webservices - setup tenant') {
-        if (authMode == 'OIDC') {
+        if (AUTH_MODE == 'OIDC') {
        try {
            env.clientId = "${CLIENT_ID}"
            env.clientSecret = "${CLIENT_SECRET}"
