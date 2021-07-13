@@ -73,6 +73,7 @@ void execute() {
 
     def _setupTenant = {
         stage('Test webservices - setup tenant') {
+        if (authMode == 'OIDC') {
        try {
            env.clientId = "${CLIENT_ID}"
            env.clientSecret = "${CLIENT_SECRET}"
@@ -100,6 +101,7 @@ void execute() {
                 -e "s|^\\(oidc.idpApiUri\\+=\\).*|\\1https://graph.microsoft.com |g" \
 				${WORKSPACE}/docker/config/oscm-identity/tenants/tenant-default.properties;
             '''
+        }
         }
     }
 
