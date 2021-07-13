@@ -73,33 +73,34 @@ void execute() {
 
     def _setupTenant = {
         stage('Test webservices - setup tenant') {
-       try {
-           env.clientId = "${CLIENT_ID}"
-           env.clientSecret = "${CLIENT_SECRET}"
-        } catch (exc) {
-            withCredentials([string(credentialsId: 'WS-TESTS-CLIENT-ID', variable: 'CLIENT_ID'), string(credentialsId: 'WS-TESTS-CLIENT-SECRET', variable: 'CLIENT_SECRET')]) {
-              env.clientId = "${CLIENT_ID}"
-              env.clientSecret = "${CLIENT_SECRET}"
+           if (AUTH_MODE == 'OIDC') {
+              try {
+                 env.clientId = "${CLIENT_ID}"
+                 env.clientSecret = "${CLIENT_SECRET}"
+              } catch (exc) {
+                 withCredentials([string(credentialsId: 'WS-TESTS-CLIENT-ID', variable: 'CLIENT_ID'), string(credentialsId: 'WS-TESTS-CLIENT-SECRET', variable: 'CLIENT_SECRET')]) {
+                 env.clientId = "${CLIENT_ID}"
+                 env.clientSecret = "${CLIENT_SECRET}"
+                }
             }
-        }
-            sh "cp ${WORKSPACE}/docker/config/oscm-identity/tenants/tenant-default.properties.template ${WORKSPACE}/docker/config/oscm-identity/tenants/tenant-default.properties"
-
-            sh '''
-            sed -i \
-                -e "s|^\\(oidc.provider\\+=\\).*|\\1default|g" \
-                -e "s|^\\(oidc.clientId\\+=\\).*|\\1${clientId}|g" \
-                -e "s|^\\(oidc.clientSecret\\+=\\).*|\\1${clientSecret}|g" \
-                -e "s|^\\(oidc.authUrl\\+=\\).*|\\1https://login.microsoftonline.com/ctmgsso.onmicrosoft.com/oauth2/v2.0/authorize|g" \
-                -e "s|^\\(oidc.authUrlScope\\+=\\).*|\\1openid profile offline_access https://graph.microsoft.com/user.read.all https://graph.microsoft.com/group.readwrite.all |g" \
-                -e "s|^\\(oidc.logoutUrl\\+=\\).*|\\1https://login.microsoftonline.com/ctmgsso.onmicrosoft.com/oauth2/v2.0/logout|g" \
-                -e "s|^\\(oidc.tokenUrl\\+=\\).*|\\1https://login.microsoftonline.com/ctmgsso.onmicrosoft.com/oauth2/v2.0/token|g" \
-                -e "s|^\\(oidc.redirectUrl\\+=\\).*|\\1http://localhost:9090/oscm-identity/callback|g" \
-                -e "s|^\\(oidc.configurationUrl\\+=\\).*|\\1https://login.microsoftonline.com/ctmgsso.onmicrosoft.com/v2.0/.well-known/openid-configuration|g" \
-                -e "s|^\\(oidc.usersEndpoint\\+=\\).*|\\1https://graph.microsoft.com/v1.0/users|g" \
-                -e "s|^\\(oidc.groupsEndpoint\\+=\\).*|\\1https://graph.microsoft.com/v1.0/groups|g" \
-                -e "s|^\\(oidc.idpApiUri\\+=\\).*|\\1https://graph.microsoft.com |g" \
-				${WORKSPACE}/docker/config/oscm-identity/tenants/tenant-default.properties;
-            '''
+                sh "cp ${WORKSPACE}/docker/config/oscm-identity/tenants/tenant-default.properties.template ${WORKSPACE}/docker/config/oscm-identity/tenants/tenant-default.properties"
+                sh '''
+                sed -i \
+                    -e "s|^\\(oidc.provider\\+=\\).*|\\1default|g" \
+                    -e "s|^\\(oidc.clientId\\+=\\).*|\\1${clientId}|g" \
+                    -e "s|^\\(oidc.clientSecret\\+=\\).*|\\1${clientSecret}|g" \
+                    -e "s|^\\(oidc.authUrl\\+=\\).*|\\1https://login.microsoftonline.com/ctmgsso.onmicrosoft.com/oauth2/v2.0/authorize|g" \
+                    -e "s|^\\(oidc.authUrlScope\\+=\\).*|\\1openid profile offline_access https://graph.microsoft.com/user.read.all https://graph.microsoft.com/group.readwrite.all |g" \
+                    -e "s|^\\(oidc.logoutUrl\\+=\\).*|\\1https://login.microsoftonline.com/ctmgsso.onmicrosoft.com/oauth2/v2.0/logout|g" \
+                    -e "s|^\\(oidc.tokenUrl\\+=\\).*|\\1https://login.microsoftonline.com/ctmgsso.onmicrosoft.com/oauth2/v2.0/token|g" \
+                    -e "s|^\\(oidc.redirectUrl\\+=\\).*|\\1http://localhost:9090/oscm-identity/callback|g" \
+                    -e "s|^\\(oidc.configurationUrl\\+=\\).*|\\1https://login.microsoftonline.com/ctmgsso.onmicrosoft.com/v2.0/.well-known/openid-configuration|g" \
+                    -e "s|^\\(oidc.usersEndpoint\\+=\\).*|\\1https://graph.microsoft.com/v1.0/users|g" \
+                    -e "s|^\\(oidc.groupsEndpoint\\+=\\).*|\\1https://graph.microsoft.com/v1.0/groups|g" \
+                    -e "s|^\\(oidc.idpApiUri\\+=\\).*|\\1https://graph.microsoft.com |g" \
+                    ${WORKSPACE}/docker/config/oscm-identity/tenants/tenant-default.properties;
+                '''
+            }
         }
     }
 
