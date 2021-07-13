@@ -1,0 +1,67 @@
+Vagrant.configure('2') do |config|
+
+  KEY_PATH = 'path to your ssh private key which will be used for authenticating to VM'
+
+  config.vm.box = 'azure'
+  config.ssh.private_key_path = KEY_PATH
+
+  config.vm.define "agent" do |agent|
+    agent.vm.hostname = "agent"
+    agent.vm.provider :azure do |azure, override|
+
+      override.vm.synced_folder ".", "/vagrant", disabled: true
+
+      azure.tenant_id = ENV['AZURE_TENANT_ID']
+      azure.client_id = ENV['AZURE_CLIENT_ID']
+      azure.client_secret = ENV['AZURE_CLIENT_SECRET']
+      azure.subscription_id = ENV['AZURE_SUBSCRIPTION_ID']
+
+      azure.resource_group_name = 'oscm-jenkins'
+      azure.location = 'westeurope'
+      azure.vm_name = 'vagrant-oscm-agent'
+      azure.vm_size = 'Standard_D2s_v3'
+      azure.vm_image_urn = 'Canonical:UbuntuServer:18.04-LTS:latest'
+
+    end
+
+    agent.vm.provision "file", source: "provisioning/agent.yml", destination: "/home/vagrant/agent.yml"
+    agent.vm.provision "shell", path: "provisioning/agent.sh"
+  end
+
+  config.vm.define "jenkins" do |jenkins|
+    jenkins.vm.hostname = "jenkins"
+    jenkins.vm.provider :azure do |azure, override|
+
+      override.vm.synced_folder ".", "/vagrant", disabled: true
+
+      azure.tenant_id = ENV['AZURE_TENANT_ID']
+      azure.client_id = ENV['AZURE_CLIENT_ID']
+      azure.client_secret = ENV['AZURE_CLIENT_SECRET']
+      azure.subscription_id = ENV['AZURE_SUBSCRIPTION_ID']
+
+      azure.resource_group_name = 'oscm-jenkins'
+      azure.location = 'westeurope'
+      azure.vm_name = 'vagrant-oscm-jenkins'
+      azure.vm_size = 'Standard_D2s_v3'
+      azure.vm_image_urn = 'Canonical:UbuntuServer:18.04-LTS:latest'
+
+      azure.tcp_endpoints = ['8080', '443']
+    end
+
+    jenkins.vm.provision "file", source: "provisioning/jenkins.conf", destination: "/home/vagrant/provisioning/jenkins.conf"
+    jenkins.vm.provision "file", source: "provisioning/plugins.yaml", destination: "/home/vagrant/provisioning/plugins.yaml"
+    jenkins.vm.provision "file", source: KEY_PATH, destination: "/home/vagrant/agent_key"
+    jenkins.vm.provision "file", source: "provisioning/jenkins.yaml", destination: "/home/vagrant/provisioning/jenkins.yaml"
+    jenkins.vm.provision "file", source: "provisioning/init.groovy.d/", destination: "/home/vagrant/provisioning/"
+    jenkins.vm.provision "file", source: "provisioning/jobs/", destination: "/home/vagrant/provisioning/"
+    jenkins.vm.provision "file", source: "provisioning/master.yml", destination: "/home/vagrant/master.yml"
+    jenkins.vm.provision "file", source: "provisioning/vaultList.yml", destination: "/home/vagrant/vaultList.yml"
+    jenkins.vm.provision "file", source: "provisioning/paths.yml", destination: "/home/vagrant/paths.yml"
+    
+    jenkins.vm.provision :shell do |s|
+      s.env = {AZURE_TENANT_ID:ENV['AZURE_TENANT_ID'], AZURE_CLIENT_ID:ENV['AZURE_CLIENT_ID'], AZURE_OBJECT_ID:ENV['AZURE_OBJECT_ID'], AZURE_SUBSCRIPTION_ID:ENV['AZURE_SUBSCRIPTION_ID'], AZURE_CLIENT_SECRET:ENV['AZURE_CLIENT_SECRET']}
+      s.path = 'provisioning/master.sh'
+    end
+  end
+
+end

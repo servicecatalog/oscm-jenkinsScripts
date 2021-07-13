@@ -1,0 +1,96 @@
+- name: Agent installation
+  hosts: localhost
+  gather_facts: yes
+  become: true
+  tasks:
+    - name: Install OpenJDK, Git
+      apt:
+        update_cache: yes
+        name:
+          - openjdk-8-jdk
+          - git
+        state: latest
+    - name: Remove any installed docker
+      apt:
+        name:
+          - docker
+          - docker-client
+          - docker-client-latest
+          - docker-common
+          - docker-latest
+          - docker-latest-logrotate
+          - docker-logrotate
+          - docker-engine
+        state: absent
+    - name: Install docker-compose
+      get_url:
+        url: https://github.com/docker/compose/releases/download/1.27.4/docker-compose-linux-x86_64
+        dest: /usr/local/bin/docker-compose
+    - name: Set docker-compose rights
+      file:
+        path: "/usr/local/bin/docker-compose"
+        mode: "+x"
+    - name: Add docker-compose bin dir to system-wide $PATH.
+      copy:
+        dest: /etc/profile.d/custom-path.sh
+        content: 'PATH=$PATH:/usr/local/bin'
+    - name: Install prerequisites for Docker repository
+      apt:
+        name:
+        - apt-transport-https
+        - ca-certificates
+        - curl
+        - gnupg2
+        - software-properties-common
+        state: present
+        update_cache: yes
+
+    - name: Add Docker GPG key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+
+
+    - name: Add Docker APT repository
+      apt_repository:
+        repo: deb [arch=amd64] https://download.docker.com/linux/{{ansible_distribution|lower}} {{ansible_distribution_release}} stable
+    - name: Install Docker CE
+      apt:
+        name:
+        - docker-ce
+        - docker-ce-cli
+        - containerd.io
+        state: present
+        update_cache: yes
+
+    - name: Add docker group
+      group:
+        name: docker
+        state: present
+    - name: Create a jenkins group
+      group:
+       name: jenkins
+       state: present
+    - name: Create a jenkins user
+      user:
+        name: jenkins
+        groups:
+        - jenkins
+        - docker
+        state: present
+        createhome: yes
+        home: /var/lib/jenkins
+    - name: Create directories for Jenkins
+      file:
+        path: "{{ item }}"
+        state: directory
+        owner: jenkins
+        group: jenkins
+        recurse: yes
+      with_items:
+        - '/var/lib/jenkins'
+    - name: Do a ssh reset in order to reflect the $USER group changes
+      meta: reset_connection
+    - name: start Docker service
+      systemd:
+        name: docker
+        state: started

@@ -1,0 +1,128 @@
+#*****************************************************************************
+#*                                                                           *
+#* Copyright FUJITSU LIMITED 2021                                            *                                                                     *
+#* Creation Date: 22-04-2021                                                 *
+#*                                                                           *
+#*****************************************************************************
+jenkins:
+  agentProtocols:
+  - "JNLP4-connect"
+  - "Ping"
+  authorizationStrategy:
+    loggedInUsersCanDoAnything:
+      allowAnonymousRead: false
+  crumbIssuer:
+    standard:
+      excludeClientIPFromCrumb: false
+  disableRememberMe: false
+  labelAtoms:
+  - name: "Controller"
+  - name: "agent"
+  - name: "linux"
+  - name: "master"
+  labelString: "Controller"
+  markupFormatter:
+    rawHtml:
+      disableSyntaxHighlighting: false
+  mode: EXCLUSIVE
+  myViewsTabBar: "standard"
+  nodes:
+  - permanent:
+      labelString: "vagrant-oscm-agent linux"
+      launcher:
+        command:
+        # connect the node to the master.
+          command: "ssh -i /var/lib/jenkins/agent_key vagrant@vagrant-oscm-agent.westeurope.cloudapp.azure.com -o StrictHostKeyChecking=no\
+            \ \"sudo su -s /bin/bash jenkins -c 'cd /var/lib/jenkins && curl -O http://vagrant-oscm-jenkins.westeurope.cloudapp.azure.com:8080/jnlpJars/agent.jar\
+            \ && java -jar agent.jar'\""
+      mode: EXCLUSIVE
+      name: "agent"
+      remoteFS: "/var/lib/jenkins"
+      retentionStrategy: "always"
+  numExecutors: 0
+  primaryView:
+    all:
+      name: "all"
+  projectNamingStrategy: "standard"
+  quietPeriod: 5
+  remotingSecurity:
+    enabled: true
+  scmCheckoutRetryCount: 0
+  securityRealm:
+    local:
+      allowsSignup: false
+      enableCaptcha: false
+      users:
+      # user has probably to be replaced with hashicorp vault
+      - id: "admin"
+        name: "admin"
+        properties:
+        - "apiToken"
+        - "mailer"
+        - preferredProvider:
+            providerId: "default"
+  slaveAgentPort: -1
+  updateCenter:
+    sites:
+    - id: "default"
+      url: "https://updates.jenkins.io/update-center.json"
+  views:
+  - all:
+      name: "all"
+  viewsTabBar: "standard"
+security:
+  apiToken:
+    creationOfLegacyTokenEnabled: false
+    tokenGenerationOnCreationEnabled: false
+    usageStatisticsEnabled: true
+  copyartifact:
+    mode: PRODUCTION
+  sSHD:
+    port: -1
+credentials:
+  system:
+    domainCredentials:
+    - credentials:
+      - azure:
+          azureEnvironmentName: "Azure"
+          clientId: "${AZURE_CLIENT_ID}"
+          clientSecret: "${AZURE_CLIENT_SECRET}"
+          description: "An azure service principal"
+          id: "service-principal"
+          scope: SYSTEM
+          subscriptionId: "${AZURE_SUBSCRIPTION_ID}"
+          tenant: "${AZURE_TENANT_ID}"
+unclassified:
+  azureKeyVault:
+    keyVaultURL: https://oscm-vault.vault.azure.net/
+    credentialID: service-principal
+  gitSCM:
+    addGitTagAction: false
+    allowSecondFetch: false
+    createAccountBasedOnEmail: false
+    disableGitToolChooser: false
+    hideCredentials: false
+    showEntireCommitSummaryInChanges: false
+    useExistingAccountWithSameEmail: false
+  ivyBuildTrigger:
+    extendedVersionMatching: false
+  junitTestResultStorage:
+    storage: "file"
+  location:
+    adminAddress: "Adresse nicht konfiguriert <nobody@nowhere>"
+    url: "http://vagrant-oscm-jenkins.westeurope.cloudapp.azure.com:8080/"
+  mailer:
+    charset: "UTF-8"
+    useSsl: false
+    useTls: false
+  mavenModuleSet:
+    localRepository: "default"
+  pollSCM:
+    pollingThreadCount: 10
+  upstream:
+    globalUpstreamFilterStrategy: UseOldest
+tool:
+  git:
+    installations:
+    - home: "git"
+      name: "Default"
